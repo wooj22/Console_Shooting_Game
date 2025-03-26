@@ -8,69 +8,70 @@
 
 namespace Play {
 	// Map Data
-	const wchar_t* floor1StaticMap[] = {
+	const wchar_t* playMap[] = {
 
-	L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓",
-	L"                                                            ",
-	L"                                                            ",
-	L"                                                            ",
-	L"                                                            ",
-	L"                    Current Floor : 1                       ",
-	L"                  이 정도는 거뜬하겠지?                       ",
-	L"                                                            ",
-	L"                                                            ",
-	L"                                                            ",
-	L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓                                              ▓▓▓▓▓▓▓▓▓▓▓▓▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓                                     ▓▓▓▓▓▓▓▓▓▓▓▓         ▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓                           ▓▓▓▓▓▓▓▓▓▓▓▓                   ▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓                 ▓▓▓▓▓▓▓▓▓▓▓▓                             ▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓         ▓▓▓▓▓▓▓▓▓▓▓▓                                     ▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓▓▓▓▓▓▓▓▓▓▓▓                                               ▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓            ▓▓▓▓▓▓▓▓▓▓▓▓                                  ▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓                       ▓▓▓▓▓▓▓▓▓▓▓▓                       ▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓                                   ▓▓▓▓▓▓▓▓▓▓▓▓           ▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓                                              ▓▓▓▓▓▓▓▓▓▓▓▓▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓                                     ▓▓▓▓▓▓▓▓▓▓▓▓         ▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓                              ▓▓▓▓▓▓▓▓▓▓▓▓                ▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓                      ▓▓▓▓▓▓▓▓▓▓▓▓                        ▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓              ▓▓▓▓▓▓▓▓▓▓▓▓                                ▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
-	L"▓        ▓▓▓▓▓▓▓▓▓▓▓▓                                      ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
+	L"▓                                                          ▓",
 	L"▓                                                          ▓",
 	L"▓                                                          ▓",
 	L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓"
 	};
-	const int mapHeight = sizeof(floor1StaticMap) / sizeof(floor1StaticMap[0]);
+	const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
 
 	// Player
 	COORD g_Player = { 3, 57 };
@@ -97,7 +98,7 @@ namespace Play {
 		// map
 		for (int i = 0; i < mapHeight; i++)
 		{
-			ConsoleRenderer::ScreenDrawStringW(0, i, floor1StaticMap[i], FG_GRAY | FOREGROUND_INTENSITY);
+			ConsoleRenderer::ScreenDrawStringW(0, i, playMap[i], FG_GRAY | FOREGROUND_INTENSITY);
 		}
 
 		// player
@@ -112,16 +113,16 @@ namespace Play {
 		int nextY = g_Player.Y;
 
 		// 입력 처리
-		if (Input::IsKeyDown(VK_LEFT) && floor1StaticMap[g_Player.Y][g_Player.X - 1] != L'▓') {
+		if (Input::IsKeyDown(VK_LEFT) && playMap[g_Player.Y][g_Player.X - 1] != L'▓') {
 			nextX--;
 		}
-		if (Input::IsKeyDown(VK_RIGHT) && floor1StaticMap[g_Player.Y][g_Player.X + 1] != L'▓') {
+		if (Input::IsKeyDown(VK_RIGHT) && playMap[g_Player.Y][g_Player.X + 1] != L'▓') {
 			nextX++;
 		}
-		if (Input::IsKeyDown(VK_UP) && floor1StaticMap[g_Player.Y - 1][g_Player.X] != L'▓') {
+		if (Input::IsKeyDown(VK_UP) && playMap[g_Player.Y - 1][g_Player.X] != L'▓') {
 			nextY--;
 		}
-		if (Input::IsKeyDown(VK_DOWN) && floor1StaticMap[g_Player.Y + 1][g_Player.X] != L'▓') {
+		if (Input::IsKeyDown(VK_DOWN) && playMap[g_Player.Y + 1][g_Player.X] != L'▓') {
 			nextY++;
 		}
 
