@@ -25,6 +25,15 @@
     <Filter Include="소스 파일\Scene">
       <UniqueIdentifier>{8d1bea86-9ce2-4486-baee-e0fc00ae6e99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Player">
+      <UniqueIdentifier>{27094330-ef01-4a58-a78e-a7726548dafd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Bullet">
+      <UniqueIdentifier>{76395391-3028-4213-a711-e04097ecc621}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Enemy">
+      <UniqueIdentifier>{7fcfa658-b732-4cec-8d0e-e8c36ad8b502}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConsoleRenderer.cpp">
@@ -48,6 +57,12 @@
     <ClCompile Include="EndScene.cpp">
       <Filter>소스 파일\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>소스 파일\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>소스 파일\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleRenderer.h">
@@ -70,6 +85,12 @@
     </ClInclude>
     <ClInclude Include="PlayScene.h">
       <Filter>헤더 파일\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>소스 파일\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>소스 파일\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

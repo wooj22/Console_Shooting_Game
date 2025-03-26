@@ -5,6 +5,8 @@
 #include "GameManager.h"
 #include "PlayScene.h"
 #include "EndScene.h"
+#include "Player.h"
+#include "Bullet.h"
 
 // Map Data
 const wchar_t* playMap[] = {
@@ -72,66 +74,6 @@ L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 };
 const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
 
-/*----------  Bullet Calss  ----------*/
-class Bullet {
-public:
-	COORD pos;
-	char bulletChar = 'o';
-
-	void SetPos(int x, int y) {
-		pos.X = x;
-		pos.Y = y;
-	}
-};
-
-/*----------  Player Calss  ----------*/
-class Player {
-public:
-	COORD pos = { 30, 57 };
-	char playerChar = 'P';
-
-	/// Move
-	void Move()
-	{
-		// 임시값 저장
-		int nextX = pos.X;
-		int nextY = pos.Y;
-
-		// input에 따른 이동, 벽 경계 제어
-		if (Input::IsKeyDown(VK_LEFT) && 
-			playMap[pos.Y][pos.X - 1] != L'▓') { nextX--; }
-		if (Input::IsKeyDown(VK_RIGHT) && 
-			playMap[pos.Y][pos.X + 1] != L'▓') { nextX++; }
-		if (Input::IsKeyDown(VK_UP)) { nextY--; }
-		if (Input::IsKeyDown(VK_DOWN) &&
-			playMap[pos.Y + 1][pos.X] != L'▓') { nextY++; }
-
-		// 상단 경계 제어
-		if (nextY < 0) nextY = 0;
-
-		// 최종 포지션
-		pos.X = nextX;
-		pos.Y = nextY;
-	}
-
-	/// Attack
-	void Shoot() {
-		if (Input::IsKeyDown(VK_SPACE)) {
-			Bullet bullet;
-			
-			while (bullet.pos.Y <= 0) {
-				if (Time::GetTotalTime() >= 0.1f) {
-					bullet.SetPos(this->pos.X, this->pos.Y - 1);
-					ConsoleRenderer::ScreenDrawChar(bullet.pos.X, bullet.pos.Y, bullet.bulletChar, FG_RED);
-				}
-			}
-		}
-	}
-};
-
-
-
-
 namespace Play {
 	Player player;
 
@@ -145,7 +87,7 @@ namespace Play {
 		// input & playControll
 		Time::UpdateTime();
 		if (Time::GetTotalTime() >= 0.1f) {
-			player.Move();
+			player.Move(playMap);
 			Time::Initialize();
 		}
 		
