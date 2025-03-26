@@ -6,127 +6,133 @@
 #include "PlayScene.h"
 #include "EndScene.h"
 
+// Map Data
+const wchar_t* playMap[] = {
+
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓                                                          ▓",
+L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓"
+};
+const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
+
+/*----------  Bullet Calss  ----------*/
+class Bullet {
+public:
+	COORD pos;
+	char bulletChar = 'o';
+
+	void SetPos(int x, int y) {
+		pos.X = x;
+		pos.Y = y;
+	}
+};
+
+/*----------  Player Calss  ----------*/
+class Player {
+public:
+	COORD pos = { 30, 57 };
+	char playerChar = 'P';
+
+	/// Move
+	void Move()
+	{
+		// 임시값 저장
+		int nextX = pos.X;
+		int nextY = pos.Y;
+
+		// input에 따른 이동, 벽 경계 제어
+		if (Input::IsKeyDown(VK_LEFT) && 
+			playMap[pos.Y][pos.X - 1] != L'▓') { nextX--; }
+		if (Input::IsKeyDown(VK_RIGHT) && 
+			playMap[pos.Y][pos.X + 1] != L'▓') { nextX++; }
+		if (Input::IsKeyDown(VK_UP)) { nextY--; }
+		if (Input::IsKeyDown(VK_DOWN) &&
+			playMap[pos.Y + 1][pos.X] != L'▓') { nextY++; }
+
+		// 상단 경계 제어
+		if (nextY < 0) nextY = 0;
+
+		// 최종 포지션
+		pos.X = nextX;
+		pos.Y = nextY;
+	}
+
+	/// Attack
+	void Shoot() {
+		if (Input::IsKeyDown(VK_SPACE)) {
+			Bullet bullet;
+			
+			while (bullet.pos.Y <= 0) {
+				if (Time::GetTotalTime() >= 0.1f) {
+					bullet.SetPos(this->pos.X, this->pos.Y - 1);
+					ConsoleRenderer::ScreenDrawChar(bullet.pos.X, bullet.pos.Y, bullet.bulletChar, FG_RED);
+				}
+			}
+		}
+	}
+};
+
+
+
+
 namespace Play {
-	// Map Data
-	const wchar_t* playMap[] = {
-
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓                                                          ▓",
-	L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓"
-	};
-	const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
-
-	// Player
-	class Player {
-	public:
-		COORD playerPos = { 3, 57 };
-		char playerChar = 'P';
-
-		// Player Move
-		void PlayerMove()
-		{// 임시 좌표
-			int nextX = playerPos.X;
-			int nextY = playerPos.Y;
-
-			// 입력 처리
-			if (Input::IsKeyDown(VK_LEFT) && playMap[playerPos.Y][playerPos.X - 1] != L'▓') {
-				nextX--;
-			}
-			if (Input::IsKeyDown(VK_RIGHT) && playMap[playerPos.Y][playerPos.X + 1] != L'▓') {
-				nextX++;
-			}
-			if (Input::IsKeyDown(VK_UP)) {
-				nextY--;
-			}
-			if (Input::IsKeyDown(VK_DOWN) && playMap[playerPos.Y + 1][playerPos.X] != L'▓') {
-				nextY++;
-			}
-
-			// 경계 검사 (콘솔 창 크기 기준)
-			if (nextX < 0) nextX = 0;
-			if (nextX >= ConsoleRenderer::ScreenWidth()) nextX = ConsoleRenderer::ScreenWidth() - 1;
-			if (nextY < 0) nextY = 0;
-			if (nextY >= mapHeight) nextY = mapHeight - 1;
-
-			// 최종 위치 업데이트
-			playerPos.X = nextX;
-			playerPos.Y = nextY;
-		}
-
-		// Player Attack
-		void PlayerAttack() {
-			if (Input::IsKeyDown(VK_SPACE)) {
-
-			}
-		}
-	};
-	 
-
-	// Bullet
-	class Bullet {
-	public:
-		COORD bulletPos;
-		char bulletChar = 'o';
-	};
-
-	/*----------------------------------------------------------------*/
 	Player player;
 
 	// Start
@@ -139,7 +145,7 @@ namespace Play {
 		// input & playControll
 		Time::UpdateTime();
 		if (Time::GetTotalTime() >= 0.1f) {
-			player.PlayerMove();
+			player.Move();
 			Time::Initialize();
 		}
 		
@@ -159,8 +165,7 @@ namespace Play {
 		}
 
 		// player
-		ConsoleRenderer::ScreenDrawChar(player.playerPos.X, player.playerPos.Y, player.playerChar, FG_RED);
+		ConsoleRenderer::ScreenDrawChar(player.pos.X, player.pos.Y, player.playerChar, FG_RED);
 	}
-
-	
 }
+
