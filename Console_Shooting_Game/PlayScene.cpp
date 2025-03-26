@@ -74,7 +74,60 @@ namespace Play {
 	const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
 
 	// Player
-	COORD g_Player = { 3, 57 };
+	class Player {
+	public:
+		COORD playerPos = { 3, 57 };
+		char playerChar = 'P';
+
+		// Player Move
+		void PlayerMove()
+		{// 임시 좌표
+			int nextX = playerPos.X;
+			int nextY = playerPos.Y;
+
+			// 입력 처리
+			if (Input::IsKeyDown(VK_LEFT) && playMap[playerPos.Y][playerPos.X - 1] != L'▓') {
+				nextX--;
+			}
+			if (Input::IsKeyDown(VK_RIGHT) && playMap[playerPos.Y][playerPos.X + 1] != L'▓') {
+				nextX++;
+			}
+			if (Input::IsKeyDown(VK_UP)) {
+				nextY--;
+			}
+			if (Input::IsKeyDown(VK_DOWN) && playMap[playerPos.Y + 1][playerPos.X] != L'▓') {
+				nextY++;
+			}
+
+			// 경계 검사 (콘솔 창 크기 기준)
+			if (nextX < 0) nextX = 0;
+			if (nextX >= ConsoleRenderer::ScreenWidth()) nextX = ConsoleRenderer::ScreenWidth() - 1;
+			if (nextY < 0) nextY = 0;
+			if (nextY >= mapHeight) nextY = mapHeight - 1;
+
+			// 최종 위치 업데이트
+			playerPos.X = nextX;
+			playerPos.Y = nextY;
+		}
+
+		// Player Attack
+		void PlayerAttack() {
+			if (Input::IsKeyDown(VK_SPACE)) {
+
+			}
+		}
+	};
+	 
+
+	// Bullet
+	class Bullet {
+	public:
+		COORD bulletPos;
+		char bulletChar = 'o';
+	};
+
+	/*----------------------------------------------------------------*/
+	Player player;
 
 	// Start
 	void Initalize() {
@@ -86,15 +139,15 @@ namespace Play {
 		// input & playControll
 		Time::UpdateTime();
 		if (Time::GetTotalTime() >= 0.1f) {
-			PlayerMove();
+			player.PlayerMove();
 			Time::Initialize();
 		}
 		
 		// scene change
-		if (Input::IsKeyPressed(VK_SPACE)) {
+		/*if (Input::IsKeyPressed(VK_SPACE)) {
 			Game::g_SceneCurrent = Game::END_SCENE;
 			End::Initalize();
-		}
+		}*/
 	}
 
 	// Render
@@ -106,37 +159,8 @@ namespace Play {
 		}
 
 		// player
-		ConsoleRenderer::ScreenDrawChar(g_Player.X, g_Player.Y, 'P', FG_RED);
+		ConsoleRenderer::ScreenDrawChar(player.playerPos.X, player.playerPos.Y, player.playerChar, FG_RED);
 	}
 
-	// Player Move
-	void PlayerMove()
-	{// 임시 좌표
-		int nextX = g_Player.X;
-		int nextY = g_Player.Y;
-
-		// 입력 처리
-		if (Input::IsKeyDown(VK_LEFT) && playMap[g_Player.Y][g_Player.X - 1] != L'▓') {
-			nextX--;
-		}
-		if (Input::IsKeyDown(VK_RIGHT) && playMap[g_Player.Y][g_Player.X + 1] != L'▓') {
-			nextX++;
-		}
-		if (Input::IsKeyDown(VK_UP)) {
-			nextY--;
-		}
-		if (Input::IsKeyDown(VK_DOWN) && playMap[g_Player.Y + 1][g_Player.X] != L'▓') {
-			nextY++;
-		}
-
-		// 경계 검사 (콘솔 창 크기 기준)
-		if (nextX < 0) nextX = 0;
-		if (nextX >= ConsoleRenderer::ScreenWidth()) nextX = ConsoleRenderer::ScreenWidth() - 1;
-		if (nextY < 0) nextY = 0;
-		if (nextY >= mapHeight) nextY = mapHeight - 1;
-
-		// 최종 위치 업데이트
-		g_Player.X = nextX;
-		g_Player.Y = nextY;
-	}
+	
 }

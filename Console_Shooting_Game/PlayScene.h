@@ -6,4 +6,5 @@ namespace Play {
 	void Update();
 	void Render();
 	void PlayerMove();
+	void PlayerAttack();
 }
