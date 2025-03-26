@@ -78,14 +78,18 @@ namespace Play {
 
 	// Start
 	void Initalize() {
-
+		Time::Initialize();
 	}
 
 	// Update
 	void Update() {
-		// input & play controll
-		PlayerMove();
-
+		// input & playControll
+		Time::UpdateTime();
+		if (Time::GetTotalTime() >= 0.1f) {
+			PlayerMove();
+			Time::Initialize();
+		}
+		
 		// scene change
 		if (Input::IsKeyPressed(VK_SPACE)) {
 			Game::g_SceneCurrent = Game::END_SCENE;
@@ -107,8 +111,7 @@ namespace Play {
 
 	// Player Move
 	void PlayerMove()
-	{
-		// 임시 좌표
+	{// 임시 좌표
 		int nextX = g_Player.X;
 		int nextY = g_Player.Y;
 
@@ -119,7 +122,7 @@ namespace Play {
 		if (Input::IsKeyDown(VK_RIGHT) && playMap[g_Player.Y][g_Player.X + 1] != L'▓') {
 			nextX++;
 		}
-		if (Input::IsKeyDown(VK_UP) && playMap[g_Player.Y - 1][g_Player.X] != L'▓') {
+		if (Input::IsKeyDown(VK_UP)) {
 			nextY--;
 		}
 		if (Input::IsKeyDown(VK_DOWN) && playMap[g_Player.Y + 1][g_Player.X] != L'▓') {
