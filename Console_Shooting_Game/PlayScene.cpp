@@ -84,13 +84,18 @@ namespace Play {
 
 	// Update
 	void Update() {
-		// input & playControll
+		// Move
 		Time::UpdateTime();
 		if (Time::GetTotalTime() >= 0.1f) {
 			player.Move(playMap);
 			Time::Initialize();
 		}
 		
+		// Shoot
+		if (Input::IsKeyDown(VK_SPACE)) {
+			player.Shoot();
+		}
+
 		// scene change
 		/*if (Input::IsKeyPressed(VK_SPACE)) {
 			Game::g_SceneCurrent = Game::END_SCENE;
