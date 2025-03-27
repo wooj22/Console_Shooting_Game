@@ -9,8 +9,6 @@ public:
     Bullet* next;
 
     Bullet(int x, int y, char symbol) : pos({ (SHORT)x, (SHORT)y }), body(symbol), next(nullptr) {}
-    virtual ~Bullet() = default;
-
     void SetPos(int x, int y) { pos.X = x; pos.Y = y; }
     COORD GetPos() { return pos; }
 };
@@ -25,10 +23,10 @@ public:
     EnemyBullet(int x, int y) : Bullet(x, y, 'V') {}
 };
 
-/*---------- Bullet Linked List --------*/
+/*---------- Bullet Single Linked List --------*/
 class BulletList {
 public:
-    Bullet* head;
+    Bullet* head; 
     BulletList() : head(nullptr) {}
     ~BulletList();
 
