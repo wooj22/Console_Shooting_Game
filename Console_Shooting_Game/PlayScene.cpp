@@ -1,5 +1,6 @@
 ﻿#include <stdio.h>
 #include <string>
+#include <vector>
 #include "ConsoleRenderer.h"
 #include "Input.h"
 #include "Time.h"
@@ -81,10 +82,17 @@ namespace Play {
 	// player
 	Player player(30, 55);
 	BulletList playerBulletList;
-	float playerTime = 0.0f;
+	float playerMoveCycle = 0.1f;
+	float playerMoveTimer = 0.0f;
+	float playerShootCycle = 0.2f;
+	float playerShootTimer = 0.0f;
 
 	// enemy
-	Enemy testEnemy(10, 10);
+	std::vector<Enemy> enemyList;
+	float enemySpawnCycle = 2.5f;
+	float enemySpawnTimer = 0.0f;
+	float enemyMoveCycle = 0.2f;
+	float enemyMoveTimer = 0.0f;
 
 	// Start
 	void Initalize() {
@@ -96,14 +104,17 @@ namespace Play {
 		// TimeControll
 		Time::UpdateTime();
 		player.HitTimer();
-		playerTime += Time::GetElapsedTime();
+		playerMoveTimer += Time::GetElapsedTime();
+		playerShootTimer += Time::GetElapsedTime();
+		enemySpawnTimer += Time::GetElapsedTime();
+		enemyMoveTimer += Time::GetElapsedTime();
 
-		// Move
-		if (playerTime >= 0.1f) {
+		// Player Move
+		if (playerMoveTimer >= playerMoveCycle) {
 			// player
 			player.Move(playMap);
 
-			// player bullet
+			// bullet
 			for (Bullet* current = playerBulletList.head; current != NULL; current = current->next) {
 				// 이동
 				current->SetPos(current->GetPos().X, current->GetPos().Y - 1);
@@ -113,23 +124,34 @@ namespace Play {
 					//playerBulletList.remove(current);   // 예외발생 에러잇음
 				}
 			}
-
-			// enemy
-			testEnemy.Move();
-			testEnemy.PlayerCollision(&player);
-
-			playerTime = 0.0f;
+			playerMoveTimer = 0.0f;
 		}
 
-		// Debug player.hp
-		std::string str = std::to_string(player.hp);
-		const char* cstr = str.c_str();
-		OutputDebugStringA(cstr);
-
-		// Shoot
-		if (Input::IsKeyDown(VK_SPACE)) {
+		// Player Shoot
+		if (playerShootTimer >= playerShootCycle && Input::IsKeyDown(VK_SPACE)) {
 			playerBulletList.insert(new PlayerBullet(player.pos.X, player.pos.Y - 1));
+			playerShootTimer = 0.0f;
 		}
+		
+		// Enemy Spawn
+		if (enemySpawnTimer >= enemySpawnCycle) {
+			enemyList.push_back(Enemy(rand() % 58 + 1, 1));
+			enemySpawnTimer = 0.0f;
+		}
+
+		// Enemy move
+		if (enemyMoveTimer >= enemyMoveCycle) {
+			for (auto& enemy : enemyList) {
+				enemy.Move();
+				enemy.PlayerCollision(&player);
+			}
+			enemyMoveTimer = 0.0f;
+		}
+		
+		// Debug player.hp
+		/*std::string str = std::to_string(player.hp);
+		const char* cstr = str.c_str();
+		OutputDebugStringA(cstr);*/
 	}
 
 	// Render
@@ -149,7 +171,9 @@ namespace Play {
 		}
 
 		// enemy
-		ConsoleRenderer::ScreenDrawChar(testEnemy.pos.X, testEnemy.pos.Y, testEnemy.body, FG_BLUE);
+		for (auto& enemy : enemyList) {
+			ConsoleRenderer::ScreenDrawChar(enemy.pos.X, enemy.pos.Y, enemy.body, FG_BLUE);
+		}
 	}
 }
 
