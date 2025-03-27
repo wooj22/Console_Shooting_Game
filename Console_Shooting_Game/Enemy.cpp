@@ -18,8 +18,12 @@ void Enemy::Hit(int damage) {
 }
 
 // 플레이어와 닿았을 경우
-void Enemy::PlayerCollision(Player* player) {
+bool Enemy::PlayerCollision(Player* player) {
 	if (player->pos.X == this->pos.X && player->pos.Y == this->pos.Y) {
 		player->Hit(attackDamege);
+		return true;
+	}
+	else {
+		return false;
 	}
 }

@@ -12,5 +12,5 @@ public:
 	Enemy(int x, int y) : pos({ (SHORT)x, (SHORT)y }), body('E'), hp(10), attackDamege(10), isDie(false) {};
 	void Move();
 	void Hit(int damage);
-	void PlayerCollision(Player* player);
+	bool PlayerCollision(Player* player);
 };
