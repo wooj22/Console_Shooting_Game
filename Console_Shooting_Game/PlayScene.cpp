@@ -77,10 +77,7 @@ const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
 
 namespace Play {
 	Player player;
-	PlayerBullet* bullets[100];
-
-	Enemy* enemys[10];
-	EnemyBullet* enemyBullets[100];
+	Bullet* bullets[100];
 
 	// Start
 	void Initalize() {
@@ -95,20 +92,15 @@ namespace Play {
 			player.Move(playMap);
 			for (int i = 0; i < 100; i++)
 				if (bullets[i] != nullptr)
-					bullets[i]->SetPos(bullets[i]->GetPos().X, bullets[i]->GetPos().Y - 1);
+					((PlayerBullet*)bullets[i])->SetPos(
+						((PlayerBullet*)bullets[i])->GetPos().X, ((PlayerBullet*)bullets[i])->GetPos().Y - 1);
 			Time::Initialize();
 		}
 		
 		// Shoot
 		if (Input::IsKeyDown(VK_SPACE)) {
-			bullets[0] = new PlayerBullet(player.pos.X, player.pos.Y - 1);
+			bullets[0] = (Bullet*)new PlayerBullet(player.pos.X, player.pos.Y - 1);
 		}
-
-		// scene change
-		/*if (Input::IsKeyPressed(VK_SPACE)) {
-			Game::g_SceneCurrent = Game::END_SCENE;
-			End::Initalize();
-		}*/
 	}
 
 	// Render
@@ -116,16 +108,17 @@ namespace Play {
 		// map
 		for (int i = 0; i < mapHeight; i++)
 		{
-			ConsoleRenderer::ScreenDrawStringW(0, i, playMap[i], FG_GRAY | FOREGROUND_INTENSITY);
+			ConsoleRenderer::ScreenDrawStringW(0, i, playMap[i], FG_YELLOW);
 		}
 
 		// player
 		ConsoleRenderer::ScreenDrawChar(player.pos.X, player.pos.Y, player.body, FG_RED);
 
-		// bullet
+		// player bullet
 		for (int i = 0; i < 100; i++)
 			if (bullets[i] != nullptr)
-				ConsoleRenderer::ScreenDrawChar(bullets[i]->pos.X, bullets[i]->pos.Y, bullets[i]->body, FG_RED);
+				ConsoleRenderer::ScreenDrawChar(((PlayerBullet*)bullets[i])->pos.X, 
+					((PlayerBullet*)bullets[i])->pos.Y, ((PlayerBullet*)bullets[i])->body, FG_RED);
 	}
 }
 
