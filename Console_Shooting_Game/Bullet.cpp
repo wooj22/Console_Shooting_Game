@@ -1,9 +1,23 @@
 #include "Bullet.h"
 
+/*--------- Bullet --------*/
+// 충돌 : 플레이어의 총알이 적과 충돌했을 때
+bool PlayerBullet::OnTrrigerEndter2D() {
+    return true;
+}
+
+// 충돌 : 적의 총알이 플레이와 충돌했을 때
+bool EnemyBullet::OnTrrigerEndter2D() {
+    return true;
+}
+
+/*---------- Bullet Single Linked List --------*/
+// 소멸자
 BulletList::~BulletList() {
     clear();
 }
 
+// 삽입 : 리스트의 마지막에 추가
 void BulletList::insert(Bullet* newBullet) {
     if (!head) {
         head = newBullet;
@@ -17,6 +31,7 @@ void BulletList::insert(Bullet* newBullet) {
     }
 }
 
+// 삭제 : targetBullet을 찾아서 삭제
 void BulletList::remove(Bullet* targetBullet) {
     if (!head) return;
 
@@ -39,6 +54,7 @@ void BulletList::remove(Bullet* targetBullet) {
     }
 }
 
+// 삭제 : 모든 노드 삭제
 void BulletList::clear() {
     Bullet* current = head;
     while (current) {

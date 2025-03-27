@@ -77,7 +77,6 @@ const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
 
 namespace Play {
 	Player player;
-	//Bullet* bullets[100];
 	BulletList playerBulletList;
 
 	// Start
@@ -95,13 +94,14 @@ namespace Play {
 
 			// Player Bullet
 			for (Bullet* current = playerBulletList.head; current != NULL; current = current->next) {
+				// 이동
 				current->SetPos(current->GetPos().X, current->GetPos().Y - 1);
+
+				// 적과 닿았을 경우 remove
+				if (((PlayerBullet*)current)->OnTrrigerEndter2D()) {
+					playerBulletList.remove(current);   // 예외발생 에러잇음
+				}
 			}
-				
-			/*for (int i = 0; i < 100; i++)
-				if (bullets[i] != nullptr)
-					((PlayerBullet*)bullets[i])->SetPos(
-						((PlayerBullet*)bullets[i])->GetPos().X, ((PlayerBullet*)bullets[i])->GetPos().Y - 1);*/
 
 			Time::Initialize();
 		}
@@ -109,7 +109,6 @@ namespace Play {
 		// Shoot
 		if (Input::IsKeyDown(VK_SPACE)) {
 			playerBulletList.insert(new PlayerBullet(player.pos.X, player.pos.Y - 1));
-			//bullets[0] = (Bullet*)new PlayerBullet(player.pos.X, player.pos.Y - 1);
 		}
 	}
 
@@ -128,11 +127,6 @@ namespace Play {
 		for (Bullet* current = playerBulletList.head; current != NULL; current = current->next) {
 			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_RED);
 		}
-
-		/*for (int i = 0; i < 100; i++)
-			if (bullets[i] != nullptr)
-				ConsoleRenderer::ScreenDrawChar(((PlayerBullet*)bullets[i])->pos.X, 
-					((PlayerBullet*)bullets[i])->pos.Y, ((PlayerBullet*)bullets[i])->body, FG_RED);*/
 	}
 }
 

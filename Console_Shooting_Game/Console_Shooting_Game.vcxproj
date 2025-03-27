@@ -136,7 +136,6 @@
     <ClCompile Include="MenuScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
-    <ClCompile Include="SingleLinkedList.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="UIManager.cpp" />
@@ -151,7 +150,6 @@
     <ClInclude Include="MenuScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
-    <ClInclude Include="SingleLinkedList.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="UIManager.h" />
