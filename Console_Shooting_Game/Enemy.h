@@ -3,13 +3,12 @@
 class Enemy {
 public:
 	COORD pos;
-	char body = 'E';
-
-	int hp = 10;
-	int attackDamege = 10;
-	bool isDie = false;
+	char body;
+	int hp;
+	int attackDamege;
+	bool isDie;
 	
-	Enemy(int x, int y);
+	Enemy(int x, int y) : pos({ (SHORT)x, (SHORT)y }), body('E'), hp(10), attackDamege(10), isDie(false) {};
 	void Move(const wchar_t** playMap);
 	void TakeDamaged(int damage);
 };

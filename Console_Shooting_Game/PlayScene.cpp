@@ -76,7 +76,7 @@ L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
 
 namespace Play {
-	Player player;
+	Player player(30, 55);
 	BulletList playerBulletList;
 
 	// Start
@@ -98,8 +98,8 @@ namespace Play {
 				current->SetPos(current->GetPos().X, current->GetPos().Y - 1);
 
 				// 적과 닿았을 경우 remove
-				if (((PlayerBullet*)current)->OnTrrigerEndter2D()) {
-					playerBulletList.remove(current);   // 예외발생 에러잇음
+				if (((PlayerBullet*)current)->OnTriggerEnter2D()) {
+					//playerBulletList.remove(current);   // 예외발생 에러잇음
 				}
 			}
 

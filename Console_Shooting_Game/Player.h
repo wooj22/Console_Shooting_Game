@@ -2,13 +2,13 @@
 
 class Player {
 public:
-	COORD pos = { 30, 55 };
+	COORD pos;
 	char body = 'P';
+	int hp;
+	int attackDamege;
+	bool isDie ;
 
-	int hp = 100;
-	int attackDamege = 10;
-	bool isDie = false;
-
+	Player(int x, int y) : pos({ (SHORT)x, (SHORT)y }), body('P'), hp(100), attackDamege(10), isDie(false) {};
 	void Move(const wchar_t** playMap);
 	//bool CheckCollision(int targetX, int targetY);
 	void TakeDamaged(int damage);

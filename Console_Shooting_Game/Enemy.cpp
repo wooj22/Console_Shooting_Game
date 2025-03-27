@@ -3,11 +3,6 @@
 #include "Time.h"
 #include "Enemy.h"
 
-Enemy::Enemy(int x, int y) {
-	this->pos.X = x;
-	this->pos.Y = y;
-}
-
 /// 이동
 void Enemy::Move(const wchar_t** playMap)
 {
