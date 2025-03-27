@@ -1,4 +1,5 @@
 #pragma once
+#include "Player.h"
 
 class Enemy {
 public:
@@ -10,5 +11,6 @@ public:
 	
 	Enemy(int x, int y) : pos({ (SHORT)x, (SHORT)y }), body('E'), hp(10), attackDamege(10), isDie(false) {};
 	void Move(const wchar_t** playMap);
-	void TakeDamaged(int damage);
+	void Hit(int damage);
+	void PlayerCollision(Player* player);
 };

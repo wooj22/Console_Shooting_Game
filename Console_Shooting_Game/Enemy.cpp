@@ -9,13 +9,15 @@ void Enemy::Move(const wchar_t** playMap)
 	
 }
 
-/// 충돌 체크
-//bool Player::CheckCollision(int targetX, int targetY) {
-//	return (this->pos.X <= targetX && this->pos.X >= targetX)
-//		&& (this->pos.Y <= targetY && this->pos.Y  >= targetY);
-//}
-
 /// 피격
-void Enemy::TakeDamaged(int damage) {
+void Enemy::Hit(int damage) {
 	this->hp -= damage;
+	if (hp <= 0) this->isDie = true;
+}
+
+// 플레이어와 닿았을 경우
+void Enemy::PlayerCollision(Player* player) {
+	if (player->pos.X == this->pos.X && player->pos.Y == this->pos.Y) {
+		player->Hit(this->attackDamege);
+	}
 }

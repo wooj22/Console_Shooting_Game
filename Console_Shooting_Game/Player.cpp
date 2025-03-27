@@ -33,13 +33,12 @@ void Player::Move(const wchar_t** playMap)
 	this->pos.Y = nextY;
 }
 
-/// 충돌 체크
-//bool Player::CheckCollision(int targetX, int targetY) {
-//	return (this->pos.X <= targetX && this->pos.X >= targetX)
-//		&& (this->pos.Y <= targetY && this->pos.Y  >= targetY);
-//}
-
 /// 피격
-void Player::TakeDamaged(int damage) {
-	this->hp -= damage;
+void Player::Hit(int damage) {
+	hp -= damage;
+	if (hp <= 0) {
+		isDie = true;
+		hp = 0;
+	}
 }
+

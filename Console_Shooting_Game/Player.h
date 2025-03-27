@@ -10,6 +10,5 @@ public:
 
 	Player(int x, int y) : pos({ (SHORT)x, (SHORT)y }), body('P'), hp(100), attackDamege(10), isDie(false) {};
 	void Move(const wchar_t** playMap);
-	//bool CheckCollision(int targetX, int targetY);
-	void TakeDamaged(int damage);
+	void Hit(int damage);
 };

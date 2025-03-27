@@ -1,4 +1,5 @@
 ﻿#include <stdio.h>
+#include <string>
 #include "ConsoleRenderer.h"
 #include "Input.h"
 #include "Time.h"
@@ -8,6 +9,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Enemy.h"
+
 
 // Map Data
 const wchar_t* playMap[] = {
@@ -79,6 +81,8 @@ namespace Play {
 	Player player(30, 55);
 	BulletList playerBulletList;
 
+	Enemy testEnemy(10, 10);
+
 	// Start
 	void Initalize() {
 		Time::Initialize();
@@ -101,11 +105,18 @@ namespace Play {
 				if (((PlayerBullet*)current)->OnTriggerEnter2D()) {
 					//playerBulletList.remove(current);   // 예외발생 에러잇음
 				}
+
+				testEnemy.PlayerCollision(&player);
 			}
 
 			Time::Initialize();
 		}
-		
+
+		// Debug player.hp
+		/*std::string str = std::to_string(player.hp);
+		const char* cstr = str.c_str();
+		OutputDebugStringA(cstr);*/
+
 		// Shoot
 		if (Input::IsKeyDown(VK_SPACE)) {
 			playerBulletList.insert(new PlayerBullet(player.pos.X, player.pos.Y - 1));
@@ -127,6 +138,9 @@ namespace Play {
 		for (Bullet* current = playerBulletList.head; current != NULL; current = current->next) {
 			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_RED);
 		}
+
+		// enemy
+		ConsoleRenderer::ScreenDrawChar(testEnemy.pos.X, testEnemy.pos.Y, testEnemy.body, FG_BLUE);
 	}
 }
 
