@@ -90,10 +90,11 @@ namespace Play {
 
 	// Update
 	void Update() {
-		// Move
+		// TimeControll
 		Time::UpdateTime();
 		player.HitTimer();
 
+		// Move
 		if (Time::GetTotalTime() >= 0.1f) {
 			// Player
 			player.Move(playMap);
@@ -107,9 +108,11 @@ namespace Play {
 				if (((PlayerBullet*)current)->OnTriggerEnter2D()) {
 					//playerBulletList.remove(current);   // 예외발생 에러잇음
 				}
-
-				testEnemy.PlayerCollision(&player);
 			}
+
+			// Enemy
+			testEnemy.Move();
+			testEnemy.PlayerCollision(&player);
 
 			Time::Initialize();
 		}
