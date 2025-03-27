@@ -1,47 +1,38 @@
 #pragma once
+#include <Windows.h>
 
 /*----------Bullet Node Data--------*/
 class Bullet {
-	Bullet* next;
+public:
+    COORD pos;
+    char body;
+    Bullet* next;
+
+    Bullet(int x, int y, char symbol) : pos({ (SHORT)x, (SHORT)y }), body(symbol), next(nullptr) {}
+    virtual ~Bullet() = default;
+
+    void SetPos(int x, int y) { pos.X = x; pos.Y = y; }
+    COORD GetPos() { return pos; }
 };
 
-class PlayerBullet : Bullet {
+class PlayerBullet : public Bullet {
 public:
-	COORD pos;
-	char body = 'n';
-
-	PlayerBullet(int x, int y);
-	void SetPos(int x, int y);
-	COORD GetPos();
+    PlayerBullet(int x, int y) : Bullet(x, y, '!') {}
 };
 
-class EnemyBullet : Bullet {
+class EnemyBullet : public Bullet {
 public:
-	COORD pos;
-	char body = 'u';
-
-	EnemyBullet(int x, int y);
-	void SetPos(int x, int y);
-	COORD GetPos();
+    EnemyBullet(int x, int y) : Bullet(x, y, 'V') {}
 };
 
-/*----------Single Linked List--------*/
-// Node를 Bullet으로 변경
-class Node {
+/*---------- Bullet Linked List --------*/
+class BulletList {
 public:
-	int data;
-	Node* next;
+    Bullet* head;
+    BulletList() : head(nullptr) {}
+    ~BulletList();
 
-	Node(int value);
-};
-
-class SinglyLinkedList {
-private:
-	Node* head;
-public:
-	SinglyLinkedList();
-	~SinglyLinkedList();
-
-	void insert(int value);
-	void remove(int value);
+    void insert(Bullet* newBullet);
+    void remove(Bullet* targetBullet);
+    void clear();
 };
