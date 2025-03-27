@@ -77,8 +77,10 @@ const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
 
 namespace Play {
 	Player player;
-	Bullet* bullets[100];
-	Enemy* enemys[30];
+	PlayerBullet* bullets[100];
+
+	Enemy* enemys[10];
+	EnemyBullet* enemyBullets[100];
 
 	// Start
 	void Initalize() {
@@ -91,12 +93,15 @@ namespace Play {
 		Time::UpdateTime();
 		if (Time::GetTotalTime() >= 0.1f) {
 			player.Move(playMap);
+			for (int i = 0; i < 100; i++)
+				if (bullets[i] != nullptr)
+					bullets[i]->SetPos(bullets[i]->GetPos().X, bullets[i]->GetPos().Y - 1);
 			Time::Initialize();
 		}
 		
 		// Shoot
 		if (Input::IsKeyDown(VK_SPACE)) {
-			player.Shoot();
+			bullets[0] = new PlayerBullet(player.pos.X, player.pos.Y - 1);
 		}
 
 		// scene change
@@ -115,7 +120,12 @@ namespace Play {
 		}
 
 		// player
-		ConsoleRenderer::ScreenDrawChar(player.pos.X, player.pos.Y, player.playerChar, FG_RED);
+		ConsoleRenderer::ScreenDrawChar(player.pos.X, player.pos.Y, player.body, FG_RED);
+
+		// bullet
+		for (int i = 0; i < 100; i++)
+			if (bullets[i] != nullptr)
+				ConsoleRenderer::ScreenDrawChar(bullets[i]->pos.X, bullets[i]->pos.Y, bullets[i]->body, FG_RED);
 	}
 }
 

@@ -1,11 +1,21 @@
 #pragma once
 
-class Bullet {
+class PlayerBullet {
 public:
 	COORD pos;
-	char bulletChar = 'o';
+	char body = 'n';
 
-	Bullet(int x, int y);
+	PlayerBullet(int x, int y);
+	void SetPos(int x, int y);
+	COORD GetPos();
+};
+
+class EnemyBullet {
+public:
+	COORD pos;
+	char body = 'u';
+
+	EnemyBullet(int x, int y);
 	void SetPos(int x, int y);
 	COORD GetPos();
 };

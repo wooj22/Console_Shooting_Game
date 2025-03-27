@@ -34,26 +34,10 @@ void Player::Move(const wchar_t** playMap)
 }
 
 /// 충돌 체크
-bool Player::CheckCollision(int targetX, int targetY) {
-	return (this->pos.X <= targetX && this->pos.X >= targetX)
-		&& (this->pos.Y <= targetY && this->pos.Y  >= targetY);
-}
-
-/// TODO::공격 
-void Player::Shoot() {
-	Bullet bullet(this->pos.X, this->pos.Y - 1);
-
-	Time::Initialize();
-	while (bullet.pos.Y <= 0) {
-		Time::UpdateTime();
-
-		if (Time::GetTotalTime() >= 0.1f) {
-			bullet.SetPos(bullet.GetPos().X, bullet.GetPos().Y - 1);
-			ConsoleRenderer::ScreenDrawChar(bullet.pos.X, bullet.pos.Y, bullet.bulletChar, FG_RED);
-			Time::Initialize();
-		}
-	}
-}
+//bool Player::CheckCollision(int targetX, int targetY) {
+//	return (this->pos.X <= targetX && this->pos.X >= targetX)
+//		&& (this->pos.Y <= targetY && this->pos.Y  >= targetY);
+//}
 
 /// 피격
 void Player::TakeDamaged(int damage) {
