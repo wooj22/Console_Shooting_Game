@@ -92,6 +92,8 @@ namespace Play {
 	void Update() {
 		// Move
 		Time::UpdateTime();
+		player.HitTimer();
+
 		if (Time::GetTotalTime() >= 0.1f) {
 			// Player
 			player.Move(playMap);
@@ -113,9 +115,9 @@ namespace Play {
 		}
 
 		// Debug player.hp
-		/*std::string str = std::to_string(player.hp);
+		std::string str = std::to_string(player.hp);
 		const char* cstr = str.c_str();
-		OutputDebugStringA(cstr);*/
+		OutputDebugStringA(cstr);
 
 		// Shoot
 		if (Input::IsKeyDown(VK_SPACE)) {

@@ -33,12 +33,25 @@ void Player::Move(const wchar_t** playMap)
 	this->pos.Y = nextY;
 }
 
-/// 피격
+/// 피격 : 3초간 무적
 void Player::Hit(int damage) {
-	hp -= damage;
-	if (hp <= 0) {
-		isDie = true;
-		hp = 0;
+	if (!isHit) {
+		isHit = true;
+		hitTimer = invincibleDuration;
+		hp -= damage;
+
+		if (hp <= 0) {
+			isDie = true;
+			hp = 0;
+		}
 	}
 }
 
+void Player::HitTimer() {
+	if (isHit) {
+		hitTimer -= Time::GetElapsedTime();
+		if (hitTimer <= 0.0f) {
+			isHit = false;
+		}
+	}
+}
