@@ -78,9 +78,12 @@ L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
 
 namespace Play {
+	// player
 	Player player(30, 55);
 	BulletList playerBulletList;
+	float playerTime = 0.0f;
 
+	// enemy
 	Enemy testEnemy(10, 10);
 
 	// Start
@@ -93,13 +96,14 @@ namespace Play {
 		// TimeControll
 		Time::UpdateTime();
 		player.HitTimer();
+		playerTime += Time::GetElapsedTime();
 
 		// Move
-		if (Time::GetTotalTime() >= 0.1f) {
-			// Player
+		if (playerTime >= 0.1f) {
+			// player
 			player.Move(playMap);
 
-			// Player Bullet
+			// player bullet
 			for (Bullet* current = playerBulletList.head; current != NULL; current = current->next) {
 				// 이동
 				current->SetPos(current->GetPos().X, current->GetPos().Y - 1);
@@ -110,11 +114,11 @@ namespace Play {
 				}
 			}
 
-			// Enemy
+			// enemy
 			testEnemy.Move();
 			testEnemy.PlayerCollision(&player);
 
-			Time::Initialize();
+			playerTime = 0.0f;
 		}
 
 		// Debug player.hp
