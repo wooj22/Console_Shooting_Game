@@ -20,13 +20,13 @@ public:
 class PlayerBullet : public Bullet {
 public:
     PlayerBullet(int x, int y) : Bullet(x, y, '!') {}
-    bool OnTrrigerEndter2D();
+    bool OnTriggerEnter2D();
 };
 
 class EnemyBullet : public Bullet {
 public:
     EnemyBullet(int x, int y) : Bullet(x, y, 'V') {}
-    bool OnTrrigerEndter2D();
+    bool OnTriggerEnter2D();
 };
 
 /*---------- Bullet Single Linked List --------*/

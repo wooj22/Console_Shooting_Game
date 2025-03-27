@@ -2,12 +2,12 @@
 
 /*--------- Bullet --------*/
 // 충돌 : 플레이어의 총알이 적과 충돌했을 때
-bool PlayerBullet::OnTrrigerEndter2D() {
+bool PlayerBullet::OnTriggerEnter2D() {
     return true;
 }
 
 // 충돌 : 적의 총알이 플레이와 충돌했을 때
-bool EnemyBullet::OnTrrigerEndter2D() {
+bool EnemyBullet::OnTriggerEnter2D() {
     return true;
 }
 
