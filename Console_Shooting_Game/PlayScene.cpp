@@ -7,6 +7,7 @@
 #include "EndScene.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "Enemy.h"
 
 // Map Data
 const wchar_t* playMap[] = {
@@ -76,6 +77,8 @@ const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
 
 namespace Play {
 	Player player;
+	Bullet* bullets[100];
+	Enemy* enemys[30];
 
 	// Start
 	void Initalize() {
