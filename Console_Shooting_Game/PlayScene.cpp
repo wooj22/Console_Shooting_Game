@@ -11,6 +11,7 @@
 #include "Bullet.h"
 #include "Enemy.h"
 
+/* --------------------- Play Data ------------------------*/
 // Map Data
 const wchar_t* playMap[] = {
 
@@ -96,7 +97,85 @@ float enemySpawnTimer = 0.0f;
 float enemyMoveCycle = 0.2f;
 float enemyMoveTimer = 0.0f;
 
+/* --------------------- Funtions ------------------------*/
+// Timer += deltaTime
+void UpdateTimer() {
+	Time::UpdateTime();
+	player.HitTimer();
+	playerMoveTimer += Time::GetElapsedTime();
+	playerShootTimer += Time::GetElapsedTime();
+	bulletMoveTimer += Time::GetElapsedTime();
+	enemySpawnTimer += Time::GetElapsedTime();
+	enemyMoveTimer += Time::GetElapsedTime();
+}
 
+// Player move & collision
+void PlayerMoving() {
+	if (playerMoveTimer >= playerMoveCycle) {
+		player.Move(playMap);
+
+		// collision(player - enemy) : player hp 감소(die), enemy destroy
+		for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
+			if (enemy->PlayerCollision(&player)) {
+				player.Hit(enemy->attackDamege);
+				enemy = enemyList.erase(enemy);
+			}
+			else
+				enemy++;
+		}
+		playerMoveTimer = 0.0f;
+	}
+}
+
+// Player shoot
+void PlayerShooting() {
+	if (playerShootTimer >= playerShootCycle && Input::IsKeyDown(VK_SPACE)) {
+		playerBulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1));
+		playerShootTimer = 0.0f;
+	}
+}
+
+// Bullet move & collision
+void BulletControll() {
+	if (bulletMoveTimer >= bulletMoveCycle) {
+		for (Bullet* currentBullet = playerBulletList.head; currentBullet != NULL; currentBullet = currentBullet->next) {
+			currentBullet->SetPos(currentBullet->GetPos().X, currentBullet->GetPos().Y - 1);
+
+			// collision(playerbullet - enemy) : playerbullet destroy, enemy hp 감소(die)
+			for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
+				if ((*enemy).PlayerBulletCollision((*currentBullet).pos.X, (*currentBullet).pos.Y)) {
+					//playerBulletList.Remove(currentBullet);	 // TODO :: BulletList Remove() 수정
+					enemy->Hit(player.attackDamege);
+					if (enemy->isDie)
+						enemy = enemyList.erase(enemy);
+					else enemy++;
+				}
+				else
+					enemy++;
+			}
+		}
+		bulletMoveTimer = 0.0f;
+	}
+}
+
+// Enemy spawn
+void EnemySpawn() {
+	if (enemySpawnTimer >= enemySpawnCycle) {
+		enemyList.push_back(Enemy(rand() % 58 + 1, 0));
+		enemySpawnTimer = 0.0f;
+	}
+}
+
+// Enemy move
+void EnemyMoving() {
+	if (enemyMoveTimer >= enemyMoveCycle) {
+		for (auto enemy = enemyList.begin(); enemy != enemyList.end(); enemy++)
+			enemy->Move();
+		enemyMoveTimer = 0.0f;
+	}
+}
+
+/* ----------------------- Play --------------------------*/
 namespace Play {
 	// Start
 	void Initalize() {
@@ -106,70 +185,12 @@ namespace Play {
 	// Update
 	void Update() {
 		if (!player.isDie) {
-			// Timer += deltaTime
-			Time::UpdateTime();
-			player.HitTimer();
-			playerMoveTimer += Time::GetElapsedTime();
-			playerShootTimer += Time::GetElapsedTime();
-			bulletMoveTimer += Time::GetElapsedTime();
-			enemySpawnTimer += Time::GetElapsedTime();
-			enemyMoveTimer += Time::GetElapsedTime();
-
-			// Player move & collision
-			if (playerMoveTimer >= playerMoveCycle) {
-				player.Move(playMap);
-
-				// collision(player - enemy) : player hp 감소(die), enemy destroy
-				for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
-					if (enemy->PlayerCollision(&player)) {
-						player.Hit(enemy->attackDamege);
-						enemy = enemyList.erase(enemy);
-					}
-					else
-						enemy++;
-				}
-				playerMoveTimer = 0.0f;
-			}
-
-			// Player shoot
-			if (playerShootTimer >= playerShootCycle && Input::IsKeyDown(VK_SPACE)) {
-				playerBulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1));
-				playerShootTimer = 0.0f;
-			}
-
-			// Bullet move & collision
-			if (bulletMoveTimer >= bulletMoveCycle) {
-				for (Bullet* currentBullet = playerBulletList.head; currentBullet != NULL; currentBullet = currentBullet->next) {
-					currentBullet->SetPos(currentBullet->GetPos().X, currentBullet->GetPos().Y - 1);
-
-					// collision(playerbullet - enemy) : playerbullet destroy, enemy hp 감소(die)
-					for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
-						if ((*enemy).PlayerBulletCollision((*currentBullet).pos.X, (*currentBullet).pos.Y)) {
-							//playerBulletList.Remove(currentBullet);	 // TODO :: BulletList Remove() 수정
-							enemy->Hit(player.attackDamege);
-							if (enemy->isDie)
-								enemy = enemyList.erase(enemy);
-							else enemy++;
-						}
-						else
-							enemy++;
-					}
-				}
-				bulletMoveTimer = 0.0f;
-			}
-
-			// Enemy spawn
-			if (enemySpawnTimer >= enemySpawnCycle) {
-				enemyList.push_back(Enemy(rand() % 58 + 1, 0));
-				enemySpawnTimer = 0.0f;
-			}
-
-			// Enemy move
-			if (enemyMoveTimer >= enemyMoveCycle) {
-				for (auto enemy = enemyList.begin(); enemy != enemyList.end(); enemy++)
-					enemy->Move();
-				enemyMoveTimer = 0.0f;
-			}
+			UpdateTimer();
+			PlayerMoving();
+			PlayerShooting();
+			BulletControll();
+			EnemySpawn();
+			EnemyMoving();
 
 			// Debug player.hp
 			/*std::string str = std::to_string(player.hp);
@@ -204,4 +225,3 @@ namespace Play {
 		}
 	}
 }
-
