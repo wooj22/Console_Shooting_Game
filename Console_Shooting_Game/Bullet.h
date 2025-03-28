@@ -19,12 +19,12 @@ public:
 
 class PlayerBullet : public Bullet {
 public:
-    PlayerBullet(SHORT x, SHORT y) : Bullet(x, y, '!') {}
+    PlayerBullet(SHORT x, SHORT y) : Bullet(x, y, '^') {}
 };
 
 class EnemyBullet : public Bullet {
 public:
-    EnemyBullet(SHORT x, SHORT y) : Bullet(x, y, 'V') {}
+    EnemyBullet(SHORT x, SHORT y) : Bullet(x, y, '*') {}
 };
 
 /*---------- Bullet Single Linked List --------*/

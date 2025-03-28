@@ -97,6 +97,14 @@ float enemySpawnTimer = 0.0f;
 float enemyMoveCycle = 0.8f;
 float enemyMoveTimer = 0.0f;
 
+std::vector<ShootingEnemy> shootingEnemyList;
+float s_enemySpawnCycle = 4.0f;
+float s_enemySpawnTimer = 0.0f;
+float s_enemyMoveCycle = 0.5f;
+float s_enemyMoveTimer = 0.0f;
+float s_enemyShootCycle = 0.5f;
+float s_enemyShootTimer = 0.0f;
+
 /* --------------------- Funtions ------------------------*/
 // Timer += deltaTime
 inline void UpdateTimer() {
@@ -107,6 +115,9 @@ inline void UpdateTimer() {
 	bulletMoveTimer += Time::GetElapsedTime();
 	enemySpawnTimer += Time::GetElapsedTime();
 	enemyMoveTimer += Time::GetElapsedTime();
+	s_enemySpawnTimer += Time::GetElapsedTime();
+	s_enemyMoveTimer += Time::GetElapsedTime();
+	s_enemyShootTimer += Time::GetElapsedTime();
 }
 
 // Player move & collision
@@ -123,6 +134,17 @@ inline void PlayerMoving() {
 			else
 				enemy++;
 		}
+
+		// collision(player - s_enemy) : player hp 감소(die), s_enemy destroy
+		for (auto s_enemy = shootingEnemyList.begin(); s_enemy != shootingEnemyList.end(); ) {
+			if (s_enemy->isCollision(player.pos.X, player.pos.Y)) {
+				player.Hit(s_enemy->attackDamege);
+				s_enemy = shootingEnemyList.erase(s_enemy);
+			}
+			else
+				s_enemy++;
+		}
+
 		playerMoveTimer = 0.0f;
 	}
 }
@@ -153,25 +175,53 @@ inline void BulletControll() {
 				else
 					enemy++;
 			}
+
+			// collision(playerbullet - s_enemy) : playerbullet destroy, s_enemy hp 감소(die)
+			for (auto s_enemy = shootingEnemyList.begin(); s_enemy != shootingEnemyList.end(); ) {
+				if ((*s_enemy).isCollision((*currentBullet).pos.X, (*currentBullet).pos.Y)) {
+					//playerBulletList.Remove(currentBullet);	 // TODO :: BulletList Remove() 수정
+					s_enemy->Hit(player.attackDamege);
+					if (s_enemy->isDie)
+						s_enemy = shootingEnemyList.erase(s_enemy);
+					else s_enemy++;
+				}
+				else
+					s_enemy++;
+			}
 		}
+
 		bulletMoveTimer = 0.0f;
 	}
 }
 
 // Enemy spawn
 inline void EnemySpawn() {
+	// 일반
 	if (enemySpawnTimer >= enemySpawnCycle) {
 		enemyList.push_back(Enemy(rand() % 58 + 1, 0));
 		enemySpawnTimer = 0.0f;
+	}
+
+	// 공격
+	if (s_enemySpawnTimer >= s_enemySpawnCycle) {
+		shootingEnemyList.push_back(ShootingEnemy(rand() % 58 + 1, 0));
+		s_enemySpawnTimer = 0.0f;
 	}
 }
 
 // Enemy move
 inline void EnemyMoving() {
+	// 일반
 	if (enemyMoveTimer >= enemyMoveCycle) {
 		for (auto enemy = enemyList.begin(); enemy != enemyList.end(); enemy++)
 			enemy->Move();
 		enemyMoveTimer = 0.0f;
+	}
+
+	if (s_enemyMoveTimer >= s_enemyMoveCycle) {
+		for (auto s_enemy = shootingEnemyList.begin(); s_enemy != shootingEnemyList.end(); s_enemy++)
+			s_enemy->Move();
+		s_enemyMoveTimer = 0.0f;
 	}
 }
 
@@ -222,7 +272,12 @@ namespace Play {
 
 		// enemy
 		for (auto& enemy : enemyList) {
-			ConsoleRenderer::ScreenDrawChar(enemy.pos.X, enemy.pos.Y, enemy.body, FG_RED);
+			ConsoleRenderer::ScreenDrawChar(enemy.pos.X, enemy.pos.Y, enemy.body, FG_BLUE);
+		}
+
+		// s_enemy
+		for (auto& s_enemy : shootingEnemyList) {
+			ConsoleRenderer::ScreenDrawChar(s_enemy.pos.X, s_enemy.pos.Y, s_enemy.body, FG_RED);
 		}
 	}
 }

@@ -8,11 +8,11 @@ private:
 
 public:
 	COORD pos;
-	char body = 'P';
+	char body;
 	int hp;
 	int attackDamege;
 	bool isDie ;
-	Player(SHORT x = 30, SHORT y = 55) : pos({ x, y }), body('P'),
+	Player(SHORT x = 30, SHORT y = 55) : pos({ x, y }), body('A'),
 		hp(100), attackDamege(10), isDie(false), isHit(false) {};
 	void Initialization();
 	void Move(const wchar_t** playMap);
