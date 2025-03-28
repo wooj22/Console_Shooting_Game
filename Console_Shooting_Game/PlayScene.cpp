@@ -99,7 +99,7 @@ float enemyMoveTimer = 0.0f;
 
 /* --------------------- Funtions ------------------------*/
 // Timer += deltaTime
-void UpdateTimer() {
+inline void UpdateTimer() {
 	Time::UpdateTime();
 	player.HitTimer();
 	playerMoveTimer += Time::GetElapsedTime();
@@ -110,7 +110,7 @@ void UpdateTimer() {
 }
 
 // Player move & collision
-void PlayerMoving() {
+inline void PlayerMoving() {
 	if (playerMoveTimer >= playerMoveCycle) {
 		player.Move(playMap);
 
@@ -128,7 +128,7 @@ void PlayerMoving() {
 }
 
 // Player shoot
-void PlayerShooting() {
+inline void PlayerShooting() {
 	if (playerShootTimer >= playerShootCycle && Input::IsKeyDown(VK_SPACE)) {
 		playerBulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1));
 		playerShootTimer = 0.0f;
@@ -136,7 +136,7 @@ void PlayerShooting() {
 }
 
 // Bullet move & collision
-void BulletControll() {
+inline void BulletControll() {
 	if (bulletMoveTimer >= bulletMoveCycle) {
 		for (Bullet* currentBullet = playerBulletList.head; currentBullet != NULL; currentBullet = currentBullet->next) {
 			currentBullet->SetPos(currentBullet->GetPos().X, currentBullet->GetPos().Y - 1);
@@ -159,7 +159,7 @@ void BulletControll() {
 }
 
 // Enemy spawn
-void EnemySpawn() {
+inline void EnemySpawn() {
 	if (enemySpawnTimer >= enemySpawnCycle) {
 		enemyList.push_back(Enemy(rand() % 58 + 1, 0));
 		enemySpawnTimer = 0.0f;
@@ -167,7 +167,7 @@ void EnemySpawn() {
 }
 
 // Enemy move
-void EnemyMoving() {
+inline void EnemyMoving() {
 	if (enemyMoveTimer >= enemyMoveCycle) {
 		for (auto enemy = enemyList.begin(); enemy != enemyList.end(); enemy++)
 			enemy->Move();
