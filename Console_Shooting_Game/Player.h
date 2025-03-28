@@ -16,6 +16,7 @@ public:
 		hp(100), attackDamege(10), isDie(false), isHit(false) {};
 	void Initialization();
 	void Move(const wchar_t** playMap);
+	bool isCollision(SHORT x, SHORT y);
 	void Hit(int damage);
 	void HitTimer();
 };

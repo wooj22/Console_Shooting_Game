@@ -245,8 +245,15 @@ inline void EnemyShooting() {
 // Enemy Bullet move & collision
 inline void EnemyBulletControll() {
 	if (enemyBulletMoveTimer >= enemyBulletMoveCycle) {
-		for (Bullet* currentBullet = enemyBulletList.head; currentBullet != NULL; currentBullet = currentBullet->next) 
+		for (Bullet* currentBullet = enemyBulletList.head; currentBullet != NULL; currentBullet = currentBullet->next) {
+			// move
 			currentBullet->SetPos(currentBullet->GetPos().X, currentBullet->GetPos().Y + 1);
+
+			// collision
+			if (player.isCollision(currentBullet->GetPos().X, currentBullet->GetPos().Y)) {
+				player.Hit(shootingEnemyList.front().attackDamege);
+			}
+		}
 		enemyBulletMoveTimer = 0.0f;
 	}
 }
@@ -279,6 +286,11 @@ namespace Play {
 			OutputDebugStringA(cstr);*/
 		}
 		else {
+			playerBulletList.Clear();
+			enemyBulletList.Clear();
+			enemyList.clear();
+			shootingEnemyList.clear();
+
 			Game::g_SceneCurrent = Game::END_SCENE;
 			End::Initalize();
 		}

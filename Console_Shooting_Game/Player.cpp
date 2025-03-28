@@ -43,6 +43,12 @@ void Player::Move(const wchar_t** playMap)
 	this->pos.Y = nextY;
 }
 
+// 충돌
+bool Player::isCollision(SHORT x, SHORT y) {
+	if (this->pos.X == x && this->pos.Y == y) return true;
+	else return false;
+}
+
 /// 피격 : 3초간 무적
 void Player::Hit(int damage) {
 	if (!isHit) {
