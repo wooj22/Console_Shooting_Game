@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 #include <Windows.h>
 
-/// PlayerBullet, EnemyBulletÀ» ¸ğµÎ ´ã±â À§ÇØ (Base)Bullet Class¸¦ ¸¸µé°í
-/// (Base)Bullet Çü½ÄÀÇ ¸®½ºÆ®¿¡ ¾÷Ä³½ºÆÃ ÇØ¼­ Ãß°¡ÇÑ´Ù.
-/// ¸®½ºÆ® ¾È¿¡ BulletÀ» ´Ù¿îÄ³½ºÆÃÇØ¼­ PlayerBullet, EnemyBulletÀÇ ¸â¹ö¿¡ Á¢±ÙÇÑ´Ù.
+/// PlayerBullet, EnemyBulletì„ ëª¨ë‘ ë‹´ê¸° ìœ„í•´ (Base)Bullet Classë¥¼ ë§Œë“¤ê³ 
+/// (Base)Bullet í˜•ì‹ì˜ ë¦¬ìŠ¤íŠ¸ì— ì—…ìºìŠ¤íŒ… í•´ì„œ ì¶”ê°€í•œë‹¤.
+/// ë¦¬ìŠ¤íŠ¸ ì•ˆì— Bulletì„ ë‹¤ìš´ìºìŠ¤íŒ…í•´ì„œ PlayerBullet, EnemyBulletì˜ ë©¤ë²„ì— ì ‘ê·¼í•œë‹¤.
 
 /*----------Bullet (Node) Data--------*/
 class Bullet {

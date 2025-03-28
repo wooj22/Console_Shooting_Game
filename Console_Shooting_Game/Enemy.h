@@ -19,3 +19,4 @@ class ShootingEnemy : public Enemy {
 public:
 	ShootingEnemy(SHORT x, SHORT y, char body = '0', int hp = 30, int attackDamege = 20) : Enemy(x, y, body, hp, attackDamege) {}
 };
+

@@ -6,7 +6,7 @@
 /// 초기화 : 한번 죽고 retry시에
 void Player::Initialization() {
 	pos.X = 30;
-	pos.Y = 55;
+	pos.Y = 53;
 	hp = 100;
 	attackDamege = 10;
 	isDie = false;

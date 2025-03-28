@@ -10,6 +10,8 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "UIManager.h"
+
 
 /* --------------------- Play Data ------------------------*/
 // Map Data
@@ -70,8 +72,8 @@ L"▓                                                          ▓",
 L"▓                                                          ▓",
 L"▓                                                          ▓",
 L"▓                                                          ▓",
-L"▓                                                          ▓",
-L"▓                                                          ▓",
+L"▓  HP                                                      ▓",
+L"▓  Power                                                   ▓",
 L"▓                                                          ▓",
 L"▓                                                          ▓",
 L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓"
@@ -99,6 +101,8 @@ float enemyMoveTimer = 0.0f;
 
 // shooting enemy data
 std::vector<ShootingEnemy> shootingEnemyList;
+//float s_nemeyCreatStartTime = 20.0f;
+//float s_nemeyCreatStartTimer = 0.0f;
 float s_enemySpawnCycle = 4.0f;
 float s_enemySpawnTimer = 0.0f;
 float s_enemyMoveCycle = 0.5f;
@@ -138,6 +142,7 @@ inline void PlayerMoving() {
 			if (enemy->isCollision(player.pos.X, player.pos.Y)) {
 				player.Hit(enemy->attackDamege);
 				enemy = enemyList.erase(enemy);
+				UpdatePlayerHpUi(&player);
 				OutputDebugStringA("player : 공격 당함! (enemy collision)\n");		// debug
 			}
 			else
@@ -149,6 +154,7 @@ inline void PlayerMoving() {
 			if (s_enemy->isCollision(player.pos.X, player.pos.Y)) {
 				player.Hit(s_enemy->attackDamege);
 				s_enemy = shootingEnemyList.erase(s_enemy);
+				UpdatePlayerHpUi(&player);
 				OutputDebugStringA("player : 공격 당함!  (s_enemy collision)\n");		// debug
 			}
 			else
@@ -180,6 +186,7 @@ inline void PlayerBulletControll() {
 					enemy->Hit(player.attackDamege);
 					if (enemy->isDie) {
 						enemy = enemyList.erase(enemy);
+						UpdatePlayerHpUi(&player);
 						OutputDebugStringA("player : 일반 몬스터 죽임\n");		// debug
 					}	
 					else enemy++;
@@ -195,6 +202,7 @@ inline void PlayerBulletControll() {
 					s_enemy->Hit(player.attackDamege);
 					if (s_enemy->isDie) {
 						s_enemy = shootingEnemyList.erase(s_enemy);
+						UpdatePlayerHpUi(&player);
 						OutputDebugStringA("player : 공격 몬스터 죽임\n");		// debug
 					}
 					else s_enemy++;
@@ -258,6 +266,7 @@ inline void EnemyBulletControll() {
 			// collision
 			if (player.isCollision(currentBullet->GetPos().X, currentBullet->GetPos().Y)) {
 				player.Hit(shootingEnemyList.front().attackDamege);
+				UpdatePlayerHpUi(&player);
 				OutputDebugStringA("player : 공격 당함! (s_enemy bullet)\n");		// debug
 			}
 		}
@@ -334,5 +343,9 @@ namespace Play {
 		for (Bullet* current = enemyBulletList.head; current != NULL; current = current->next) {
 			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_RED);
 		}
+
+		// UI
+		ConsoleRenderer::ScreenDrawStringW(10, 55, ui_playerHp, FG_RED);
+		ConsoleRenderer::ScreenDrawStringW(10, 56, ui_playerPower, FG_GREEN);
 	}
 }
