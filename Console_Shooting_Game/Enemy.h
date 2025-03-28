@@ -9,7 +9,7 @@ public:
 	int attackDamege;
 	bool isDie;
 	
-	Enemy(int x, int y) : pos({ (SHORT)x, (SHORT)y }), body('E'), hp(10), attackDamege(10), isDie(false) {};
+	Enemy(SHORT x, SHORT y) : pos({ x, y }), body('E'), hp(10), attackDamege(10), isDie(false) {};
 	void Move();
 	void Hit(int damage);
 	bool PlayerCollision(Player* player);

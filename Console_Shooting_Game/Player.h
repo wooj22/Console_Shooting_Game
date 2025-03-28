@@ -13,7 +13,7 @@ public:
 	int attackDamege;
 	bool isDie ;
 
-	Player(int x, int y) : pos({ (SHORT)x, (SHORT)y }), body('P'), 
+	Player(SHORT x, SHORT y) : pos({ x, y }), body('P'),
 		hp(100), attackDamege(10), isDie(false), isHit(false) {};
 	void Move(const wchar_t** playMap);
 	void Hit(int damage);
