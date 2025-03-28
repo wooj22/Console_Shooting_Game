@@ -85,7 +85,7 @@ float playerMoveTimer = 0.0f;
 float playerShootCycle = 0.2f;
 float playerShootTimer = 0.0f;
 
-// Bullet data
+// player bullet data
 BulletList playerBulletList;
 float bulletMoveCycle = 0.05f;
 float bulletMoveTimer = 0.0f;
@@ -97,13 +97,20 @@ float enemySpawnTimer = 0.0f;
 float enemyMoveCycle = 0.8f;
 float enemyMoveTimer = 0.0f;
 
+// shooting enemy data
 std::vector<ShootingEnemy> shootingEnemyList;
 float s_enemySpawnCycle = 4.0f;
 float s_enemySpawnTimer = 0.0f;
 float s_enemyMoveCycle = 0.5f;
 float s_enemyMoveTimer = 0.0f;
-float s_enemyShootCycle = 0.5f;
-float s_enemyShootTimer = 0.0f;
+float enemyShootCycle = 2.0f;
+float enemyShootTimer = 0.0f;
+
+// shooting enemy bullet data
+BulletList enemyBulletList;
+float enemyBulletMoveCycle = 0.05f;
+float enemyBulletMoveTimer = 0.0f;
+
 
 /* --------------------- Funtions ------------------------*/
 // Timer += deltaTime
@@ -117,7 +124,8 @@ inline void UpdateTimer() {
 	enemyMoveTimer += Time::GetElapsedTime();
 	s_enemySpawnTimer += Time::GetElapsedTime();
 	s_enemyMoveTimer += Time::GetElapsedTime();
-	s_enemyShootTimer += Time::GetElapsedTime();
+	enemyShootTimer += Time::GetElapsedTime();
+	enemyBulletMoveTimer += Time::GetElapsedTime();
 }
 
 // Player move & collision
@@ -158,7 +166,7 @@ inline void PlayerShooting() {
 }
 
 // Bullet move & collision
-inline void BulletControll() {
+inline void PlayerBulletControll() {
 	if (bulletMoveTimer >= bulletMoveCycle) {
 		for (Bullet* currentBullet = playerBulletList.head; currentBullet != NULL; currentBullet = currentBullet->next) {
 			currentBullet->SetPos(currentBullet->GetPos().X, currentBullet->GetPos().Y - 1);
@@ -225,6 +233,24 @@ inline void EnemyMoving() {
 	}
 }
 
+// Enemy shoot
+inline void EnemyShooting() {
+	if (enemyShootTimer >= enemyShootCycle) {
+		for (auto s_enemy = shootingEnemyList.begin(); s_enemy != shootingEnemyList.end(); s_enemy++) 
+			enemyBulletList.Insert(new EnemyBullet((*s_enemy).pos.X, (*s_enemy).pos.Y+1));
+		enemyShootTimer = 0.0f;
+	}
+}
+ 
+// Enemy Bullet move & collision
+inline void EnemyBulletControll() {
+	if (enemyBulletMoveTimer >= enemyBulletMoveCycle) {
+		for (Bullet* currentBullet = enemyBulletList.head; currentBullet != NULL; currentBullet = currentBullet->next) 
+			currentBullet->SetPos(currentBullet->GetPos().X, currentBullet->GetPos().Y + 1);
+		enemyBulletMoveTimer = 0.0f;
+	}
+}
+
 /* ----------------------- Play --------------------------*/
 namespace Play {
 	// Start
@@ -237,11 +263,15 @@ namespace Play {
 	void Update() {
 		if (!player.isDie) {
 			UpdateTimer();
+
 			PlayerMoving();
 			PlayerShooting();
-			BulletControll();
+			PlayerBulletControll();
+
 			EnemySpawn();
 			EnemyMoving();
+			EnemyShooting();
+			EnemyBulletControll();
 
 			// Debug player.hp
 			/*std::string str = std::to_string(player.hp);
@@ -278,6 +308,11 @@ namespace Play {
 		// s_enemy
 		for (auto& s_enemy : shootingEnemyList) {
 			ConsoleRenderer::ScreenDrawChar(s_enemy.pos.X, s_enemy.pos.Y, s_enemy.body, FG_RED);
+		}
+
+		// s_enemy bullet
+		for (Bullet* current = enemyBulletList.head; current != NULL; current = current->next) {
+			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_RED);
 		}
 	}
 }
