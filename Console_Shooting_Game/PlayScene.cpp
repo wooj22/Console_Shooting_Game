@@ -138,6 +138,7 @@ inline void PlayerMoving() {
 			if (enemy->isCollision(player.pos.X, player.pos.Y)) {
 				player.Hit(enemy->attackDamege);
 				enemy = enemyList.erase(enemy);
+				OutputDebugStringA("player : 공격 당함! (enemy collision)\n");		// debug
 			}
 			else
 				enemy++;
@@ -148,6 +149,7 @@ inline void PlayerMoving() {
 			if (s_enemy->isCollision(player.pos.X, player.pos.Y)) {
 				player.Hit(s_enemy->attackDamege);
 				s_enemy = shootingEnemyList.erase(s_enemy);
+				OutputDebugStringA("player : 공격 당함!  (s_enemy collision)\n");		// debug
 			}
 			else
 				s_enemy++;
@@ -176,8 +178,10 @@ inline void PlayerBulletControll() {
 				if ((*enemy).isCollision((*currentBullet).pos.X, (*currentBullet).pos.Y)) {
 					//playerBulletList.Remove(currentBullet);	 // TODO :: BulletList Remove() 수정
 					enemy->Hit(player.attackDamege);
-					if (enemy->isDie)
+					if (enemy->isDie) {
 						enemy = enemyList.erase(enemy);
+						OutputDebugStringA("player : 일반 몬스터 죽임\n");		// debug
+					}	
 					else enemy++;
 				}
 				else
@@ -189,8 +193,10 @@ inline void PlayerBulletControll() {
 				if ((*s_enemy).isCollision((*currentBullet).pos.X, (*currentBullet).pos.Y)) {
 					//playerBulletList.Remove(currentBullet);	 // TODO :: BulletList Remove() 수정
 					s_enemy->Hit(player.attackDamege);
-					if (s_enemy->isDie)
+					if (s_enemy->isDie) {
 						s_enemy = shootingEnemyList.erase(s_enemy);
+						OutputDebugStringA("player : 공격 몬스터 죽임\n");		// debug
+					}
 					else s_enemy++;
 				}
 				else
@@ -252,6 +258,7 @@ inline void EnemyBulletControll() {
 			// collision
 			if (player.isCollision(currentBullet->GetPos().X, currentBullet->GetPos().Y)) {
 				player.Hit(shootingEnemyList.front().attackDamege);
+				OutputDebugStringA("player : 공격 당함! (s_enemy bullet)\n");		// debug
 			}
 		}
 		enemyBulletMoveTimer = 0.0f;
@@ -278,14 +285,15 @@ namespace Play {
 			EnemySpawn();
 			EnemyMoving();
 			EnemyShooting();
-			EnemyBulletControll();
-
-			// Debug player.hp
-			/*std::string str = std::to_string(player.hp);
-			const char* cstr = str.c_str();
-			OutputDebugStringA(cstr);*/
+			EnemyBulletControll();	
 		}
 		else {
+			// debug
+			OutputDebugStringA("player : 죽었다...\n HP : ");
+			std::string str = std::to_string(player.hp);
+			const char* cstr = str.c_str();
+			OutputDebugStringA(cstr);
+
 			playerBulletList.Clear();
 			enemyBulletList.Clear();
 			enemyList.clear();
