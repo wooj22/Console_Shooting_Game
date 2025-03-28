@@ -11,7 +11,6 @@
 #include "Bullet.h"
 #include "Enemy.h"
 
-
 // Map Data
 const wchar_t* playMap[] = {
 

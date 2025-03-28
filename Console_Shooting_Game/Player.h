@@ -14,7 +14,7 @@ public:
 	bool isDie ;
 
 	Player(SHORT x, SHORT y) : pos({ x, y }), body('P'),
-		hp(10), attackDamege(10), isDie(false), isHit(false) {};
+		hp(100), attackDamege(10), isDie(false), isHit(false) {};
 	void Move(const wchar_t** playMap);
 	void Hit(int damage);
 	void HitTimer();

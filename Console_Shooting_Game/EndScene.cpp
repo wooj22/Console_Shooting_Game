@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include "ConsoleRenderer.h"
 #include "Input.h"
 #include "Time.h"
@@ -6,18 +6,82 @@
 #include "MenuScene.h"
 #include "EndScene.h"
 
-
 namespace End {
+	// Map Data
+	const wchar_t* endMap[] = {
+
+	L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                          Your Die !                        ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                       press [spacebar]                     ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"                                                            ",
+	L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓"
+	};
+	const int mapHeight = sizeof(endMap) / sizeof(endMap[0]);
+
 	// Start
 	void Initalize() {
-		Time::Initialize();
+		
 	}
 
 	// Update 
 	void Update() {
 		// scene change
-		Time::UpdateTime();
-		if (Time::GetTotalTime() >= 5.0) {
+		if (Input::IsKeyPressed(VK_SPACE)) {
 			Game::g_SceneCurrent = Game::MENU_SCENE;
 			Menu::Initalize();
 		}
@@ -25,6 +89,9 @@ namespace End {
 
 	// Render
 	void Render() {
-		ConsoleRenderer::ScreenDrawString(0, 0, "END SCENE  5�ʵ� MENU SCENE���� �̵��մϴ�", FG_GRAY);
+		for (int i = 0; i < mapHeight; i++)
+		{
+			ConsoleRenderer::ScreenDrawStringW(0, i, endMap[i], FG_YELLOW);
+		}
 	}
 }
