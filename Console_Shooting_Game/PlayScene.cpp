@@ -280,6 +280,7 @@ namespace Play {
 	void Initalize() {
 		Time::Initialize();
 		player.Initialization();
+		UpdatePlayerHpUi(&player);
 	}
 
 	// Update
