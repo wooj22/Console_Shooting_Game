@@ -13,4 +13,5 @@ public:
 	void Move();
 	void Hit(int damage);
 	bool PlayerCollision(Player* player);
+	bool PlayerBulletCollision(const wchar_t** playMap);
 };

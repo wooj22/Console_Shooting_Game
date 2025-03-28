@@ -37,7 +37,7 @@ public:
     BulletList() : head(nullptr) {}
     ~BulletList();
 
-    void insert(Bullet* newBullet);
-    void remove(Bullet* targetBullet);
-    void clear();
+    void Insert(Bullet* newBullet);
+    void Remove(Bullet* targetBullet);
+    void Clear();
 };

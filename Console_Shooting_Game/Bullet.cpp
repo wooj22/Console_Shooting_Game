@@ -14,11 +14,11 @@ bool EnemyBullet::OnTriggerEnter2D() {
 /*---------- Bullet Single Linked List --------*/
 // 소멸자
 BulletList::~BulletList() {
-    clear();
+    Clear();
 }
 
 // 삽입 : 리스트의 마지막에 추가
-void BulletList::insert(Bullet* newBullet) {
+void BulletList::Insert(Bullet* newBullet) {
     if (!head) {
         head = newBullet;
     }
@@ -32,7 +32,7 @@ void BulletList::insert(Bullet* newBullet) {
 }
 
 // 삭제 : targetBullet을 찾아서 삭제
-void BulletList::remove(Bullet* targetBullet) {
+void BulletList::Remove(Bullet* targetBullet) {
     if (!head) return;
 
     if (head == targetBullet) {
@@ -55,7 +55,7 @@ void BulletList::remove(Bullet* targetBullet) {
 }
 
 // 삭제 : 모든 노드 삭제
-void BulletList::clear() {
+void BulletList::Clear() {
     Bullet* current = head;
     while (current) {
         Bullet* nextBullet = current->next;
