@@ -1,17 +1,5 @@
 #include "Bullet.h"
 
-/*--------- Bullet --------*/
-// 충돌 : 플레이어의 총알이 적과 충돌했을 때
-bool PlayerBullet::OnTriggerEnter2D() {
-    return true;
-}
-
-// 충돌 : 적의 총알이 플레이와 충돌했을 때
-bool EnemyBullet::OnTriggerEnter2D() {
-    return true;
-}
-
-/*---------- Bullet Single Linked List --------*/
 // 소멸자
 BulletList::~BulletList() {
     Clear();

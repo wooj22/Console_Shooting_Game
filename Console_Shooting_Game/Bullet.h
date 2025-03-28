@@ -20,13 +20,11 @@ public:
 class PlayerBullet : public Bullet {
 public:
     PlayerBullet(SHORT x, SHORT y) : Bullet(x, y, '!') {}
-    bool OnTriggerEnter2D();
 };
 
 class EnemyBullet : public Bullet {
 public:
     EnemyBullet(SHORT x, SHORT y) : Bullet(x, y, 'V') {}
-    bool OnTriggerEnter2D();
 };
 
 /*---------- Bullet Single Linked List --------*/
