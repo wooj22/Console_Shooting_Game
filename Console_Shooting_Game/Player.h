@@ -4,7 +4,7 @@ class Player {
 private:
 	bool isHit;
 	float hitTimer = 0.0f;
-	const float invincibleDuration = 2.0f;
+	const float invincibleDuration = 1.0f;
 
 public:
 	COORD pos;

@@ -49,7 +49,7 @@ bool Player::isCollision(SHORT x, SHORT y) {
 	else return false;
 }
 
-/// 피격 : 3초간 무적
+/// 피격 : 1초간 무적
 void Player::Hit(int damage) {
 	if (!isHit) {
 		isHit = true;
