@@ -94,7 +94,7 @@ float bulletMoveTimer = 0.0f;
 std::vector<Enemy> enemyList;
 float enemySpawnCycle = 2.5f;
 float enemySpawnTimer = 0.0f;
-float enemyMoveCycle = 0.2f;
+float enemyMoveCycle = 0.8f;
 float enemyMoveTimer = 0.0f;
 
 /* --------------------- Funtions ------------------------*/
@@ -116,7 +116,7 @@ inline void PlayerMoving() {
 
 		// collision(player - enemy) : player hp 감소(die), enemy destroy
 		for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
-			if (enemy->PlayerCollision(&player)) {
+			if (enemy->isCollision(player.pos.X, player.pos.Y)) {
 				player.Hit(enemy->attackDamege);
 				enemy = enemyList.erase(enemy);
 			}
@@ -143,7 +143,7 @@ inline void BulletControll() {
 
 			// collision(playerbullet - enemy) : playerbullet destroy, enemy hp 감소(die)
 			for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
-				if ((*enemy).PlayerBulletCollision((*currentBullet).pos.X, (*currentBullet).pos.Y)) {
+				if ((*enemy).isCollision((*currentBullet).pos.X, (*currentBullet).pos.Y)) {
 					//playerBulletList.Remove(currentBullet);	 // TODO :: BulletList Remove() 수정
 					enemy->Hit(player.attackDamege);
 					if (enemy->isDie)

@@ -13,5 +13,5 @@ public:
 	void Move();
 	void Hit(int damage);
 	bool PlayerCollision(Player* player);
-	bool PlayerBulletCollision(SHORT x, SHORT y);
+	bool isCollision(SHORT x, SHORT y);
 };
