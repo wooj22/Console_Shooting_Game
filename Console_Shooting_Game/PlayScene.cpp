@@ -144,7 +144,7 @@ namespace Play {
 				// collision(playerbullet - enemy) : playerbullet destroy, enemy hp 감소(die)
 				for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
 					if ((*enemy).PlayerBulletCollision((*currentBullet).pos.X, (*currentBullet).pos.Y)){
-						//playerBulletList.Remove(currentBullet);
+						//playerBulletList.Remove(currentBullet);	 // TODO :: BulletList Remove() 수정
 						enemy->Hit(player.attackDamege);
 						if (enemy->isDie)
 							enemy = enemyList.erase(enemy);
@@ -185,16 +185,16 @@ namespace Play {
 		}
 
 		// player
-		ConsoleRenderer::ScreenDrawChar(player.pos.X, player.pos.Y, player.body, FG_RED);
+		ConsoleRenderer::ScreenDrawChar(player.pos.X, player.pos.Y, player.body, FG_YELLOW);
 
 		// player bullet
 		for (Bullet* current = playerBulletList.head; current != NULL; current = current->next) {
-			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_RED);
+			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_YELLOW);
 		}
 
 		// enemy
 		for (auto& enemy : enemyList) {
-			ConsoleRenderer::ScreenDrawChar(enemy.pos.X, enemy.pos.Y, enemy.body, FG_BLUE);
+			ConsoleRenderer::ScreenDrawChar(enemy.pos.X, enemy.pos.Y, enemy.body, FG_RED);
 		}
 	}
 }
