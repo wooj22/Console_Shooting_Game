@@ -332,17 +332,17 @@ namespace Play {
 
 		// enemy
 		for (auto& enemy : enemyList) {
-			ConsoleRenderer::ScreenDrawChar(enemy.pos.X, enemy.pos.Y, enemy.body, FG_BLUE);
+			ConsoleRenderer::ScreenDrawChar(enemy.pos.X, enemy.pos.Y, enemy.body, FG_GRAY);
 		}
 
 		// s_enemy
 		for (auto& s_enemy : shootingEnemyList) {
-			ConsoleRenderer::ScreenDrawChar(s_enemy.pos.X, s_enemy.pos.Y, s_enemy.body, FG_RED);
+			ConsoleRenderer::ScreenDrawChar(s_enemy.pos.X, s_enemy.pos.Y, s_enemy.body, FG_GREEN);
 		}
 
 		// s_enemy bullet
 		for (Bullet* current = enemyBulletList.head; current != NULL; current = current->next) {
-			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_RED);
+			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_GREEN);
 		}
 
 		// UI
