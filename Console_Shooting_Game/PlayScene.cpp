@@ -138,21 +138,21 @@ namespace Play {
 
 		// Bullet move & collision
 		if (bulletMoveTimer >= bulletMoveCycle) {
-			for (Bullet* current = playerBulletList.head; current != NULL; current = current->next) {
-				current->SetPos(current->GetPos().X, current->GetPos().Y - 1);
-			}
+			for (Bullet* currentBullet = playerBulletList.head; currentBullet != NULL; currentBullet = currentBullet->next) {
+				currentBullet->SetPos(currentBullet->GetPos().X, currentBullet->GetPos().Y - 1);
 
-			for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
 				// collision(playerbullet - enemy) : playerbullet destroy, enemy hp 감소(die)
-				if (enemy->PlayerBulletCollision(playMap)) {
-
-					enemy->Hit(player.attackDamege);
-					if (enemy->isDie)
-						enemy = enemyList.erase(enemy);
-					else enemy++;
+				for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
+					if ((*enemy).PlayerBulletCollision((*currentBullet).pos.X, (*currentBullet).pos.Y)){
+						//playerBulletList.Remove(currentBullet);
+						enemy->Hit(player.attackDamege);
+						if (enemy->isDie)
+							enemy = enemyList.erase(enemy);
+						else enemy++;
+					}
+					else
+						enemy++;
 				}
-				else
-					enemy++;
 			}
 			bulletMoveTimer = 0.0f;
 		}

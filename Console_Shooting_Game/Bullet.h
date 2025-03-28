@@ -14,7 +14,7 @@ public:
 
     Bullet(SHORT x, SHORT y, char symbol) : pos({ x, y }), body(symbol), next(nullptr) {}
     void SetPos(int x, int y) { pos.X = x; pos.Y = y; }
-    COORD GetPos() { return pos; }
+     COORD GetPos() { return pos; }
 };
 
 class PlayerBullet : public Bullet {

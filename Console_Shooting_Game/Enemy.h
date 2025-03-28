@@ -13,5 +13,6 @@ public:
 	void Move();
 	void Hit(int damage);
 	bool PlayerCollision(Player* player);
-	bool PlayerBulletCollision(const wchar_t** playMap);
+	bool old_PlayerBulletCollision(const wchar_t** playMap);
+	bool PlayerBulletCollision(SHORT x, SHORT y);
 };
