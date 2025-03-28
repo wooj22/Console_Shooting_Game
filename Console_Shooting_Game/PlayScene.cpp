@@ -77,26 +77,27 @@ L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 };
 const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
 
+// player data
+Player player(30, 55);
+float playerMoveCycle = 0.1f;
+float playerMoveTimer = 0.0f;
+float playerShootCycle = 0.2f;
+float playerShootTimer = 0.0f;
+
+// Bullet data
+BulletList playerBulletList;
+float bulletMoveCycle = 0.05f;
+float bulletMoveTimer = 0.0f;
+
+// enemy data
+std::vector<Enemy> enemyList;
+float enemySpawnCycle = 2.5f;
+float enemySpawnTimer = 0.0f;
+float enemyMoveCycle = 0.2f;
+float enemyMoveTimer = 0.0f;
+
+
 namespace Play {
-	// player data
-	Player player(30, 55);
-	float playerMoveCycle = 0.1f;
-	float playerMoveTimer = 0.0f;
-	float playerShootCycle = 0.2f;
-	float playerShootTimer = 0.0f;
-
-	// Bullet data
-	BulletList playerBulletList;
-	float bulletMoveCycle = 0.05f;
-	float bulletMoveTimer = 0.0f;
-
-	// enemy data
-	std::vector<Enemy> enemyList;
-	float enemySpawnCycle = 2.5f;
-	float enemySpawnTimer = 0.0f;
-	float enemyMoveCycle = 0.2f;
-	float enemyMoveTimer = 0.0f;
-
 	// Start
 	void Initalize() {
 		Time::Initialize();
