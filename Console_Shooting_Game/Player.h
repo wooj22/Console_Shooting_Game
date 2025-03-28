@@ -12,9 +12,9 @@ public:
 	int hp;
 	int attackDamege;
 	bool isDie ;
-
-	Player(SHORT x, SHORT y) : pos({ x, y }), body('P'),
+	Player(SHORT x = 30, SHORT y = 55) : pos({ x, y }), body('P'),
 		hp(100), attackDamege(10), isDie(false), isHit(false) {};
+	void Initialization();
 	void Move(const wchar_t** playMap);
 	void Hit(int damage);
 	void HitTimer();

@@ -79,7 +79,7 @@ L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
 
 // player data
-Player player(30, 55);
+Player player;
 float playerMoveCycle = 0.1f;
 float playerMoveTimer = 0.0f;
 float playerShootCycle = 0.2f;
@@ -180,6 +180,7 @@ namespace Play {
 	// Start
 	void Initalize() {
 		Time::Initialize();
+		player.Initialization();
 	}
 
 	// Update
