@@ -26,14 +26,6 @@ bool Enemy::PlayerCollision(Player* player) {
 }
 
 // 플레이어 총알과 닿았을 경우
-bool Enemy::old_PlayerBulletCollision(const wchar_t** playMap) {
-	if (playMap[this->pos.X][this->pos.Y] == L'!') 
-		return true;
-	else 
-		return false;
-}
-
-// 플레이어 총알과 닿았을 경우
 bool Enemy::PlayerBulletCollision(SHORT x, SHORT y) {
 	if (this->pos.X == x && this->pos.Y == y) return true;
 	else return false;
