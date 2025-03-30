@@ -29,6 +29,11 @@ public:
 	PowerPosion(SHORT x, SHORT y, char body = 'P') : Item(x, y, body) {};
 };
 
+class SpeedPosion : public Item {
+public:
+	SpeedPosion(SHORT x, SHORT y, char body = 'S') : Item(x, y, body) {};
+};
+
 
 /*---------- Item Single Linked List --------*/
 class ItemList {

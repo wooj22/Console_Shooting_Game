@@ -9,6 +9,7 @@ void Player::Initialization() {
 	pos.Y = 53;
 	hp = 100;
 	attackDamege = 10;
+	moveCycle = 0.1f;
 	shootCycle = 0.2f;
 	isDie = false;
 	isHit = false;
@@ -97,4 +98,10 @@ void Player::PowerUp() {
 
 	shootCycle -= 0.02f;
 	if (shootCycle <= 0.01f) shootCycle = 0.01f;
+}
+
+/// 이속 증가
+void Player::SpeedUp() {
+	moveCycle -= 0.01f;
+	if (moveCycle <= 0.01f) moveCycle = 0.01f;
 }

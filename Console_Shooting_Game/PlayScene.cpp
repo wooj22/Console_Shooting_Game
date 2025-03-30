@@ -95,7 +95,7 @@ float s_enemyBulletMoveCycle[3] = { 0.3f, 0.1f, 0.05f };
 
 // player data
 Player player;
-float playerMoveCycle = 0.1f;	// player 멤버로 변경하고 ui 표시도 해봅시다
+//float playerMoveCycle = 0.1f; -> player 멤버로 변경
 float playerMoveTimer = 0.0f;
 //float playerShootCycle = 0.2f; -> player 멤버로 변경
 float playerShootTimer = 0.0f;
@@ -136,6 +136,13 @@ float powerPosionCreateTimer = 0.0f;
 float powerPosionMoveCycle = 0.2f;
 float powerPosionMoveTimer = 0.0f;
 
+// speed posion
+ItemList speedPosionList;
+float speedPosionCreateCycle = 16.0f;
+float speedPosionCreateTimer = 0.0f;
+float speedPosionMoveCycle = 0.08f;
+float speedPosionMoveTimer = 0.0f;
+
 
 /* ---------------------- Funtions -------------------------*/
 /* 충돌 체크는 cycle이 더 짧은 쪽에서 검사하여 놓치지 않도록 한다. */
@@ -156,6 +163,8 @@ inline void InitializationTimer() {
 	hpPosionMoveTimer = 0.0f;
 	powerPosionCreateTimer = 0.0f;
 	powerPosionMoveTimer = 0.0f;
+	speedPosionCreateTimer = 0.0f;
+	speedPosionMoveTimer = 0.0f;
 }
 
 // Timer += deltaTime
@@ -176,6 +185,8 @@ inline void UpdateTimer() {
 	hpPosionMoveTimer += Time::GetDeltaTime();
 	powerPosionCreateTimer += Time::GetDeltaTime();
 	powerPosionMoveTimer += Time::GetDeltaTime();
+	speedPosionCreateTimer += Time::GetDeltaTime();
+	speedPosionMoveTimer += Time::GetDeltaTime();
 }
 
 // Level Managing
@@ -188,7 +199,7 @@ inline void LevelManaging() {
 
 // Player move & collision
 inline void PlayerMoving() {
-	if (playerMoveTimer >= playerMoveCycle) {
+	if (playerMoveTimer >= player.moveCycle) {
 		player.Move(playMap);
 
 		// collision(player - enemy) : player hp 감소(die), enemy destroy
@@ -235,6 +246,18 @@ inline void PlayerMoving() {
 				player.PowerUp();
 				powerPosionList.Remove(currentItem);
 				UpdatePlayerPowerUi(&player);
+			}
+			currentItem = nextItem;
+		}
+
+		// collision(player - speed posoin) : player 이속 증가, speed posion remove
+		for (Item* currentItem = speedPosionList.head; currentItem != nullptr; ) {
+			Item* nextItem = currentItem->next;
+
+			if (currentItem->isCollision(player.pos.X, player.pos.Y)) {
+				player.SpeedUp();
+				speedPosionList.Remove(currentItem);
+				UpdatePlayerSpeedUi(&player);
 			}
 			currentItem = nextItem;
 		}
@@ -457,6 +480,32 @@ inline void PowerPosionMoving() {
 	}
 }
 
+// Speed Posion creating
+inline void SpeedPosionCreating() {
+	if (speedPosionCreateTimer >= speedPosionCreateCycle) {
+		speedPosionList.Insert(new SpeedPosion(rand() % 58 + 1, 0));
+		speedPosionCreateTimer = 0.0f;
+	}
+}
+
+// Speed Posion move
+inline void SpeedPosionMoving() {
+	if (speedPosionMoveTimer >= speedPosionMoveCycle) {
+		for (Item* currentItem = speedPosionList.head; currentItem != nullptr; ) {
+			Item* nextItem = currentItem->next;
+			currentItem->Move();
+
+			// 하단을 넘었을 경우 remove
+			if (currentItem->isGoal)
+				speedPosionList.Remove(currentItem);
+
+			currentItem = nextItem;
+		}
+
+		speedPosionMoveTimer = 0.0f;
+	}
+}
+
 
 /* ----------------------- Play --------------------------*/
 namespace Play {
@@ -492,6 +541,9 @@ namespace Play {
 
 			PowerPosionCreating();
 			PowerPosionMoving();
+
+			SpeedPosionCreating();
+			SpeedPosionMoving();
 		}
 		else {
 			// debug
@@ -555,7 +607,11 @@ namespace Play {
 		// power posion
 		for (Item* current = powerPosionList.head; current != nullptr; current = current->next)
 			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_BLUE);
-
+		
+		// speed posion
+		for (Item* current = speedPosionList.head; current != nullptr; current = current->next)
+			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_SKY);
+		
 		// UI
 		ConsoleRenderer::ScreenDrawStringW(10, 55, ui_playerHp, FG_RED);
 		ConsoleRenderer::ScreenDrawStringW(10, 56, ui_playerPower, FG_GREEN);
