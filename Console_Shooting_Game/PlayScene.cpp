@@ -128,7 +128,7 @@ float hpPosionCreateTimer = 0.0f;
 float hpPosionMoveCycle = 0.7f;
 float hpPosionMoveTimer = 0.0f;
 
-// power posion
+// power posion data
 ItemList powerPosionList;
 float powerPosionStartTime = 20.0f;
 float powerPosionCreateCycle = 15.0f;
@@ -136,7 +136,7 @@ float powerPosionCreateTimer = 0.0f;
 float powerPosionMoveCycle = 0.2f;
 float powerPosionMoveTimer = 0.0f;
 
-// speed posion
+// speed posion data
 ItemList speedPosionList;
 float speedPosionCreateCycle = 16.0f;
 float speedPosionCreateTimer = 0.0f;
