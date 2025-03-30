@@ -559,6 +559,7 @@ namespace Play {
 			e_bulletList.Clear();
 			hpPosionList.Clear();
 			powerPosionList.Clear();
+			speedPosionList.Clear();
 
 			// scene change
 			Game::g_SceneCurrent = Game::END_SCENE;
@@ -602,7 +603,7 @@ namespace Play {
 		
 		// hp posion
 		for (Item* current = hpPosionList.head; current != nullptr; current = current->next)
-			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_YELLOW);
+			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_RED);
 		
 		// power posion
 		for (Item* current = powerPosionList.head; current != nullptr; current = current->next)
@@ -614,7 +615,7 @@ namespace Play {
 		
 		// UI
 		ConsoleRenderer::ScreenDrawStringW(10, 55, ui_playerHp, FG_RED);
-		ConsoleRenderer::ScreenDrawStringW(10, 56, ui_playerPower, FG_GREEN);
+		ConsoleRenderer::ScreenDrawStringW(10, 56, ui_playerPower, FG_BLUE);
 		ConsoleRenderer::ScreenDrawStringW(10, 57, ui_playerSpeed, FG_SKY);
 	}
 }
