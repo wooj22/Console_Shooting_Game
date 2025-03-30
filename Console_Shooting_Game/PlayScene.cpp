@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "Item.h"
 #include "UIManager.h"
 
 
@@ -117,7 +118,11 @@ BulletList enemyBulletList;
 float s_enemyBulletMoveCycle = 0.05f;
 float s_enemyBulletMoveTimer = 0.0f;
 
-// item
+// hpPosion data
+float hpPosionCreateCycle = 5.0f;
+float hpPosionCreateTimer = 0.0f;
+float hpPosionMoveCycle = 0.8f;
+float hpPosionMoveTimer = 0.0f;
 
 
 /* ---------------------- Funtions -------------------------*/
@@ -134,6 +139,8 @@ inline void InitializationTimer() {
 	s_enemyMoveTimer = 0.0f;
 	s_enemyShootTimer = 0.0f;
 	s_enemyBulletMoveTimer = 0.0f;
+	hpPosionCreateTimer = 0.0f;
+	hpPosionMoveTimer = 0.0f;
 }
 
 
@@ -151,6 +158,8 @@ inline void UpdateTimer() {
 	s_enemyMoveTimer += Time::GetDeltaTime();
 	s_enemyShootTimer += Time::GetDeltaTime();
 	s_enemyBulletMoveTimer += Time::GetDeltaTime();
+	hpPosionCreateTimer += Time::GetDeltaTime();
+	hpPosionMoveTimer += Time::GetDeltaTime();
 }
 
 // Player move & collision
@@ -342,6 +351,24 @@ inline void EnemyBulletControll() {
 		}
 
 		s_enemyBulletMoveTimer = 0.0f;
+	}
+}
+
+// HpPosion creating
+void HpPosionCreating() {
+	if (hpPosionCreateTimer >= hpPosionCreateCycle) {
+
+
+		hpPosionCreateTimer = 0.0f;
+	}
+}
+
+// HpPosion move
+void HpPosionMoving() {
+	if (hpPosionMoveTimer >= hpPosionMoveCycle) {
+
+
+		hpPosionMoveTimer = 0.0f;
 	}
 }
 

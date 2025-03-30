@@ -1,25 +1,25 @@
 #include "Bullet.h"
 
-// Player Bullet Move
+/// Player Bullet Move
 void PlayerBullet::Move() {
     this->pos.Y--;
     if (this->pos.Y <= 0)
         isGoal = true;
 }
 
-// Enemy Bullet Move
+/// Enemy Bullet Move
 void EnemyBullet::Move() {
     this->pos.Y++;
     if (this->pos.Y >= 59)
         isGoal = true;
 }
 
-// 소멸자
+/// 소멸자
 BulletList::~BulletList() {
     Clear();
 }
 
-// 삽입 : 리스트의 마지막에 추가
+/// 삽입 : 리스트의 마지막에 추가
 void BulletList::Insert(Bullet* newBullet) {
     if (!head) {
         head = newBullet;
@@ -33,7 +33,7 @@ void BulletList::Insert(Bullet* newBullet) {
     }
 }
 
-// 삭제 : targetBullet을 찾아서 삭제
+/// 삭제 : targetBullet을 찾아서 삭제
 void BulletList::Remove(Bullet* targetBullet) {
     // 리스트가 비었을 경우
     if (!head) return;
@@ -61,7 +61,7 @@ void BulletList::Remove(Bullet* targetBullet) {
     }
 }
 
-// 삭제 : 모든 노드 삭제
+/// 삭제 : 모든 노드 삭제
 void BulletList::Clear() {
     Bullet* current = head;
     while (current) {
