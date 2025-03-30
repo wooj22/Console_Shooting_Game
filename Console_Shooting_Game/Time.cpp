@@ -22,7 +22,7 @@ namespace Time
         prevCounter = currentCounter;
     }
 
-    float GetElapsedTime()
+    float GetDeltaTime()
     {
         return deltaTime;
     }

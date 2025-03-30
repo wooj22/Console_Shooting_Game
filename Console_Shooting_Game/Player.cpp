@@ -65,7 +65,7 @@ void Player::Hit(int damage) {
 
 void Player::HitTimer() {
 	if (isHit) {
-		hitTimer -= Time::GetElapsedTime();
+		hitTimer -= Time::GetDeltaTime();
 		if (hitTimer <= 0.0f) {
 			isHit = false;
 		}

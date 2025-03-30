@@ -80,6 +80,9 @@ L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 };
 const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
 
+// game & level data
+float gamePlayTimer = 0.0f;
+
 // player data
 Player player;
 float playerMoveCycle = 0.1f;
@@ -101,35 +104,50 @@ float enemyMoveTimer = 0.0f;
 
 // shooting enemy data
 std::vector<ShootingEnemy> shootingEnemyList;
-//float s_nemeyCreatStartTime = 20.0f;
-//float s_nemeyCreatStartTimer = 0.0f;
+float s_nemeyCreatStartTime = 20.0f;
 float s_enemySpawnCycle = 4.0f;
 float s_enemySpawnTimer = 0.0f;
 float s_enemyMoveCycle = 0.5f;
 float s_enemyMoveTimer = 0.0f;
-float enemyShootCycle = 2.0f;
-float enemyShootTimer = 0.0f;
+float s_enemyShootCycle = 2.0f;
+float s_enemyShootTimer = 0.0f;
 
 // shooting enemy bullet data
 BulletList enemyBulletList;
-float enemyBulletMoveCycle = 0.05f;
-float enemyBulletMoveTimer = 0.0f;
+float s_enemyBulletMoveCycle = 0.05f;
+float s_enemyBulletMoveTimer = 0.0f;
 
 
 /* --------------------- Funtions ------------------------*/
+// Timer Initialization
+inline void InitializationTimer() {
+	gamePlayTimer  = 0.0f;
+	playerMoveTimer = 0.0f;
+	playerShootTimer = 0.0f;
+	bulletMoveTimer = 0.0f;
+	enemySpawnTimer = 0.0f;
+	enemyMoveTimer = 0.0f;
+	s_enemySpawnTimer = 0.0f;
+	s_enemyMoveTimer = 0.0f;
+	s_enemyShootTimer = 0.0f;
+	s_enemyBulletMoveTimer = 0.0f;
+}
+
+
 // Timer += deltaTime
 inline void UpdateTimer() {
 	Time::UpdateTime();
 	player.HitTimer();
-	playerMoveTimer += Time::GetElapsedTime();
-	playerShootTimer += Time::GetElapsedTime();
-	bulletMoveTimer += Time::GetElapsedTime();
-	enemySpawnTimer += Time::GetElapsedTime();
-	enemyMoveTimer += Time::GetElapsedTime();
-	s_enemySpawnTimer += Time::GetElapsedTime();
-	s_enemyMoveTimer += Time::GetElapsedTime();
-	enemyShootTimer += Time::GetElapsedTime();
-	enemyBulletMoveTimer += Time::GetElapsedTime();
+	gamePlayTimer += Time::GetDeltaTime();
+	playerMoveTimer += Time::GetDeltaTime();
+	playerShootTimer += Time::GetDeltaTime();
+	bulletMoveTimer += Time::GetDeltaTime();
+	enemySpawnTimer += Time::GetDeltaTime();
+	enemyMoveTimer += Time::GetDeltaTime();
+	s_enemySpawnTimer += Time::GetDeltaTime();
+	s_enemyMoveTimer += Time::GetDeltaTime();
+	s_enemyShootTimer += Time::GetDeltaTime();
+	s_enemyBulletMoveTimer += Time::GetDeltaTime();
 }
 
 // Player move & collision
@@ -173,7 +191,7 @@ inline void PlayerShooting() {
 	}
 }
 
-// Bullet move & collision
+// Player Bullet move & collision
 inline void PlayerBulletControll() {
 	if (bulletMoveTimer >= bulletMoveCycle) {
 		for (Bullet* currentBullet = playerBulletList.head; currentBullet != NULL; currentBullet = currentBullet->next) {
@@ -184,6 +202,7 @@ inline void PlayerBulletControll() {
 				if ((*enemy).isCollision((*currentBullet).pos.X, (*currentBullet).pos.Y)) {
 					//playerBulletList.Remove(currentBullet);	 // TODO :: BulletList Remove() 수정
 					enemy->Hit(player.attackDamege);
+					
 					if (enemy->isDie) {
 						enemy = enemyList.erase(enemy);
 						UpdatePlayerHpUi(&player);
@@ -225,7 +244,7 @@ inline void EnemySpawn() {
 	}
 
 	// 공격
-	if (s_enemySpawnTimer >= s_enemySpawnCycle) {
+	if (gamePlayTimer >= s_nemeyCreatStartTime && s_enemySpawnTimer >= s_enemySpawnCycle) {
 		shootingEnemyList.push_back(ShootingEnemy(rand() % 58 + 1, 0));
 		s_enemySpawnTimer = 0.0f;
 	}
@@ -249,16 +268,16 @@ inline void EnemyMoving() {
 
 // Enemy shoot
 inline void EnemyShooting() {
-	if (enemyShootTimer >= enemyShootCycle) {
+	if (s_enemyShootTimer >= s_enemyShootCycle) {
 		for (auto s_enemy = shootingEnemyList.begin(); s_enemy != shootingEnemyList.end(); s_enemy++) 
 			enemyBulletList.Insert(new EnemyBullet((*s_enemy).pos.X, (*s_enemy).pos.Y+1));
-		enemyShootTimer = 0.0f;
+		s_enemyShootTimer = 0.0f;
 	}
 }
  
 // Enemy Bullet move & collision
 inline void EnemyBulletControll() {
-	if (enemyBulletMoveTimer >= enemyBulletMoveCycle) {
+	if (s_enemyBulletMoveTimer >= s_enemyBulletMoveCycle) {
 		for (Bullet* currentBullet = enemyBulletList.head; currentBullet != NULL; currentBullet = currentBullet->next) {
 			// move
 			currentBullet->SetPos(currentBullet->GetPos().X, currentBullet->GetPos().Y + 1);
@@ -270,7 +289,7 @@ inline void EnemyBulletControll() {
 				OutputDebugStringA("player : 공격 당함! (s_enemy bullet)\n");		// debug
 			}
 		}
-		enemyBulletMoveTimer = 0.0f;
+		s_enemyBulletMoveTimer = 0.0f;
 	}
 }
 
@@ -279,6 +298,7 @@ namespace Play {
 	// Start
 	void Initalize() {
 		Time::Initialize();
+		InitializationTimer();
 		player.Initialization();
 		UpdatePlayerHpUi(&player);
 	}
