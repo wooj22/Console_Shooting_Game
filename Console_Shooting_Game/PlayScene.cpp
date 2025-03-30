@@ -278,7 +278,11 @@ inline void EnemyMoving() {
 		for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
 			enemy->Move();
 
-			if ((*enemy).isGoal) enemy = enemyList.erase(enemy);
+			if ((*enemy).isGoal) {
+				enemy = enemyList.erase(enemy);
+				player.WallHit();
+				UpdatePlayerHpUi(&player);
+			}
 			else enemy++;	
 		}
 
@@ -290,7 +294,11 @@ inline void EnemyMoving() {
 		for (auto s_enemy = s_enemyList.begin(); s_enemy != s_enemyList.end(); ) {
 			s_enemy->Move();
 
-			if ((*s_enemy).isGoal) s_enemy = s_enemyList.erase(s_enemy);
+			if ((*s_enemy).isGoal) {
+				s_enemy = s_enemyList.erase(s_enemy);
+				player.WallHit();
+				UpdatePlayerHpUi(&player);
+			}
 			else s_enemy++;	
 		}
 			

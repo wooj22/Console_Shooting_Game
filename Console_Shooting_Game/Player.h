@@ -19,5 +19,6 @@ public:
 	void Move(const wchar_t** playMap);
 	bool isCollision(SHORT x, SHORT y);
 	void Hit(int damage);
+	void WallHit();
 	void HitTimer();
 };

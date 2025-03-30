@@ -49,6 +49,15 @@ bool Player::isCollision(SHORT x, SHORT y) {
 	else return false;
 }
 
+/// Enemy가 하단에 닿았을 경우 무적타임 없이 피깎
+void Player::WallHit() {
+	hp -= 10;
+	if (hp <= 0) {
+		hp = 0;
+		isDie = true;
+	}
+}
+
 /// 피격 : 1초간 무적
 void Player::Hit(int damage) {
 	if (!isHit) {
@@ -57,8 +66,8 @@ void Player::Hit(int damage) {
 		hp -= damage;
 
 		if (hp <= 0) {
-			isDie = true;
 			hp = 0;
+			isDie = true;
 		}
 	}
 }
