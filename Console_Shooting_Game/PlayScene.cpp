@@ -120,10 +120,17 @@ float s_enemyBulletMoveTimer = 0.0f;
 
 // hpPosion data
 ItemList hpPosionList;
-float hpPosionCreateCycle = 5.0f;
+float hpPosionCreateCycle = 15.0f;
 float hpPosionCreateTimer = 0.0f;
-float hpPosionMoveCycle = 0.8f;
+float hpPosionMoveCycle = 0.7f;
 float hpPosionMoveTimer = 0.0f;
+
+// power posion
+ItemList powerPosionList;
+float powerPosionCreateCycle = 5.0f;
+float powerPosionCreateTimer = 0.0f;
+float powerPosionMoveCycle = 0.2f;
+float powerPosionMoveTimer = 0.0f;
 
 
 /* ---------------------- Funtions -------------------------*/
@@ -142,6 +149,8 @@ inline void InitializationTimer() {
 	s_enemyBulletMoveTimer = 0.0f;
 	hpPosionCreateTimer = 0.0f;
 	hpPosionMoveTimer = 0.0f;
+	powerPosionCreateTimer = 0.0f;
+	powerPosionMoveTimer = 0.0f;
 }
 
 
@@ -161,6 +170,8 @@ inline void UpdateTimer() {
 	s_enemyBulletMoveTimer += Time::GetDeltaTime();
 	hpPosionCreateTimer += Time::GetDeltaTime();
 	hpPosionMoveTimer += Time::GetDeltaTime();
+	powerPosionCreateTimer += Time::GetDeltaTime();
+	powerPosionMoveTimer += Time::GetDeltaTime();
 }
 
 // Player move & collision
@@ -192,7 +203,7 @@ inline void PlayerMoving() {
 				s_enemy++;
 		}
 
-		// collision(player - item) : player hp 증가, hp posion remove
+		// collision(player - hp posion) : player hp 증가, hp posion remove
 		for (Item* currentItem = hpPosionList.head; currentItem != nullptr; ) {
 			Item* nextItem = currentItem->next;
 
@@ -200,6 +211,18 @@ inline void PlayerMoving() {
 				player.Recover();
 				hpPosionList.Remove(currentItem);
 				UpdatePlayerHpUi(&player);
+			}
+			currentItem = nextItem;
+		}
+
+		// collision(player - power posoin) : player attack damage 증가, power posion remove
+		for (Item* currentItem = powerPosionList.head; currentItem != nullptr; ) {
+			Item* nextItem = currentItem->next;
+
+			if (currentItem->isCollision(player.pos.X, player.pos.Y)) {
+				player.PowerUp();
+				powerPosionList.Remove(currentItem);
+				UpdatePlayerPowerUi(&player);
 			}
 			currentItem = nextItem;
 		}
@@ -364,7 +387,7 @@ inline void EnemyBulletControll() {
 	}
 }
 
-// HpPosion creating
+// Hp Posion creating
 void HpPosionCreating() {
 	if (hpPosionCreateTimer >= hpPosionCreateCycle) {
 		hpPosionList.Insert(new HpPosion(rand() % 58 + 1, 0));
@@ -372,7 +395,7 @@ void HpPosionCreating() {
 	}
 }
 
-// HpPosion move
+// Hp Posion move
 void HpPosionMoving() {
 	if (hpPosionMoveTimer >= hpPosionMoveCycle) {
 		for (Item* currentItem = hpPosionList.head; currentItem != nullptr; ) {
@@ -390,6 +413,33 @@ void HpPosionMoving() {
 	}
 }
 
+// Power Posion creating
+void PowerPosionCreating() {
+	if (powerPosionCreateTimer >= powerPosionCreateCycle) {
+		powerPosionList.Insert(new PowerPosion(rand() % 58 + 1, 0));
+		powerPosionCreateTimer = 0.0f;
+	}
+}
+
+// Power Posion move
+void PowerPosionMoving() {
+	if (powerPosionMoveTimer >= powerPosionMoveCycle) {
+		for (Item* currentItem = powerPosionList.head; currentItem != nullptr; ) {
+			Item* nextItem = currentItem->next;
+			currentItem->Move();
+
+			// 하단을 넘었을 경우 remove
+			if (currentItem->isGoal)
+				powerPosionList.Remove(currentItem);
+
+			currentItem = nextItem;
+		}
+
+		powerPosionMoveTimer = 0.0f;
+	}
+}
+
+
 /* ----------------------- Play --------------------------*/
 namespace Play {
 	// Start
@@ -398,6 +448,7 @@ namespace Play {
 		InitializationTimer();
 		player.Initialization();
 		UpdatePlayerHpUi(&player);
+		UpdatePlayerPowerUi(&player);
 	}
 
 	// Update
@@ -416,6 +467,9 @@ namespace Play {
 
 			HpPosionCreating();
 			HpPosionMoving();
+
+			PowerPosionCreating();
+			PowerPosionMoving();
 		}
 		else {
 			// debug
@@ -474,6 +528,10 @@ namespace Play {
 		// hp posion
 		for (Item* current = hpPosionList.head; current != nullptr; current = current->next)
 			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_YELLOW);
+		
+		// power posion
+		for (Item* current = powerPosionList.head; current != nullptr; current = current->next)
+			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_BLUE);
 
 		// UI
 		ConsoleRenderer::ScreenDrawStringW(10, 55, ui_playerHp, FG_RED);

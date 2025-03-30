@@ -24,9 +24,9 @@ public:
 	HpPosion(SHORT x, SHORT y, char body = 'H') : Item(x, y, body) {};
 };
 
-class PowerUpPosion : public Item {
+class PowerPosion : public Item {
 public:
-	PowerUpPosion(SHORT x, SHORT y, char body = 'P') : Item(x, y, body) {};
+	PowerPosion(SHORT x, SHORT y, char body = 'P') : Item(x, y, body) {};
 };
 
 

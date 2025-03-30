@@ -91,5 +91,6 @@ void Player::Recover() {
 
 /// 공격력 증가
 void Player::PowerUp() {
-	attackDamege += 5;
+	attackDamege += 10;
+	if (attackDamege >= 100) attackDamege = 100;
 }
