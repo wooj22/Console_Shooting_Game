@@ -92,7 +92,7 @@ float playerShootCycle = 0.2f;
 float playerShootTimer = 0.0f;
 
 // player bullet data
-BulletList playerBulletList;
+BulletList p_bulletList;
 float bulletMoveCycle = 0.05f;
 float bulletMoveTimer = 0.0f;
 
@@ -114,11 +114,12 @@ float s_enemyShootCycle = 2.0f;
 float s_enemyShootTimer = 0.0f;
 
 // shooting enemy bullet data
-BulletList enemyBulletList;
+BulletList e_bulletList;
 float s_enemyBulletMoveCycle = 0.05f;
 float s_enemyBulletMoveTimer = 0.0f;
 
 // hpPosion data
+ItemList hpPosionList;
 float hpPosionCreateCycle = 5.0f;
 float hpPosionCreateTimer = 0.0f;
 float hpPosionMoveCycle = 0.8f;
@@ -201,7 +202,7 @@ inline void PlayerMoving() {
 // Player shoot
 inline void PlayerShooting() {
 	if (playerShootTimer >= playerShootCycle && Input::IsKeyDown(VK_SPACE)) {
-		playerBulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1));
+		p_bulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1));
 		playerShootTimer = 0.0f;
 	}
 }
@@ -210,7 +211,7 @@ inline void PlayerShooting() {
 inline void PlayerBulletControll() {
 	if (bulletMoveTimer >= bulletMoveCycle) {
 		// move
-		for (Bullet* currentBullet = playerBulletList.head; currentBullet != nullptr; ) {
+		for (Bullet* currentBullet = p_bulletList.head; currentBullet != nullptr; ) {
 			// nextBullet 미리 저장 (why? : bullet이 remove됐을때 currentBullet->next에 접근할 수 없기 때문)
 			Bullet* nextBullet = currentBullet->next;
 			bool isBulletDestroyed = false;
@@ -219,7 +220,7 @@ inline void PlayerBulletControll() {
 			// collision(playerbullet - enemy) : playerbullet remove, enemy hp 감소(die)
 			for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
 				if ((*enemy).isCollision(currentBullet->pos.X, currentBullet->pos.Y)) {
-					playerBulletList.Remove(currentBullet);
+					p_bulletList.Remove(currentBullet);
 					isBulletDestroyed = true;
 					enemy->Hit(player.attackDamege);
 
@@ -238,7 +239,7 @@ inline void PlayerBulletControll() {
 			if (!isBulletDestroyed) {
 				for (auto s_enemy = s_enemyList.begin(); s_enemy != s_enemyList.end(); ) {
 					if ((*s_enemy).isCollision(currentBullet->pos.X, currentBullet->pos.Y)) {
-						playerBulletList.Remove(currentBullet);
+						p_bulletList.Remove(currentBullet);
 						isBulletDestroyed = true;
 						s_enemy->Hit(player.attackDamege);
 
@@ -256,7 +257,7 @@ inline void PlayerBulletControll() {
 
 			// 상단을 넘었을 경우 remove
 			if(currentBullet->isGoal) 
-				playerBulletList.Remove(currentBullet);
+				p_bulletList.Remove(currentBullet);
 
 			currentBullet = nextBullet;
 		}
@@ -319,7 +320,7 @@ inline void EnemyMoving() {
 inline void EnemyShooting() {
 	if (s_enemyShootTimer >= s_enemyShootCycle) {
 		for (auto s_enemy = s_enemyList.begin(); s_enemy != s_enemyList.end(); s_enemy++) 
-			enemyBulletList.Insert(new EnemyBullet((*s_enemy).pos.X, (*s_enemy).pos.Y+1));
+			e_bulletList.Insert(new EnemyBullet((*s_enemy).pos.X, (*s_enemy).pos.Y+1));
 
 		s_enemyShootTimer = 0.0f;
 	}
@@ -328,7 +329,7 @@ inline void EnemyShooting() {
 // Enemy Bullet move & collision
 inline void EnemyBulletControll() {
 	if (s_enemyBulletMoveTimer >= s_enemyBulletMoveCycle) {
-		for (Bullet* currentBullet = enemyBulletList.head; currentBullet != nullptr; ) {
+		for (Bullet* currentBullet = e_bulletList.head; currentBullet != nullptr; ) {
 			// nextBullet 미리 저장 (why? : bullet이 remove됐을때 currentBullet->next에 접근할 수 없기 때문)
 			Bullet* nextBullet = currentBullet->next;
 
@@ -337,7 +338,7 @@ inline void EnemyBulletControll() {
 
 			// collision(enemy bullet - player) : enemy bullet remove, player hp 감소
 			if (player.isCollision(currentBullet->GetPos().X, currentBullet->GetPos().Y)) {
-				enemyBulletList.Remove(currentBullet);
+				e_bulletList.Remove(currentBullet);
 				player.Hit(s_enemyList.front().attackDamege);
 				UpdatePlayerHpUi(&player);
 				OutputDebugStringA("player : 공격 당함! (s_enemy bullet)\n");		// debug
@@ -345,7 +346,7 @@ inline void EnemyBulletControll() {
 
 			// 하단을 넘었을 경우 remove
 			if (currentBullet->isGoal) 
-				enemyBulletList.Remove(currentBullet);
+				e_bulletList.Remove(currentBullet);
 
 			currentBullet = nextBullet;
 		}
@@ -357,8 +358,7 @@ inline void EnemyBulletControll() {
 // HpPosion creating
 void HpPosionCreating() {
 	if (hpPosionCreateTimer >= hpPosionCreateCycle) {
-
-
+		hpPosionList.Insert(new HpPosion(rand() % 58 + 1, 0));
 		hpPosionCreateTimer = 0.0f;
 	}
 }
@@ -366,8 +366,8 @@ void HpPosionCreating() {
 // HpPosion move
 void HpPosionMoving() {
 	if (hpPosionMoveTimer >= hpPosionMoveCycle) {
-
-
+		for (Item* currentItem = hpPosionList.head; currentItem != nullptr; currentItem = currentItem->next)
+			currentItem->Move();
 		hpPosionMoveTimer = 0.0f;
 	}
 }
@@ -395,6 +395,9 @@ namespace Play {
 			EnemyMoving();
 			EnemyShooting();
 			EnemyBulletControll();	
+
+			HpPosionCreating();
+			HpPosionMoving();
 		}
 		else {
 			// debug
@@ -404,8 +407,8 @@ namespace Play {
 			OutputDebugStringA(cstr);
 
 			// list data clear
-			playerBulletList.Clear();
-			enemyBulletList.Clear();
+			p_bulletList.Clear();
+			e_bulletList.Clear();
 			enemyList.clear();
 			s_enemyList.clear();
 
@@ -430,7 +433,7 @@ namespace Play {
 			ConsoleRenderer::ScreenDrawChar(player.pos.X, player.pos.Y, player.body, FG_RED);
 
 		// player bullet
-		for (Bullet* current = playerBulletList.head; current != NULL; current = current->next) {
+		for (Bullet* current = p_bulletList.head; current != NULL; current = current->next) {
 			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_YELLOW);
 		}
 
@@ -445,9 +448,13 @@ namespace Play {
 		}
 
 		// s_enemy bullet
-		for (Bullet* current = enemyBulletList.head; current != NULL; current = current->next) {
+		for (Bullet* current = e_bulletList.head; current != nullptr; current = current->next) {
 			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_GREEN);
 		}
+		
+		// hp posion
+		for (Item* current = hpPosionList.head; current != nullptr; current = current->next)
+			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_YELLOW);
 
 		// UI
 		ConsoleRenderer::ScreenDrawStringW(10, 55, ui_playerHp, FG_RED);
