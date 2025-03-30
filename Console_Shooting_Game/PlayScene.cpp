@@ -82,7 +82,16 @@ L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
 
 // game & level data
+int currentLevel = 0;
 float gamePlayTimer = 0.0f;
+
+float levelChangeTiming[3] = {0, 10, 20};
+float enemySpawnCycle[3] = { 6.5f, 5.0f, 3.0f };
+float enemyMoveCycle[3] = { 1.2f, 1.0f, 0.7f };
+float s_enemySpawnCycle[3] = { 10.0f, 6.0f, 4.0f };
+float s_enemyMoveCycle[3] = { 1.5f, 0.8f, 0.5f };
+float s_enemyShootCycle[3] = { 5.0f, 3.0f, 2.0f };
+float s_enemyBulletMoveCycle[3] = { 0.3f, 0.1f, 0.05f };
 
 // player data
 Player player;
@@ -98,24 +107,18 @@ float bulletMoveTimer = 0.0f;
 
 // enemy data
 std::vector<Enemy> enemyList;
-float enemySpawnCycle = 2.5f;
 float enemySpawnTimer = 0.0f;
-float enemyMoveCycle = 0.8f;
 float enemyMoveTimer = 0.0f;
 
 // shooting enemy data
 std::vector<ShootingEnemy> s_enemyList;
-float s_nemeyCreatStartTime = 10.0f;
-float s_enemySpawnCycle = 4.0f;
+float s_nemeyCreatStartTime = 20.0f;
 float s_enemySpawnTimer = 0.0f;
-float s_enemyMoveCycle = 0.5f;
 float s_enemyMoveTimer = 0.0f;
-float s_enemyShootCycle = 2.0f;
 float s_enemyShootTimer = 0.0f;
 
 // shooting enemy bullet data
 BulletList e_bulletList;
-float s_enemyBulletMoveCycle = 0.05f;
 float s_enemyBulletMoveTimer = 0.0f;
 
 // hpPosion data
@@ -127,8 +130,8 @@ float hpPosionMoveTimer = 0.0f;
 
 // power posion
 ItemList powerPosionList;
-float powerPosionStartTime = 15.0f;
-float powerPosionCreateCycle = 10.0f;
+float powerPosionStartTime = 20.0f;
+float powerPosionCreateCycle = 15.0f;
 float powerPosionCreateTimer = 0.0f;
 float powerPosionMoveCycle = 0.2f;
 float powerPosionMoveTimer = 0.0f;
@@ -136,6 +139,7 @@ float powerPosionMoveTimer = 0.0f;
 
 /* ---------------------- Funtions -------------------------*/
 /* 충돌 체크는 cycle이 더 짧은 쪽에서 검사하여 놓치지 않도록 한다. */
+
 // Timer Initialization
 inline void InitializationTimer() {
 	gamePlayTimer  = 0.0f;
@@ -173,6 +177,14 @@ inline void UpdateTimer() {
 	hpPosionMoveTimer += Time::GetDeltaTime();
 	powerPosionCreateTimer += Time::GetDeltaTime();
 	powerPosionMoveTimer += Time::GetDeltaTime();
+}
+
+// Level Managing
+inline void LevelManaging() {
+	if (gamePlayTimer >= levelChangeTiming[2])
+		currentLevel = 2;
+	else if (gamePlayTimer >= levelChangeTiming[1])
+		currentLevel = 1;
 }
 
 // Player move & collision
@@ -309,13 +321,13 @@ inline void PlayerBulletControll() {
 // Enemy spawn
 inline void EnemySpawn() {
 	// 일반
-	if (enemySpawnTimer >= enemySpawnCycle) {
+	if (enemySpawnTimer >= enemySpawnCycle[currentLevel]) {
 		enemyList.push_back(Enemy(rand() % 58 + 1, 0));
 		enemySpawnTimer = 0.0f;
 	}
 
 	// 공격
-	if (gamePlayTimer >= s_nemeyCreatStartTime && s_enemySpawnTimer >= s_enemySpawnCycle) {
+	if (gamePlayTimer >= s_nemeyCreatStartTime && s_enemySpawnTimer >= s_enemySpawnCycle[currentLevel]) {
 		s_enemyList.push_back(ShootingEnemy(rand() % 58 + 1, 0));
 		s_enemySpawnTimer = 0.0f;
 	}
@@ -324,7 +336,7 @@ inline void EnemySpawn() {
 // Enemy move
 inline void EnemyMoving() {
 	// 일반
-	if (enemyMoveTimer >= enemyMoveCycle) {
+	if (enemyMoveTimer >= enemyMoveCycle[currentLevel]) {
 		for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
 			enemy->Move();
 
@@ -340,7 +352,7 @@ inline void EnemyMoving() {
 	}
 
 	// 공격
-	if (s_enemyMoveTimer >= s_enemyMoveCycle) {
+	if (s_enemyMoveTimer >= s_enemyMoveCycle[currentLevel]) {
 		for (auto s_enemy = s_enemyList.begin(); s_enemy != s_enemyList.end(); ) {
 			s_enemy->Move();
 
@@ -358,7 +370,7 @@ inline void EnemyMoving() {
 
 // Enemy shoot
 inline void EnemyShooting() {
-	if (s_enemyShootTimer >= s_enemyShootCycle) {
+	if (s_enemyShootTimer >= s_enemyShootCycle[currentLevel]) {
 		for (auto s_enemy = s_enemyList.begin(); s_enemy != s_enemyList.end(); s_enemy++) 
 			e_bulletList.Insert(new EnemyBullet((*s_enemy).pos.X, (*s_enemy).pos.Y+1));
 
@@ -368,7 +380,7 @@ inline void EnemyShooting() {
  
 // Enemy Bullet move & collision
 inline void EnemyBulletControll() {
-	if (s_enemyBulletMoveTimer >= s_enemyBulletMoveCycle) {
+	if (s_enemyBulletMoveTimer >= s_enemyBulletMoveCycle[currentLevel]) {
 		for (Bullet* currentBullet = e_bulletList.head; currentBullet != nullptr; ) {
 			Bullet* nextBullet = currentBullet->next;
 
@@ -395,7 +407,7 @@ inline void EnemyBulletControll() {
 }
 
 // Hp Posion creating
-void HpPosionCreating() {
+inline void HpPosionCreating() {
 	if (hpPosionCreateTimer >= hpPosionCreateCycle) {
 		hpPosionList.Insert(new HpPosion(rand() % 58 + 1, 0));
 		hpPosionCreateTimer = 0.0f;
@@ -403,7 +415,7 @@ void HpPosionCreating() {
 }
 
 // Hp Posion move
-void HpPosionMoving() {
+inline void HpPosionMoving() {
 	if (hpPosionMoveTimer >= hpPosionMoveCycle) {
 		for (Item* currentItem = hpPosionList.head; currentItem != nullptr; ) {
 			Item* nextItem = currentItem->next;
@@ -421,7 +433,7 @@ void HpPosionMoving() {
 }
 
 // Power Posion creating
-void PowerPosionCreating() {
+inline void PowerPosionCreating() {
 	if (gamePlayTimer >= powerPosionStartTime && powerPosionCreateTimer >= powerPosionCreateCycle) {
 		powerPosionList.Insert(new PowerPosion(rand() % 58 + 1, 0));
 		powerPosionCreateTimer = 0.0f;
@@ -429,7 +441,7 @@ void PowerPosionCreating() {
 }
 
 // Power Posion move
-void PowerPosionMoving() {
+inline void PowerPosionMoving() {
 	if (powerPosionMoveTimer >= powerPosionMoveCycle) {
 		for (Item* currentItem = powerPosionList.head; currentItem != nullptr; ) {
 			Item* nextItem = currentItem->next;
@@ -451,6 +463,8 @@ void PowerPosionMoving() {
 namespace Play {
 	// Start
 	void Initalize() {
+		currentLevel = 0;
+
 		Time::Initialize();
 		InitializationTimer();
 		player.Initialization();
@@ -462,6 +476,7 @@ namespace Play {
 	void Update() {
 		if (!player.isDie) {
 			UpdateTimer();
+			LevelManaging();
 
 			PlayerMoving();
 			PlayerShooting();
