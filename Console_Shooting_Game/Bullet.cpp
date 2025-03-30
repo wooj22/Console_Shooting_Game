@@ -1,5 +1,19 @@
 #include "Bullet.h"
 
+// Player Bullet Move
+void PlayerBullet::Move() {
+    this->pos.Y--;
+    if (this->pos.Y >= 59)
+        isGoal = true;
+}
+
+// Enemy Bullet Move
+void EnemyBullet::Move() {
+    this->pos.Y++;
+    if (this->pos.Y >= 59)
+        isGoal = true;
+}
+
 // ¼Ò¸êÀÚ
 BulletList::~BulletList() {
     Clear();

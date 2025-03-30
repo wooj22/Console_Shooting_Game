@@ -10,9 +10,10 @@ class Bullet {
 public:
     COORD pos;
     char body;
+    bool isGoal;
     Bullet* next;
 
-    Bullet(SHORT x, SHORT y, char symbol) : pos({ x, y }), body(symbol), next(nullptr) {}
+    Bullet(SHORT x, SHORT y, char symbol) : pos({ x, y }), body(symbol), isGoal(false), next(nullptr) {}
     void SetPos(int x, int y) { pos.X = x; pos.Y = y; }
      COORD GetPos() { return pos; }
 };
@@ -20,11 +21,13 @@ public:
 class PlayerBullet : public Bullet {
 public:
     PlayerBullet(SHORT x, SHORT y) : Bullet(x, y, '^') {}
+    void Move();
 };
 
 class EnemyBullet : public Bullet {
 public:
     EnemyBullet(SHORT x, SHORT y) : Bullet(x, y, '*') {}
+    void Move();
 };
 
 /*---------- Bullet Single Linked List --------*/

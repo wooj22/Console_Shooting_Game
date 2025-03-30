@@ -34,6 +34,9 @@
     <Filter Include="Player">
       <UniqueIdentifier>{27094330-ef01-4a58-a78e-a7726548dafd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Item">
+      <UniqueIdentifier>{d9e12e39-34b4-4157-b8f1-50d051f40f3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConsoleRenderer.cpp">
@@ -72,6 +75,9 @@
     <ClCompile Include="SoundManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleRenderer.h">
@@ -109,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="SoundManager.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

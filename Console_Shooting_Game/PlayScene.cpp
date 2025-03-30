@@ -103,7 +103,7 @@ float enemyMoveCycle = 0.8f;
 float enemyMoveTimer = 0.0f;
 
 // shooting enemy data
-std::vector<ShootingEnemy> shootingEnemyList;
+std::vector<ShootingEnemy> s_enemyList;
 float s_nemeyCreatStartTime = 20.0f;
 float s_enemySpawnCycle = 4.0f;
 float s_enemySpawnTimer = 0.0f;
@@ -117,8 +117,11 @@ BulletList enemyBulletList;
 float s_enemyBulletMoveCycle = 0.05f;
 float s_enemyBulletMoveTimer = 0.0f;
 
+// item
 
-/* --------------------- Funtions ------------------------*/
+
+/* ---------------------- Funtions -------------------------*/
+/* 충돌 체크는 cycle이 더 짧은 쪽에서 검사하여 놓치지 않도록 한다. */
 // Timer Initialization
 inline void InitializationTimer() {
 	gamePlayTimer  = 0.0f;
@@ -168,16 +171,19 @@ inline void PlayerMoving() {
 		}
 
 		// collision(player - s_enemy) : player hp 감소(die), s_enemy destroy
-		for (auto s_enemy = shootingEnemyList.begin(); s_enemy != shootingEnemyList.end(); ) {
+		for (auto s_enemy = s_enemyList.begin(); s_enemy != s_enemyList.end(); ) {
 			if (s_enemy->isCollision(player.pos.X, player.pos.Y)) {
 				player.Hit(s_enemy->attackDamege);
-				s_enemy = shootingEnemyList.erase(s_enemy);
+				s_enemy = s_enemyList.erase(s_enemy);
 				UpdatePlayerHpUi(&player);
 				OutputDebugStringA("player : 공격 당함!  (s_enemy collision)\n");		// debug
 			}
 			else
 				s_enemy++;
 		}
+
+		// collision(player - item)
+
 
 		playerMoveTimer = 0.0f;
 	}
@@ -199,7 +205,7 @@ inline void PlayerBulletControll() {
 			// nextBullet 미리 저장 (why? : bullet이 remove됐을때 currentBullet->next에 접근할 수 없기 때문)
 			Bullet* nextBullet = currentBullet->next;
 			bool isBulletDestroyed = false;
-			currentBullet->SetPos(currentBullet->GetPos().X, currentBullet->GetPos().Y - 1);
+			((PlayerBullet*)currentBullet)->Move();
 			
 			// collision(playerbullet - enemy) : playerbullet destroy, enemy hp 감소(die)
 			for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
@@ -221,14 +227,14 @@ inline void PlayerBulletControll() {
 
 			// collision(playerbullet - s_enemy) : playerbullet destroy, s_enemy hp 감소(die)
 			if (!isBulletDestroyed) {
-				for (auto s_enemy = shootingEnemyList.begin(); s_enemy != shootingEnemyList.end(); ) {
+				for (auto s_enemy = s_enemyList.begin(); s_enemy != s_enemyList.end(); ) {
 					if ((*s_enemy).isCollision(currentBullet->pos.X, currentBullet->pos.Y)) {
 						playerBulletList.Remove(currentBullet);
 						isBulletDestroyed = true;
 						s_enemy->Hit(player.attackDamege);
 
 						if (s_enemy->isDie) {
-							s_enemy = shootingEnemyList.erase(s_enemy);
+							s_enemy = s_enemyList.erase(s_enemy);
 							UpdatePlayerHpUi(&player);
 							OutputDebugStringA("player : 공격 몬스터 죽임\n");
 						}
@@ -256,7 +262,7 @@ inline void EnemySpawn() {
 
 	// 공격
 	if (gamePlayTimer >= s_nemeyCreatStartTime && s_enemySpawnTimer >= s_enemySpawnCycle) {
-		shootingEnemyList.push_back(ShootingEnemy(rand() % 58 + 1, 0));
+		s_enemyList.push_back(ShootingEnemy(rand() % 58 + 1, 0));
 		s_enemySpawnTimer = 0.0f;
 	}
 }
@@ -265,17 +271,23 @@ inline void EnemySpawn() {
 inline void EnemyMoving() {
 	// 일반
 	if (enemyMoveTimer >= enemyMoveCycle) {
-		for (auto enemy = enemyList.begin(); enemy != enemyList.end(); enemy++)
+		for (auto enemy = enemyList.begin(); enemy != enemyList.end(); enemy++) {
 			enemy->Move();
+			if ((*enemy).isDie)
+				enemyList.erase(enemy);
+		}
 
 		enemyMoveTimer = 0.0f;
 	}
 
 	// 공격
 	if (s_enemyMoveTimer >= s_enemyMoveCycle) {
-		for (auto s_enemy = shootingEnemyList.begin(); s_enemy != shootingEnemyList.end(); s_enemy++)
+		for (auto s_enemy = s_enemyList.begin(); s_enemy != s_enemyList.end(); s_enemy++) {
 			s_enemy->Move();
-
+			if ((*s_enemy).isDie)
+				s_enemyList.erase(s_enemy);
+		}
+			
 		s_enemyMoveTimer = 0.0f;
 	}
 }
@@ -283,7 +295,7 @@ inline void EnemyMoving() {
 // Enemy shoot
 inline void EnemyShooting() {
 	if (s_enemyShootTimer >= s_enemyShootCycle) {
-		for (auto s_enemy = shootingEnemyList.begin(); s_enemy != shootingEnemyList.end(); s_enemy++) 
+		for (auto s_enemy = s_enemyList.begin(); s_enemy != s_enemyList.end(); s_enemy++) 
 			enemyBulletList.Insert(new EnemyBullet((*s_enemy).pos.X, (*s_enemy).pos.Y+1));
 
 		s_enemyShootTimer = 0.0f;
@@ -295,11 +307,11 @@ inline void EnemyBulletControll() {
 	if (s_enemyBulletMoveTimer >= s_enemyBulletMoveCycle) {
 		for (Bullet* currentBullet = enemyBulletList.head; currentBullet != NULL; currentBullet = currentBullet->next) {
 			// move
-			currentBullet->SetPos(currentBullet->GetPos().X, currentBullet->GetPos().Y + 1);
+			((EnemyBullet*)currentBullet)->Move();
 
 			// collision
 			if (player.isCollision(currentBullet->GetPos().X, currentBullet->GetPos().Y)) {
-				player.Hit(shootingEnemyList.front().attackDamege);
+				player.Hit(s_enemyList.front().attackDamege);
 				UpdatePlayerHpUi(&player);
 				OutputDebugStringA("player : 공격 당함! (s_enemy bullet)\n");		// debug
 			}
@@ -343,7 +355,7 @@ namespace Play {
 			playerBulletList.Clear();
 			enemyBulletList.Clear();
 			enemyList.clear();
-			shootingEnemyList.clear();
+			s_enemyList.clear();
 
 			Game::g_SceneCurrent = Game::END_SCENE;
 			End::Initalize();
@@ -375,7 +387,7 @@ namespace Play {
 		}
 
 		// s_enemy
-		for (auto& s_enemy : shootingEnemyList) {
+		for (auto& s_enemy : s_enemyList) {
 			ConsoleRenderer::ScreenDrawChar(s_enemy.pos.X, s_enemy.pos.Y, s_enemy.body, FG_GREEN);
 		}
 
