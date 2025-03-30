@@ -88,7 +88,7 @@ float gamePlayTimer = 0.0f;
 Player player;
 float playerMoveCycle = 0.1f;
 float playerMoveTimer = 0.0f;
-float playerShootCycle = 0.2f;
+//float playerShootCycle = 0.2f; -> player 멤버로 변경
 float playerShootTimer = 0.0f;
 
 // player bullet data
@@ -120,14 +120,15 @@ float s_enemyBulletMoveTimer = 0.0f;
 
 // hpPosion data
 ItemList hpPosionList;
-float hpPosionCreateCycle = 15.0f;
+float hpPosionCreateCycle = 30.0f;
 float hpPosionCreateTimer = 0.0f;
 float hpPosionMoveCycle = 0.7f;
 float hpPosionMoveTimer = 0.0f;
 
 // power posion
 ItemList powerPosionList;
-float powerPosionCreateCycle = 5.0f;
+float powerPosionStartTime = 15.0f;
+float powerPosionCreateCycle = 10.0f;
 float powerPosionCreateTimer = 0.0f;
 float powerPosionMoveCycle = 0.2f;
 float powerPosionMoveTimer = 0.0f;
@@ -233,13 +234,14 @@ inline void PlayerMoving() {
 
 // Player shoot
 inline void PlayerShooting() {
-	if (playerShootTimer >= playerShootCycle && Input::IsKeyDown(VK_SPACE)) {
-		if(player.attackDamege < 30)
+	if (playerShootTimer >= player.shootCycle && Input::IsKeyDown(VK_SPACE)) {
+		if(player.attackDamege <= 30)
 			p_bulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1));
-		else if (player.attackDamege < 70)
+		else if (player.attackDamege <= 80)
 			p_bulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1, '!'));
 		else
 			p_bulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1, '$'));
+
 		playerShootTimer = 0.0f;
 	}
 }
@@ -420,7 +422,7 @@ void HpPosionMoving() {
 
 // Power Posion creating
 void PowerPosionCreating() {
-	if (powerPosionCreateTimer >= powerPosionCreateCycle) {
+	if (gamePlayTimer >= powerPosionStartTime && powerPosionCreateTimer >= powerPosionCreateCycle) {
 		powerPosionList.Insert(new PowerPosion(rand() % 58 + 1, 0));
 		powerPosionCreateTimer = 0.0f;
 	}
@@ -484,11 +486,12 @@ namespace Play {
 			OutputDebugStringA(cstr);
 
 			// list data clear
-			p_bulletList.Clear();
-			e_bulletList.Clear();
 			enemyList.clear();
 			s_enemyList.clear();
+			p_bulletList.Clear();
+			e_bulletList.Clear();
 			hpPosionList.Clear();
+			powerPosionList.Clear();
 
 			// scene change
 			Game::g_SceneCurrent = Game::END_SCENE;

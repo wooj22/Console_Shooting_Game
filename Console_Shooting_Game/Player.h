@@ -11,10 +11,11 @@ public:
 	char body;
 	int hp;
 	int attackDamege;
+	float shootCycle;
 	bool isHit;
 	bool isDie ;
 	Player(SHORT x = 30, SHORT y = 53) : pos({ x, y }), body('A'),
-		hp(100), attackDamege(10), isDie(false), isHit(false) {};
+		hp(100), attackDamege(10), shootCycle(0.2f), isDie(false), isHit(false) {};
 	void Initialization();
 	void Move(const wchar_t** playMap);
 	bool isCollision(SHORT x, SHORT y);

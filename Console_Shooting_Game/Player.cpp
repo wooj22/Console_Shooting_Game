@@ -9,6 +9,7 @@ void Player::Initialization() {
 	pos.Y = 53;
 	hp = 100;
 	attackDamege = 10;
+	shootCycle = 0.2f;
 	isDie = false;
 	isHit = false;
 }
@@ -89,8 +90,11 @@ void Player::Recover() {
 	}
 }
 
-/// 공격력 증가
+/// 공격력, 공속 증가
 void Player::PowerUp() {
 	attackDamege += 10;
 	if (attackDamege >= 100) attackDamege = 100;
+
+	shootCycle -= 0.02f;
+	if (shootCycle <= 0.01f) shootCycle = 0.01f;
 }
