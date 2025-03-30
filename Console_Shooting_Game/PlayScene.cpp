@@ -75,7 +75,7 @@ L"▓                                                          ▓",
 L"▓                                                          ▓",
 L"▓  HP                                                      ▓",
 L"▓  Power                                                   ▓",
-L"▓                                                          ▓",
+L"▓  Speed                                                   ▓",
 L"▓                                                          ▓",
 L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓"
 };
@@ -95,7 +95,7 @@ float s_enemyBulletMoveCycle[3] = { 0.3f, 0.1f, 0.05f };
 
 // player data
 Player player;
-float playerMoveCycle = 0.1f;
+float playerMoveCycle = 0.1f;	// player 멤버로 변경하고 ui 표시도 해봅시다
 float playerMoveTimer = 0.0f;
 //float playerShootCycle = 0.2f; -> player 멤버로 변경
 float playerShootTimer = 0.0f;
@@ -157,7 +157,6 @@ inline void InitializationTimer() {
 	powerPosionCreateTimer = 0.0f;
 	powerPosionMoveTimer = 0.0f;
 }
-
 
 // Timer += deltaTime
 inline void UpdateTimer() {
@@ -470,6 +469,7 @@ namespace Play {
 		player.Initialization();
 		UpdatePlayerHpUi(&player);
 		UpdatePlayerPowerUi(&player);
+		UpdatePlayerSpeedUi(&player);
 	}
 
 	// Update
@@ -559,5 +559,6 @@ namespace Play {
 		// UI
 		ConsoleRenderer::ScreenDrawStringW(10, 55, ui_playerHp, FG_RED);
 		ConsoleRenderer::ScreenDrawStringW(10, 56, ui_playerPower, FG_GREEN);
+		ConsoleRenderer::ScreenDrawStringW(10, 57, ui_playerSpeed, FG_SKY);
 	}
 }

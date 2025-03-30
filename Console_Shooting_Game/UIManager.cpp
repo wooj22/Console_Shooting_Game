@@ -2,6 +2,7 @@
 
 const wchar_t* ui_playerHp = { L"⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" }; 
 const wchar_t* ui_playerPower = { L"⬛" };
+const wchar_t* ui_playerSpeed = { L"⬛" };
 
 void UpdatePlayerHpUi(Player* player) {
 	int hpBox = player->hp / 10;
@@ -80,6 +81,46 @@ void UpdatePlayerPowerUi(Player* player) {
 		break;
 	case 10:
 		ui_playerPower = { L"⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" };
+		break;
+	default:
+		break;
+	}
+}
+
+void UpdatePlayerSpeedUi(Player* player) {
+	int speedBox = player->attackDamege / 10;
+
+	switch (speedBox)
+	{
+	case 1:
+		ui_playerSpeed = { L"⬛" };
+		break;
+	case 2:
+		ui_playerSpeed = { L"⬛⬛" };
+		break;
+	case 3:
+		ui_playerSpeed = { L"⬛⬛⬛" };
+		break;
+	case 4:
+		ui_playerSpeed = { L"⬛⬛⬛⬛" };
+		break;
+	case 5:
+		ui_playerSpeed = { L"⬛⬛⬛⬛⬛" };
+		break;
+	case 6:
+		ui_playerSpeed = { L"⬛⬛⬛⬛⬛⬛" };
+		break;
+	case 7:
+		ui_playerSpeed = { L"⬛⬛⬛⬛⬛⬛⬛" };
+		break;
+	case 8:
+		ui_playerSpeed = { L"⬛⬛⬛⬛⬛⬛⬛⬛" };
+		break;
+	case 9:
+		ui_playerSpeed = { L"⬛⬛⬛⬛⬛⬛⬛⬛⬛" };
+		break;
+	case 10:
+		ui_playerSpeed = { L"⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" };
 		break;
 	default:
 		break;
