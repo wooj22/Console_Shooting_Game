@@ -3,7 +3,7 @@
 // Player Bullet Move
 void PlayerBullet::Move() {
     this->pos.Y--;
-    if (this->pos.Y >= 59)
+    if (this->pos.Y <= 0)
         isGoal = true;
 }
 

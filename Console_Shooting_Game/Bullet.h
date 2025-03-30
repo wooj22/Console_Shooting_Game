@@ -3,7 +3,7 @@
 
 /// PlayerBullet, EnemyBullet을 모두 담기 위해 (Base)Bullet Class를 만들고
 /// (Base)Bullet 형식의 리스트에 업캐스팅 해서 추가한다.
-/// 리스트 안에 Bullet을 다운캐스팅해서 PlayerBullet, EnemyBullet의 멤버에 접근한다.
+/// 리스트 안의 Bullet을 다운캐스팅해서 PlayerBullet, EnemyBullet의 멤버에 접근한다.
 
 /*----------Bullet (Node) Data--------*/
 class Bullet {
