@@ -22,4 +22,5 @@ public:
 	void WallHit();
 	void HitTimer();
 	void Recover();
+	void PowerUp();
 };

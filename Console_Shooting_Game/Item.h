@@ -21,13 +21,11 @@ public:
 
 class HpPosion : public Item{
 public:
-	int hpUp = 10;
 	HpPosion(SHORT x, SHORT y, char body = 'H') : Item(x, y, body) {};
 };
 
 class PowerUpPosion : public Item {
 public:
-	int powerUp = 5;
 	PowerUpPosion(SHORT x, SHORT y, char body = 'P') : Item(x, y, body) {};
 };
 
