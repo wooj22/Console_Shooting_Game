@@ -194,41 +194,52 @@ inline void PlayerShooting() {
 // Player Bullet move & collision
 inline void PlayerBulletControll() {
 	if (bulletMoveTimer >= bulletMoveCycle) {
-		for (Bullet* currentBullet = playerBulletList.head; currentBullet != NULL; currentBullet = currentBullet->next) {
+		// move
+		for (Bullet* currentBullet = playerBulletList.head; currentBullet != nullptr; ) {
+			// nextBullet 미리 저장 (why? : bullet이 remove됐을때 currentBullet->next에 접근할 수 없기 때문)
+			Bullet* nextBullet = currentBullet->next;
+			bool isBulletDestroyed = false;
 			currentBullet->SetPos(currentBullet->GetPos().X, currentBullet->GetPos().Y - 1);
-
+			
 			// collision(playerbullet - enemy) : playerbullet destroy, enemy hp 감소(die)
 			for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
-				if ((*enemy).isCollision((*currentBullet).pos.X, (*currentBullet).pos.Y)) {
-					//playerBulletList.Remove(currentBullet);	 // TODO :: BulletList Remove() 수정
+				if ((*enemy).isCollision(currentBullet->pos.X, currentBullet->pos.Y)) {
+					playerBulletList.Remove(currentBullet);
+					isBulletDestroyed = true;
 					enemy->Hit(player.attackDamege);
-					
+
 					if (enemy->isDie) {
 						enemy = enemyList.erase(enemy);
 						UpdatePlayerHpUi(&player);
-						OutputDebugStringA("player : 일반 몬스터 죽임\n");		// debug
-					}	
-					else enemy++;
+						OutputDebugStringA("player : 일반 몬스터 죽임\n");
+					}
+					else ++enemy;
+					break;
 				}
-				else
-					enemy++;
+				else ++enemy;
 			}
 
 			// collision(playerbullet - s_enemy) : playerbullet destroy, s_enemy hp 감소(die)
-			for (auto s_enemy = shootingEnemyList.begin(); s_enemy != shootingEnemyList.end(); ) {
-				if ((*s_enemy).isCollision((*currentBullet).pos.X, (*currentBullet).pos.Y)) {
-					//playerBulletList.Remove(currentBullet);	 // TODO :: BulletList Remove() 수정
-					s_enemy->Hit(player.attackDamege);
-					if (s_enemy->isDie) {
-						s_enemy = shootingEnemyList.erase(s_enemy);
-						UpdatePlayerHpUi(&player);
-						OutputDebugStringA("player : 공격 몬스터 죽임\n");		// debug
+			if (!isBulletDestroyed) {
+				for (auto s_enemy = shootingEnemyList.begin(); s_enemy != shootingEnemyList.end(); ) {
+					if ((*s_enemy).isCollision(currentBullet->pos.X, currentBullet->pos.Y)) {
+						playerBulletList.Remove(currentBullet);
+						isBulletDestroyed = true;
+						s_enemy->Hit(player.attackDamege);
+
+						if (s_enemy->isDie) {
+							s_enemy = shootingEnemyList.erase(s_enemy);
+							UpdatePlayerHpUi(&player);
+							OutputDebugStringA("player : 공격 몬스터 죽임\n");
+						}
+						else ++s_enemy;
+						break;
 					}
-					else s_enemy++;
+					else ++s_enemy;
 				}
-				else
-					s_enemy++;
 			}
+
+			currentBullet = nextBullet;
 		}
 
 		bulletMoveTimer = 0.0f;

@@ -21,20 +21,25 @@ void BulletList::Insert(Bullet* newBullet) {
 
 // 삭제 : targetBullet을 찾아서 삭제
 void BulletList::Remove(Bullet* targetBullet) {
+    // 리스트가 비었을 경우
     if (!head) return;
 
+    // 삭제할 bullet이 헤드(첫번째 원소)일 경우
     if (head == targetBullet) {
         Bullet* temp = head;
-        head = head->next;
+        if (targetBullet->next)
+            head = head->next;
+        else
+            head = nullptr;
         delete temp;
         return;
     }
 
+    // 삭제할 bullet이 헤드가 아닐 경우
     Bullet* current = head;
     while (current->next && current->next != targetBullet) {
         current = current->next;
     }
-
     if (current->next) {
         Bullet* temp = current->next;
         current->next = current->next->next;
