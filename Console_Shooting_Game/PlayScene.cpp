@@ -256,12 +256,15 @@ inline void EnemyMoving() {
 	if (enemyMoveTimer >= enemyMoveCycle) {
 		for (auto enemy = enemyList.begin(); enemy != enemyList.end(); enemy++)
 			enemy->Move();
+
 		enemyMoveTimer = 0.0f;
 	}
 
+	// 공격
 	if (s_enemyMoveTimer >= s_enemyMoveCycle) {
 		for (auto s_enemy = shootingEnemyList.begin(); s_enemy != shootingEnemyList.end(); s_enemy++)
 			s_enemy->Move();
+
 		s_enemyMoveTimer = 0.0f;
 	}
 }
@@ -271,6 +274,7 @@ inline void EnemyShooting() {
 	if (s_enemyShootTimer >= s_enemyShootCycle) {
 		for (auto s_enemy = shootingEnemyList.begin(); s_enemy != shootingEnemyList.end(); s_enemy++) 
 			enemyBulletList.Insert(new EnemyBullet((*s_enemy).pos.X, (*s_enemy).pos.Y+1));
+
 		s_enemyShootTimer = 0.0f;
 	}
 }
@@ -289,6 +293,7 @@ inline void EnemyBulletControll() {
 				OutputDebugStringA("player : 공격 당함! (s_enemy bullet)\n");		// debug
 			}
 		}
+
 		s_enemyBulletMoveTimer = 0.0f;
 	}
 }
@@ -343,7 +348,10 @@ namespace Play {
 		}
 
 		// player
-		ConsoleRenderer::ScreenDrawChar(player.pos.X, player.pos.Y, player.body, FG_YELLOW);
+		if(!player.isHit)
+			ConsoleRenderer::ScreenDrawChar(player.pos.X, player.pos.Y, player.body, FG_YELLOW);
+		else
+			ConsoleRenderer::ScreenDrawChar(player.pos.X, player.pos.Y, player.body, FG_RED);
 
 		// player bullet
 		for (Bullet* current = playerBulletList.head; current != NULL; current = current->next) {
