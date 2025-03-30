@@ -4,6 +4,8 @@
 void Item::Move()
 {
 	this->pos.Y++;
+    if (this->pos.Y >= 59)
+        isGoal = true;
 }
 
 /// Ãæµ¹

@@ -224,6 +224,7 @@ inline void PlayerBulletControll() {
 			// nextBullet 미리 저장 (why? : bullet이 remove됐을때 currentBullet->next에 접근할 수 없기 때문)
 			Bullet* nextBullet = currentBullet->next;
 			bool isBulletDestroyed = false;
+
 			((PlayerBullet*)currentBullet)->Move();
 			
 			// collision(playerbullet - enemy) : playerbullet remove, enemy hp 감소(die)
@@ -339,7 +340,6 @@ inline void EnemyShooting() {
 inline void EnemyBulletControll() {
 	if (s_enemyBulletMoveTimer >= s_enemyBulletMoveCycle) {
 		for (Bullet* currentBullet = e_bulletList.head; currentBullet != nullptr; ) {
-			// nextBullet 미리 저장 (why? : bullet이 remove됐을때 currentBullet->next에 접근할 수 없기 때문)
 			Bullet* nextBullet = currentBullet->next;
 
 			// move
@@ -375,8 +375,17 @@ void HpPosionCreating() {
 // HpPosion move
 void HpPosionMoving() {
 	if (hpPosionMoveTimer >= hpPosionMoveCycle) {
-		for (Item* currentItem = hpPosionList.head; currentItem != nullptr; currentItem = currentItem->next)
+		for (Item* currentItem = hpPosionList.head; currentItem != nullptr; ) {
+			Item* nextItem = currentItem->next;
 			currentItem->Move();
+
+			// 하단을 넘었을 경우 remove
+			if (currentItem->isGoal)
+				hpPosionList.Remove(currentItem);
+
+			currentItem = nextItem;
+		}
+			
 		hpPosionMoveTimer = 0.0f;
 	}
 }
@@ -420,6 +429,7 @@ namespace Play {
 			e_bulletList.Clear();
 			enemyList.clear();
 			s_enemyList.clear();
+			hpPosionList.Clear();
 
 			// scene change
 			Game::g_SceneCurrent = Game::END_SCENE;
