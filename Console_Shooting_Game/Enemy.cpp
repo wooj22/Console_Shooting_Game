@@ -8,7 +8,7 @@ void Enemy::Move()
 {
 	this->pos.Y++;
 	if (this->pos.Y >= 59)
-		isDie = true;
+		isGoal = true;
 }
 
 /// 피격

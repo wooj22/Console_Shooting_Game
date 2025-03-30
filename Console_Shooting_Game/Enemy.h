@@ -6,10 +6,11 @@ public:
 	char body;
 	int hp;
 	int attackDamege;
+	bool isGoal;
 	bool isDie;
 	
 	Enemy(SHORT x, SHORT y, char body = 'o', int hp = 10, int attackDamege = 10) :
-		pos({ x, y }), body(body), hp(hp), attackDamege(attackDamege), isDie(false) {};
+		pos({ x, y }), body(body), hp(hp), attackDamege(attackDamege), isGoal(false), isDie(false) {};
 	void Move();
 	void Hit(int damage);
 	bool isCollision(SHORT x, SHORT y);

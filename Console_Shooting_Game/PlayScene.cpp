@@ -275,10 +275,11 @@ inline void EnemySpawn() {
 inline void EnemyMoving() {
 	// 일반
 	if (enemyMoveTimer >= enemyMoveCycle) {
-		for (auto enemy = enemyList.begin(); enemy != enemyList.end(); enemy++) {
+		for (auto enemy = enemyList.begin(); enemy != enemyList.end(); ) {
 			enemy->Move();
-			//if ((*enemy).isDie)
-				//enemyList.erase(enemy);
+
+			if ((*enemy).isGoal) enemy = enemyList.erase(enemy);
+			else enemy++;	
 		}
 
 		enemyMoveTimer = 0.0f;
@@ -286,10 +287,11 @@ inline void EnemyMoving() {
 
 	// 공격
 	if (s_enemyMoveTimer >= s_enemyMoveCycle) {
-		for (auto s_enemy = s_enemyList.begin(); s_enemy != s_enemyList.end(); s_enemy++) {
+		for (auto s_enemy = s_enemyList.begin(); s_enemy != s_enemyList.end(); ) {
 			s_enemy->Move();
-			//if ((*s_enemy).isDie)
-				//s_enemyList.erase(s_enemy);
+
+			if ((*s_enemy).isGoal) s_enemy = s_enemyList.erase(s_enemy);
+			else s_enemy++;	
 		}
 			
 		s_enemyMoveTimer = 0.0f;
@@ -366,11 +368,13 @@ namespace Play {
 			const char* cstr = str.c_str();
 			OutputDebugStringA(cstr);
 
+			// list data clear
 			playerBulletList.Clear();
 			enemyBulletList.Clear();
 			enemyList.clear();
 			s_enemyList.clear();
 
+			// scene change
 			Game::g_SceneCurrent = Game::END_SCENE;
 			End::Initalize();
 		}
