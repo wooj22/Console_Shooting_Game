@@ -192,9 +192,18 @@ inline void PlayerMoving() {
 				s_enemy++;
 		}
 
-		// collision(player - item)
+		// collision(player - item) : player hp 증가, hp posion remove
+		for (Item* currentItem = hpPosionList.head; currentItem != nullptr; ) {
+			Item* nextItem = currentItem->next;
 
-
+			if (currentItem->isCollision(player.pos.X, player.pos.Y)) {
+				player.Recover();
+				hpPosionList.Remove(currentItem);
+				UpdatePlayerHpUi(&player);
+			}
+			currentItem = nextItem;
+		}
+			
 		playerMoveTimer = 0.0f;
 	}
 }

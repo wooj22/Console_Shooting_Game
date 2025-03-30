@@ -80,3 +80,12 @@ void Player::HitTimer() {
 		}
 	}
 }
+
+
+/// 체력 회복
+void Player::Recover() {
+	hp += 10;
+	if (hp >= 100) {
+		hp = 100;
+	}
+}

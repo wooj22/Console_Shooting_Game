@@ -21,4 +21,5 @@ public:
 	void Hit(int damage);
 	void WallHit();
 	void HitTimer();
+	void Recover();
 };
