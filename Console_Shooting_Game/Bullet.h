@@ -13,14 +13,14 @@ public:
     bool isGoal;
     Bullet* next;
 
-    Bullet(SHORT x, SHORT y, char symbol) : pos({ x, y }), body(symbol), isGoal(false), next(nullptr) {}
+    Bullet(SHORT x, SHORT y, char body) : pos({ x, y }), body(body), isGoal(false), next(nullptr) {}
     void SetPos(int x, int y) { pos.X = x; pos.Y = y; }
-     COORD GetPos() { return pos; }
+    COORD GetPos() { return pos; }
 };
 
 class PlayerBullet : public Bullet {
 public:
-    PlayerBullet(SHORT x, SHORT y) : Bullet(x, y, '^') {}
+    PlayerBullet(SHORT x, SHORT y, char body = '^') : Bullet(x, y, body) {}
     void Move();
 };
 

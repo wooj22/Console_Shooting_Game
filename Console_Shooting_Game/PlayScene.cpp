@@ -234,7 +234,12 @@ inline void PlayerMoving() {
 // Player shoot
 inline void PlayerShooting() {
 	if (playerShootTimer >= playerShootCycle && Input::IsKeyDown(VK_SPACE)) {
-		p_bulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1));
+		if(player.attackDamege < 30)
+			p_bulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1));
+		else if (player.attackDamege < 70)
+			p_bulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1, '!'));
+		else
+			p_bulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1, '$'));
 		playerShootTimer = 0.0f;
 	}
 }
