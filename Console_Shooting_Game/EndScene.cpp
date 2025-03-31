@@ -145,6 +145,9 @@ namespace End {
 	void Initalize() {
 		Game::soundManager.StopSound();
 		Game::soundManager.InitSystem();
+
+		if (Game::isGameSuccess) Game::soundManager.PlaySFX_GameSuccess();
+		else Game::soundManager.PlaySFX_GameOver();
 	}
 
 	// Update 
@@ -159,15 +162,12 @@ namespace End {
 	// Render
 	void Render() {
 		if (Game::isGameSuccess) {
-			Game::soundManager.PlaySFX_GameSuccess();
 			for (int i = 0; i < winMapHeight; i++)
 				ConsoleRenderer::ScreenDrawStringW(0, i, win[i], FG_YELLOW);
-		}	
+		}
 		else {
-			Game::soundManager.PlaySFX_GameOver();
 			for (int i = 0; i < overMapHeight; i++)
 				ConsoleRenderer::ScreenDrawStringW(0, i, over[i], FG_GRAY);
 		}
-			
 	}
 }

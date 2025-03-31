@@ -19,37 +19,42 @@ void SoundManager::InitSystem() {
 /// Sound Stop
 void SoundManager::StopSound() {
 	// Á¤¸®
-	sound->release();
+	sfx_sound->release();
+	bgm_sound->release();
 	system->close();
-	sound->release();
 }
 
 /// BGM Play
 void SoundManager::PlayBGM() {
-	system->createSound("BGM_Main.wav", FMOD_DEFAULT, nullptr, &sound);
-	system->playSound(sound, nullptr, false, &channel);
+	system->createSound("BGM_Main.wav", FMOD_DEFAULT, nullptr, &bgm_sound);
+	system->playSound(bgm_sound, nullptr, false, &channel);
 }
 
 /// SFX Play
 void SoundManager::PlaySFX_Shoot() {
-	system->createSound("SFX_Shoot.wav", FMOD_DEFAULT, nullptr, &sound);
-	system->playSound(sound, nullptr, false, &channel);
+	sfx_sound->release();
+	system->createSound("SFX_Shoot.wav", FMOD_DEFAULT, nullptr, &sfx_sound);
+	system->playSound(sfx_sound, nullptr, false, &channel);
 }
 void SoundManager::PlaySFX_Hit() {
-	system->createSound("SFX_Hit.wav", FMOD_DEFAULT, nullptr, &sound);
-	system->playSound(sound, nullptr, false, &channel);
+	sfx_sound->release();
+	system->createSound("SFX_Hit.wav", FMOD_DEFAULT, nullptr, &sfx_sound);
+	system->playSound(sfx_sound, nullptr, false, &channel);
 }
 
 void SoundManager::PlaySFX_ItemPickUp() {
-	system->createSound("SFX_ItemPickUp.wav", FMOD_DEFAULT, nullptr, &sound);
-	system->playSound(sound, nullptr, false, &channel);
+	sfx_sound->release();
+	system->createSound("SFX_ItemPickUp.wav", FMOD_DEFAULT, nullptr, &sfx_sound);
+	system->playSound(sfx_sound, nullptr, false, &channel);
 }
 
 void SoundManager::PlaySFX_GameOver() {
-	system->createSound("SFX_GameOver.wav", FMOD_DEFAULT, nullptr, &sound);
-	system->playSound(sound, nullptr, false, &channel);
+	sfx_sound->release();
+	system->createSound("SFX_GameOver.wav", FMOD_DEFAULT, nullptr, &sfx_sound);
+	system->playSound(sfx_sound, nullptr, false, &channel);
 }
 void SoundManager::PlaySFX_GameSuccess() {
-	system->createSound("SFX_GameSuccess.wav", FMOD_DEFAULT, nullptr, &sound);
-	system->playSound(sound, nullptr, false, &channel);
+	sfx_sound->release();
+	system->createSound("SFX_GameSuccess.wav", FMOD_DEFAULT, nullptr, &sfx_sound);
+	system->playSound(sfx_sound, nullptr, false, &channel);
 }

@@ -97,6 +97,7 @@ namespace Menu {
 
 		if (Input::IsKeyPressed(VK_SPACE)) {
 			if (selectBar_coord.Y == 39) {
+				Game::soundManager.PlaySFX_Shoot();		// ui사운드 추가하기
 				Game::g_SceneCurrent = Game::PLAY_SCENE;
 				Play::Initalize();
 			}

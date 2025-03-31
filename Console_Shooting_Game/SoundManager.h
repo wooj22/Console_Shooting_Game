@@ -10,7 +10,8 @@ public:
 	}
 
 	FMOD::System* system = nullptr;
-	FMOD::Sound* sound = nullptr;
+	FMOD::Sound* bgm_sound = nullptr;
+	FMOD::Sound* sfx_sound = nullptr;
 	FMOD::Channel* channel = nullptr;
 
 	void InitSystem();
