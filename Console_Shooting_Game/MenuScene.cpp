@@ -74,11 +74,11 @@ const int mapHeight = sizeof(menuMap) / sizeof(menuMap[0]);
 const wchar_t* selectBar[] = { L">>" };
 COORD selectBar_coord = { 20,39 };
 
-
 namespace Menu {
+
 	// Start
 	void Initalize() {
-
+		
 	}
 
 	// Update 

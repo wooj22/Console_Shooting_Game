@@ -13,9 +13,12 @@
 #include "Boss.h"
 #include "Item.h"
 #include "UIManager.h"
-
+#include "SoundManager.h"
 
 /* ------------------------- Data ----------------------------*/
+// sound manager
+SoundManager& soundManager = SoundManager::getInstance();
+
 // Map Data
 const wchar_t* playMap[] = {
 
@@ -235,7 +238,8 @@ inline void PlayerMoving() {
 				player.Hit(enemy->attackDamege);
 				enemy = enemyList.erase(enemy);
 				UpdatePlayerHpUi(&player);
-				OutputDebugStringA("player : 공격 당함! (enemy collision)\n");		// debug
+				soundManager.PlaySFX_Hit();
+				OutputDebugStringA("player : 공격 당함! (enemy collision)\n");
 			}
 			else
 				enemy++;
@@ -247,7 +251,8 @@ inline void PlayerMoving() {
 				player.Hit(s_enemy->attackDamege);
 				s_enemy = s_enemyList.erase(s_enemy);
 				UpdatePlayerHpUi(&player);
-				OutputDebugStringA("player : 공격 당함!  (s_enemy collision)\n");		// debug
+				soundManager.PlaySFX_Hit();
+				OutputDebugStringA("player : 공격 당함!  (s_enemy collision)\n");
 			}
 			else
 				s_enemy++;
@@ -261,6 +266,7 @@ inline void PlayerMoving() {
 				player.Recover();
 				hpPosionList.Remove(currentItem);
 				UpdatePlayerHpUi(&player);
+				soundManager.PlaySFX_ItemPickUp();
 			}
 			currentItem = nextItem;
 		}
@@ -273,6 +279,7 @@ inline void PlayerMoving() {
 				player.PowerUp();
 				powerPosionList.Remove(currentItem);
 				UpdatePlayerPowerUi(&player);
+				soundManager.PlaySFX_ItemPickUp();
 			}
 			currentItem = nextItem;
 		}
@@ -285,6 +292,7 @@ inline void PlayerMoving() {
 				player.SpeedUp();
 				speedPosionList.Remove(currentItem);
 				UpdatePlayerSpeedUi(&player);
+				soundManager.PlaySFX_ItemPickUp();
 			}
 			currentItem = nextItem;
 		}
@@ -308,7 +316,7 @@ inline void PlayerShooting() {
 			p_bulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1, '!'));
 		else
 			p_bulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1, '$'));
-
+		soundManager.PlaySFX_Shoot();
 		playerShootTimer = 0.0f;
 	}
 }
@@ -457,6 +465,7 @@ inline void EnemyBulletControll() {
 				e_bulletList.Remove(currentBullet);
 				player.Hit(s_enemyList.front().attackDamege);
 				UpdatePlayerHpUi(&player);
+				soundManager.PlaySFX_Hit();
 				OutputDebugStringA("player : 공격 당함! (s_enemy bullet)\n");		// debug
 			}
 
@@ -594,10 +603,13 @@ namespace Play {
 		Time::Initialize();
 		InitializationTimer();
 		player.Initialization();
-
+		
 		UpdatePlayerHpUi(&player);
 		UpdatePlayerPowerUi(&player);
 		UpdatePlayerSpeedUi(&player);
+
+		soundManager.InitSystem();
+		soundManager.PlayBGM();
 	}
 
 	// Update

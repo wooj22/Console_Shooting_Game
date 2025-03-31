@@ -16,13 +16,14 @@ namespace Game {
 	void Initalize() {
 		Menu::Initalize();
 		isGameSuccess = false;
+		
 	}
 
 	// Update : SceneCurrent에 따라 Update()호출
 	void Update() {
 		// key input
 		Input::Update();
-
+		
 		// update
 		switch (Game::g_SceneCurrent)
 		{
