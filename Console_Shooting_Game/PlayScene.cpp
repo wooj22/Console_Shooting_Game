@@ -355,6 +355,14 @@ inline void PlayerBulletControll() {
 				}
 			}
 
+			// collision(playerbullet - boss) : playerbullet remove, boss hp 감소(die)
+			if (isBoss && !isBulletDestroyed &&
+				boss->isCollision(currentBullet->pos.X, currentBullet->pos.Y)) {
+				p_bulletList.Remove(currentBullet);
+				boss->Hit(player.attackDamege);
+			}
+			
+
 			// 상단을 넘었을 경우 remove
 			if(currentBullet->isGoal) 
 				p_bulletList.Remove(currentBullet);

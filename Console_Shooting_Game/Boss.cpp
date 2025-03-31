@@ -10,6 +10,7 @@ void Boss::Hit(int damage) {
 		hp = 0;
 		isDie = true;
 	}
+	OutputDebugStringA("boss : hit...¤Ì¤Ì\n");
 }
 
 void Boss::Attack() {
