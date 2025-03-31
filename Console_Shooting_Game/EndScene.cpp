@@ -6,8 +6,8 @@
 #include "MenuScene.h"
 #include "EndScene.h"
 
-// Map Data
-const wchar_t* endMap[] = {
+/*--------------- Data ------------------*/
+const wchar_t* win[] = {
 
 L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓",
 L"                                                            ",
@@ -31,17 +31,17 @@ L"                                                            ",
 L"                                                            ",
 L"                                                            ",
 L"                                                            ",
+L"        __   __                _    _  _         _          ",
+L"        | | / /               | |  | |(_)       | |         ",
+L"        |_ V /   ___   _   _  | |  | | _  _ __  | |         ",
+L"          | /   / _ | | | | | | |/|| || || '_  || |         ",
+L"          | |  | (_) || |_| | |  /|  /| || | | ||_|         ",
+L"          |_|   |___/  |__,_| |/  |/  |_||_| |_|(_)         "
 L"                                                            ",
 L"                                                            ",
 L"                                                            ",
 L"                                                            ",
-L"                                                            ",
-L"                                                            ",
-L"                                                            ",
-L"                         press [ESC]                        ",
-L"                                                            ",
-L"                                                            ",
-L"                                                            ",
+L"                        press [ESC]                         ",
 L"                                                            ",
 L"                                                            ",
 L"                                                            ",
@@ -70,11 +70,75 @@ L"                                                            ",
 L"                                                            ",
 L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓"
 };
-const int mapHeight = sizeof(endMap) / sizeof(endMap[0]);
 
-const wchar_t* success = L"You Win!";
-const wchar_t* over = L"Dead";
+const wchar_t* over[] = {
 
+L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                 ______                   _                 ",
+L"                 |  _  |                 | |                ",
+L"                 | | | |  ___   __ _   __| |                ",
+L"                 | | | | / _ | / _` | / _` |                ",
+L"                 | |/ / |  __/| (_| || (_| |                ",
+L"                 |___/   |___| |__,_| |__,_|                "
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                        press [ESC]                         ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"                                                            ",
+L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓"
+};
+
+const int winMapHeight = sizeof(win) / sizeof(win[0]);
+const int overMapHeight = sizeof(over) / sizeof(over[0]);
+
+/*--------------- End ------------------*/
 namespace End {
 	// Start
 	void Initalize() {
@@ -92,14 +156,11 @@ namespace End {
 
 	// Render
 	void Render() {
-		for (int i = 0; i < mapHeight; i++)
-		{
-			ConsoleRenderer::ScreenDrawStringW(0, i, endMap[i], FG_YELLOW);
-		}
-
 		if(Game::isGameSuccess)
-			ConsoleRenderer::ScreenDrawStringW(26, 25, success, FG_YELLOW);
+			for (int i = 0; i < winMapHeight; i++)
+				ConsoleRenderer::ScreenDrawStringW(0, i, win[i], FG_YELLOW);
 		else
-			ConsoleRenderer::ScreenDrawStringW(28, 25, over, FG_YELLOW);
+			for (int i = 0; i < overMapHeight; i++)
+				ConsoleRenderer::ScreenDrawStringW(0, i, over[i], FG_GRAY);
 	}
 }
