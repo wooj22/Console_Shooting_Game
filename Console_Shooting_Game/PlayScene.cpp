@@ -146,7 +146,7 @@ float speedPosionMoveTimer = 0.0f;
 
 // boss data
 bool isBoss = false;
-float bossSpawnTime = 10.0f;	// 100으로 다시 돌려놔
+float bossSpawnTime = 1.0f;	// 100으로 다시 돌려놔
 float bossMoveTimer = 0.0f;
 float bossShootTimer = 0.0f;
 Boss* boss;
@@ -282,6 +282,11 @@ inline void PlayerMoving() {
 			}
 			currentItem = nextItem;
 		}
+
+		// collision(player - boss) : 바~로 die
+		if (isBoss && boss->isCollision(player.pos.X, player.pos.Y))
+			player.isDie = true;
+		
 			
 		playerMoveTimer = 0.0f;
 	}
@@ -537,9 +542,9 @@ inline void BossControll() {
 			bossMoveTimer = 0;
 		}
 
-		// shoot
+		// attack
 		if (bossShootTimer >= boss->shootCycle) {
-			boss->Shoot();
+			boss->Attack();
 			bossShootTimer = 0;
 		}
 	}
