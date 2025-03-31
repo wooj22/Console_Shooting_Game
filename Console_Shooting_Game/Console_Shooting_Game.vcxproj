@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="ConsoleRenderer.cpp" />
     <ClCompile Include="EndScene.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="ConsoleRenderer.h" />
     <ClInclude Include="EndScene.h" />

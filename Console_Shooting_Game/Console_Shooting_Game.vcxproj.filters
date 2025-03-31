@@ -37,6 +37,9 @@
     <Filter Include="Item">
       <UniqueIdentifier>{d9e12e39-34b4-4157-b8f1-50d051f40f3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Boss">
+      <UniqueIdentifier>{35d56831-bbec-42e2-b517-5fc6003aca94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConsoleRenderer.cpp">
@@ -78,6 +81,9 @@
     <ClCompile Include="Item.cpp">
       <Filter>Item</Filter>
     </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleRenderer.h">
@@ -118,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Boss</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

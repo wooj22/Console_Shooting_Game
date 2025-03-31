@@ -10,11 +10,12 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "Boss.h"
 #include "Item.h"
 #include "UIManager.h"
 
 
-/* --------------------- Play Data ------------------------*/
+/* ------------------------- Data ----------------------------*/
 // Map Data
 const wchar_t* playMap[] = {
 
@@ -85,7 +86,7 @@ const int mapHeight = sizeof(playMap) / sizeof(playMap[0]);
 int currentLevel = 0;
 float gamePlayTimer = 0.0f;
 
-float levelChangeTiming[3] = {0, 10, 20};
+float levelChangeTiming[3] = {0, 20, 60};
 float enemySpawnCycle[3] = { 6.5f, 5.0f, 3.0f };
 float enemyMoveCycle[3] = { 1.2f, 1.0f, 0.7f };
 float s_enemySpawnCycle[3] = { 10.0f, 6.0f, 4.0f };
@@ -143,8 +144,11 @@ float speedPosionCreateTimer = 0.0f;
 float speedPosionMoveCycle = 0.08f;
 float speedPosionMoveTimer = 0.0f;
 
+// boss data
+bool isBoss = false;
+float bossSpawnTime = 100.0f;
 
-/* ---------------------- Funtions -------------------------*/
+/* ------------------------ Funtions ---------------------------*/
 /* 충돌 체크는 cycle이 더 짧은 쪽에서 검사하여 놓치지 않도록 한다. */
 
 // Timer Initialization
@@ -189,15 +193,21 @@ inline void UpdateTimer() {
 	speedPosionMoveTimer += Time::GetDeltaTime();
 }
 
-// Level Managing
+/// Level Managing
 inline void LevelManaging() {
+	// level
 	if (gamePlayTimer >= levelChangeTiming[2])
 		currentLevel = 2;
 	else if (gamePlayTimer >= levelChangeTiming[1])
 		currentLevel = 1;
+
+	// boss
+	if (gamePlayTimer >= bossSpawnTime) {
+		isBoss = true;
+	}
 }
 
-// Player move & collision
+/// Player move & collision
 inline void PlayerMoving() {
 	if (playerMoveTimer >= player.moveCycle) {
 		player.Move(playMap);
@@ -266,7 +276,7 @@ inline void PlayerMoving() {
 	}
 }
 
-// Player shoot
+/// Player shoot
 inline void PlayerShooting() {
 	if (playerShootTimer >= player.shootCycle && Input::IsKeyDown(VK_SPACE)) {
 		if(player.attackDamege <= 30)
@@ -280,7 +290,7 @@ inline void PlayerShooting() {
 	}
 }
 
-// Player Bullet move & collision
+/// Player Bullet move & collision
 inline void PlayerBulletControll() {
 	if (bulletMoveTimer >= bulletMoveCycle) {
 		// move
@@ -340,7 +350,7 @@ inline void PlayerBulletControll() {
 	}
 }
 
-// Enemy spawn
+/// Enemy spawn
 inline void EnemySpawn() {
 	// 일반
 	if (enemySpawnTimer >= enemySpawnCycle[currentLevel]) {
@@ -355,7 +365,7 @@ inline void EnemySpawn() {
 	}
 }
 
-// Enemy move
+/// Enemy move
 inline void EnemyMoving() {
 	// 일반
 	if (enemyMoveTimer >= enemyMoveCycle[currentLevel]) {
@@ -390,7 +400,7 @@ inline void EnemyMoving() {
 	}
 }
 
-// Enemy shoot
+/// Enemy shoot
 inline void EnemyShooting() {
 	if (s_enemyShootTimer >= s_enemyShootCycle[currentLevel]) {
 		for (auto s_enemy = s_enemyList.begin(); s_enemy != s_enemyList.end(); s_enemy++) 
@@ -400,7 +410,7 @@ inline void EnemyShooting() {
 	}
 }
  
-// Enemy Bullet move & collision
+/// Enemy Bullet move & collision
 inline void EnemyBulletControll() {
 	if (s_enemyBulletMoveTimer >= s_enemyBulletMoveCycle[currentLevel]) {
 		for (Bullet* currentBullet = e_bulletList.head; currentBullet != nullptr; ) {
@@ -428,7 +438,7 @@ inline void EnemyBulletControll() {
 	}
 }
 
-// Hp Posion creating
+/// Hp Posion creating
 inline void HpPosionCreating() {
 	if (hpPosionCreateTimer >= hpPosionCreateCycle) {
 		hpPosionList.Insert(new HpPosion(rand() % 58 + 1, 0));
@@ -436,7 +446,7 @@ inline void HpPosionCreating() {
 	}
 }
 
-// Hp Posion move
+/// Hp Posion move
 inline void HpPosionMoving() {
 	if (hpPosionMoveTimer >= hpPosionMoveCycle) {
 		for (Item* currentItem = hpPosionList.head; currentItem != nullptr; ) {
@@ -454,7 +464,7 @@ inline void HpPosionMoving() {
 	}
 }
 
-// Power Posion creating
+/// Power Posion creating
 inline void PowerPosionCreating() {
 	if (gamePlayTimer >= powerPosionStartTime && powerPosionCreateTimer >= powerPosionCreateCycle) {
 		powerPosionList.Insert(new PowerPosion(rand() % 58 + 1, 0));
@@ -462,7 +472,7 @@ inline void PowerPosionCreating() {
 	}
 }
 
-// Power Posion move
+/// Power Posion move
 inline void PowerPosionMoving() {
 	if (powerPosionMoveTimer >= powerPosionMoveCycle) {
 		for (Item* currentItem = powerPosionList.head; currentItem != nullptr; ) {
@@ -480,7 +490,7 @@ inline void PowerPosionMoving() {
 	}
 }
 
-// Speed Posion creating
+/// Speed Posion creating
 inline void SpeedPosionCreating() {
 	if (speedPosionCreateTimer >= speedPosionCreateCycle) {
 		speedPosionList.Insert(new SpeedPosion(rand() % 58 + 1, 0));
@@ -488,7 +498,7 @@ inline void SpeedPosionCreating() {
 	}
 }
 
-// Speed Posion move
+/// Speed Posion move
 inline void SpeedPosionMoving() {
 	if (speedPosionMoveTimer >= speedPosionMoveCycle) {
 		for (Item* currentItem = speedPosionList.head; currentItem != nullptr; ) {
@@ -507,11 +517,12 @@ inline void SpeedPosionMoving() {
 }
 
 
-/* ----------------------- Play --------------------------*/
+/* ------------------------- Play ----------------------------*/
 namespace Play {
 	// Start
 	void Initalize() {
 		currentLevel = 0;
+		isBoss = false;
 
 		Time::Initialize();
 		InitializationTimer();
