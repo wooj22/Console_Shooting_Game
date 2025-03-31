@@ -30,6 +30,11 @@ public:
     void Move();
 };
 
+class BossBullet : public Bullet {
+    BossBullet(SHORT x, SHORT y) : Bullet(x, y, '#') {}
+    void Move();
+};
+
 /*---------- Bullet Single Linked List --------*/
 class BulletList {
 public:

@@ -2,6 +2,7 @@
 
 void Boss::Move() {
 	this->pos.Y++;
+	// 움직임 패턴 수정 예정
 }
 
 void Boss::Hit(int damage) {

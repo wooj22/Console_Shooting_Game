@@ -14,6 +14,13 @@ void EnemyBullet::Move() {
         isGoal = true;
 }
 
+/// Boss Bullet Move
+void BossBullet::Move() {
+    this->pos.Y++;
+    if (this->pos.Y >= 59)
+        isGoal = true;
+}
+
 /// ¼Ò¸êÀÚ
 BulletList::~BulletList() {
     Clear();
