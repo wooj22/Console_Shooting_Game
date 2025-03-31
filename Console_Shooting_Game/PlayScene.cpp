@@ -219,6 +219,7 @@ inline void LevelManaging() {
 	// boss
 	if (!isBoss && gamePlayTimer >= bossSpawnTime) {
 		boss = new Boss();
+		UpdatePlayerHpUi(&player);
 		isBoss = true;
 	}
 }
@@ -366,6 +367,7 @@ inline void PlayerBulletControll() {
 				!isBulletDestroyed && boss->isCollision(currentBullet->pos.X, currentBullet->pos.Y)) {
 				p_bulletList.Remove(currentBullet);
 				boss->Hit(player.attackDamege);
+				UpdateBossHpBar(boss);
 				if (boss->isDie) player.isBossKill = true;
 			}
 			
@@ -701,6 +703,7 @@ namespace Play {
 		// boss
 		if (isBoss) {
 			ConsoleRenderer::ScreenDrawStringW(boss->pos.X, boss->pos.Y, boss->body, FG_GREEN);
+			ConsoleRenderer::ScreenDrawStringW(boss->pos.X, boss->pos.Y-2, ui_bossHpBar, FG_RED);
 
 			for (Bullet* current = b_bulletList.head; current != nullptr; current = current->next) 
 				ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_GREEN);

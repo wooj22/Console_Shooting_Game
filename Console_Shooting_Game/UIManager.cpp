@@ -3,7 +3,9 @@
 const wchar_t* ui_playerHp = { L"⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" }; 
 const wchar_t* ui_playerPower = { L"⬛" };
 const wchar_t* ui_playerSpeed = { L"⬛" };
+const wchar_t* ui_bossHpBar = { L"▂▂▂▂" };
 
+///  player hpUI update
 void UpdatePlayerHpUi(Player* player) {
 	int hpBox = player->hp / 10;
 
@@ -47,6 +49,7 @@ void UpdatePlayerHpUi(Player* player) {
 	}
 }
 
+///  player powerUI update
 void UpdatePlayerPowerUi(Player* player) {
 	int powerBox = player->attackDamege / 10;
 
@@ -87,6 +90,7 @@ void UpdatePlayerPowerUi(Player* player) {
 	}
 }
 
+///  player speedUI update
 void UpdatePlayerSpeedUi(Player* player) {
 	int speedBox = player->moveCycle * 100;
 
@@ -125,4 +129,19 @@ void UpdatePlayerSpeedUi(Player* player) {
 	default:
 		break;
 	}
+}
+
+///  boss hpBar update
+void UpdateBossHpBar(Boss* boss) {
+	// boss hp max : 10000
+	if(boss->hp >= 7500)
+		ui_bossHpBar = { L"▂▂▂▂" };
+	else if (boss->hp >= 5000)
+		ui_bossHpBar = { L"▂▂▂" };
+	else if (boss->hp >= 2500)
+		ui_bossHpBar = { L"▂▂" };
+	else if (boss->hp > 0)
+		ui_bossHpBar = { L"▂" };
+	else
+		ui_bossHpBar = { L"" };
 }
