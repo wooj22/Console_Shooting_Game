@@ -147,6 +147,7 @@ float speedPosionMoveTimer = 0.0f;
 // boss data
 bool isBoss = false;
 float bossSpawnTime = 100.0f;
+Boss* boss;
 
 /* ------------------------ Funtions ---------------------------*/
 /* 충돌 체크는 cycle이 더 짧은 쪽에서 검사하여 놓치지 않도록 한다. */
@@ -202,7 +203,8 @@ inline void LevelManaging() {
 		currentLevel = 1;
 
 	// boss
-	if (gamePlayTimer >= bossSpawnTime) {
+	if (!isBoss && gamePlayTimer >= bossSpawnTime) {
+		boss = new Boss();
 		isBoss = true;
 	}
 }
@@ -625,7 +627,7 @@ namespace Play {
 			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_SKY);
 		
 		// UI
-		ConsoleRenderer::ScreenDrawStringW(10, 55, ui_playerHp, FG_RED);
+		ConsoleRenderer::ScreenDrawStringW(10, 55, ui_playerHp, FG_RED); 
 		ConsoleRenderer::ScreenDrawStringW(10, 56, ui_playerPower, FG_BLUE);
 		ConsoleRenderer::ScreenDrawStringW(10, 57, ui_playerSpeed, FG_SKY);
 	}

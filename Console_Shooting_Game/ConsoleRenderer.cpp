@@ -117,45 +117,6 @@ namespace ConsoleRenderer
         return bRval;
     }
 
-    // 추가
-    bool ScreenDrawChar(int x, int y, wchar_t ch, WORD attr)
-    {
-        COORD	cdPos;
-        BOOL	bRval = FALSE;
-        DWORD	dwCharsWritten;
-        cdPos.X = x;
-        cdPos.Y = y;
-
-        bRval = FillConsoleOutputCharacterW(hScreenBuffer[nScreenBufferIndex], ch, 1, cdPos, &dwCharsWritten);
-        if (bRval == false) OutputDebugStringA("Error, FillConsoleOutputCharacter()\n");
-
-        bRval = FillConsoleOutputAttribute(hScreenBuffer[nScreenBufferIndex], attr, 1, cdPos, &dwCharsWritten);
-        if (bRval == false) OutputDebugStringA("Error, FillConsoleOutputAttribute()\n");
-        return bRval;
-    }
-
-    bool ScreenDrawStringW(int x, int y, const wchar_t* pStr, WORD attr)
-    {
-        COORD cdPos;
-        BOOL bRval = FALSE;
-        DWORD dwCharsWritten;
-
-        cdPos.X = x;
-        cdPos.Y = y;
-
-        DWORD nNumberOfCharsToWrite = (DWORD)wcslen(pStr);
-
-        // 유니코드 문자열 출력
-        WriteConsoleOutputCharacterW(hScreenBuffer[nScreenBufferIndex], pStr, nNumberOfCharsToWrite, cdPos, &dwCharsWritten);
-
-        // 문자열 속성 설정
-        bRval = FillConsoleOutputAttribute(hScreenBuffer[nScreenBufferIndex], attr, nNumberOfCharsToWrite, cdPos, &dwCharsWritten);
-        if (!bRval) printf("Error, FillConsoleOutputAttribute()\n");
-
-        return bRval;
-    }
-
-
     /**
      * @brief 특정 위치 (x, y)에 문자열 출력 및 속성 설정
      *
@@ -182,6 +143,45 @@ namespace ConsoleRenderer
 
         // 문자열 속성 설정
         bRval = FillConsoleOutputAttribute(hScreenBuffer[nScreenBufferIndex], attr, nNumberOfBytesToWrite, cdPos, &dwCharsWritten);
+        if (!bRval) printf("Error, FillConsoleOutputAttribute()\n");
+
+        return bRval;
+    }
+
+    // wchar_t 문자 출력
+    bool ScreenDrawChar(int x, int y, wchar_t ch, WORD attr)
+    {
+        COORD	cdPos;
+        BOOL	bRval = FALSE;
+        DWORD	dwCharsWritten;
+        cdPos.X = x;
+        cdPos.Y = y;
+
+        bRval = FillConsoleOutputCharacterW(hScreenBuffer[nScreenBufferIndex], ch, 1, cdPos, &dwCharsWritten);
+        if (bRval == false) OutputDebugStringA("Error, FillConsoleOutputCharacter()\n");
+
+        bRval = FillConsoleOutputAttribute(hScreenBuffer[nScreenBufferIndex], attr, 1, cdPos, &dwCharsWritten);
+        if (bRval == false) OutputDebugStringA("Error, FillConsoleOutputAttribute()\n");
+        return bRval;
+    }
+
+    // wchar_t 문자열 출력
+    bool ScreenDrawStringW(int x, int y, const wchar_t* pStr, WORD attr)
+    {
+        COORD cdPos;
+        BOOL bRval = FALSE;
+        DWORD dwCharsWritten;
+
+        cdPos.X = x;
+        cdPos.Y = y;
+
+        DWORD nNumberOfCharsToWrite = (DWORD)wcslen(pStr);
+
+        // 유니코드 문자열 출력
+        WriteConsoleOutputCharacterW(hScreenBuffer[nScreenBufferIndex], pStr, nNumberOfCharsToWrite, cdPos, &dwCharsWritten);
+
+        // 문자열 속성 설정
+        bRval = FillConsoleOutputAttribute(hScreenBuffer[nScreenBufferIndex], attr, nNumberOfCharsToWrite*2, cdPos, &dwCharsWritten);
         if (!bRval) printf("Error, FillConsoleOutputAttribute()\n");
 
         return bRval;
