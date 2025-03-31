@@ -4,6 +4,7 @@ const wchar_t* ui_playerHp = { L"⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" };
 const wchar_t* ui_playerPower = { L"⬛" };
 const wchar_t* ui_playerSpeed = { L"⬛" };
 const wchar_t* ui_bossHpBar = { L"▂▂▂▂" };
+const wchar_t* ui_currentLevel = { L"▂▂▂▂" };
 
 ///  player hpUI update
 void UpdatePlayerHpUi(Player* player) {

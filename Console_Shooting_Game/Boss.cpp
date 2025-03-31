@@ -1,6 +1,6 @@
 #include "Boss.h"
 
-// boss move :  {4, 4} ~ {55, 40} 내에서 랜덤 이동
+// boss move :  {4, 4} ~ {50, 40} 내에서 랜덤 이동
 void Boss::Move() {
 	if (this->pos.Y < 8) {
 		this->pos.Y++;
@@ -15,12 +15,12 @@ void Boss::Move() {
 		{
 		case 0:
 			nextX += 2;
-			if(nextX >= 4 && nextX <= 55) this->pos.X = nextX;
+			if(nextX >= 4 && nextX <= 50) this->pos.X = nextX;
 			else break;
 			break;
 		case 1:
 			nextX -= 2;
-			if (nextX >= 4 && nextX <= 55) this->pos.X = nextX;
+			if (nextX >= 4 && nextX <= 50) this->pos.X = nextX;
 			else break;
 			break;
 		case 2:
@@ -46,7 +46,6 @@ void Boss::Hit(int damage) {
 		hp = 0;
 		isDie = true;
 	}
-	OutputDebugStringA("boss : hit...ㅜㅜ\n");
 }
 
 bool Boss::isCollision(SHORT x, SHORT y) {
