@@ -31,6 +31,7 @@ public:
 };
 
 class BossBullet : public Bullet {
+public:
     BossBullet(SHORT x, SHORT y) : Bullet(x, y, '#') {}
     void Move();
 };

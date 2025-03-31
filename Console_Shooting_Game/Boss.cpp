@@ -14,10 +14,6 @@ void Boss::Hit(int damage) {
 	OutputDebugStringA("boss : hit...¤Ì¤Ì\n");
 }
 
-void Boss::Attack() {
-	OutputDebugStringA("boss : attack!\n");
-}
-
 bool Boss::isCollision(SHORT x, SHORT y) {
 	// Boss size : x = 1, y = 4   "Boss"
 	if (this->pos.Y == y && 

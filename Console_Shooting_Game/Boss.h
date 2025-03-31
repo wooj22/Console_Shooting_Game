@@ -15,6 +15,5 @@ public:
 		moveCycle(0.5f), shootCycle(2.0f), isDie(false){};
 	void Move();
 	void Hit(int damage);
-	void Attack();
 	bool isCollision(SHORT x, SHORT y);
 };

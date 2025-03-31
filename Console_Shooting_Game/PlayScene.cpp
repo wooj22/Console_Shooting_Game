@@ -96,9 +96,7 @@ float s_enemyBulletMoveCycle[3] = { 0.3f, 0.1f, 0.05f };
 
 // player data
 Player player;
-//float playerMoveCycle = 0.1f; -> player 멤버로 변경
 float playerMoveTimer = 0.0f;
-//float playerShootCycle = 0.2f; -> player 멤버로 변경
 float playerShootTimer = 0.0f;
 
 // player bullet data
@@ -151,6 +149,11 @@ float bossMoveTimer = 0.0f;
 float bossShootTimer = 0.0f;
 Boss* boss;
 
+// boss bullet data
+BulletList b_bulletList;
+float bossBulletMoveTimer = 0.0f;
+float bossBulletMoveCycle = 0.035f;
+
 /* ------------------------ Funtions ---------------------------*/
 /* 충돌 체크는 cycle이 더 짧은 쪽에서 검사하여 놓치지 않도록 한다. */
 
@@ -174,6 +177,7 @@ inline void InitializationTimer() {
 	speedPosionMoveTimer = 0.0f;
 	bossMoveTimer = 0.0f;
 	bossShootTimer = 0.0f;
+	bossBulletMoveTimer = 0.0f;
 }
 
 // Timer += deltaTime
@@ -200,6 +204,7 @@ inline void UpdateTimer() {
 	if (isBoss) {
 		bossMoveTimer += Time::GetDeltaTime();
 		bossShootTimer += Time::GetDeltaTime();
+		bossBulletMoveTimer += Time::GetDeltaTime();
 	}
 }
 
@@ -543,17 +548,34 @@ inline void SpeedPosionMoving() {
 /// Boss
 inline void BossControll() {
 	if (isBoss) {
-		// move
+		// boss move
 		if (bossMoveTimer >= boss->moveCycle)
 		{
 			boss->Move();
-			bossMoveTimer = 0;
+			bossMoveTimer = 0.0f;
 		}
 
-		// attack
+		// boss attack
 		if (bossShootTimer >= boss->shootCycle) {
-			boss->Attack();
-			bossShootTimer = 0;
+			b_bulletList.Insert(new BossBullet((*boss).pos.X+1, (*boss).pos.Y + 1));
+			bossShootTimer = 0.0f;
+		}
+
+		// bullet move & collision
+		if (bossBulletMoveTimer >= bossBulletMoveCycle) {
+			for (Bullet* current = b_bulletList.head; current != nullptr; ) {
+				Bullet* next = current->next;
+				((BossBullet*)current)->Move();
+
+				if (player.isCollision(current->pos.X, current->pos.Y)) {
+					b_bulletList.Remove(current);
+					player.Hit(boss->attackDamege);
+					UpdatePlayerHpUi(&player);
+				}
+				current = next;
+			}
+
+			bossBulletMoveTimer = 0.0f;
 		}
 	}
 }
@@ -629,10 +651,8 @@ namespace Play {
 	void Render() {
 		// map
 		for (int i = 0; i < mapHeight; i++)
-		{
 			ConsoleRenderer::ScreenDrawStringW(0, i, playMap[i], FG_YELLOW);
-		}
-
+		
 		// player
 		if(!player.isHit)
 			ConsoleRenderer::ScreenDrawChar(player.pos.X, player.pos.Y, player.body, FG_YELLOW);
@@ -640,24 +660,20 @@ namespace Play {
 			ConsoleRenderer::ScreenDrawChar(player.pos.X, player.pos.Y, player.body, FG_RED);
 
 		// player bullet
-		for (Bullet* current = p_bulletList.head; current != NULL; current = current->next) {
+		for (Bullet* current = p_bulletList.head; current != NULL; current = current->next) 
 			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_YELLOW);
-		}
-
+		
 		// enemy
-		for (auto& enemy : enemyList) {
+		for (auto& enemy : enemyList) 
 			ConsoleRenderer::ScreenDrawChar(enemy.pos.X, enemy.pos.Y, enemy.body, FG_GRAY);
-		}
-
+		
 		// s_enemy
-		for (auto& s_enemy : s_enemyList) {
+		for (auto& s_enemy : s_enemyList) 
 			ConsoleRenderer::ScreenDrawChar(s_enemy.pos.X, s_enemy.pos.Y, s_enemy.body, FG_GREEN);
-		}
-
+		
 		// s_enemy bullet
-		for (Bullet* current = e_bulletList.head; current != nullptr; current = current->next) {
+		for (Bullet* current = e_bulletList.head; current != nullptr; current = current->next) 
 			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_GREEN);
-		}
 		
 		// hp posion
 		for (Item* current = hpPosionList.head; current != nullptr; current = current->next)
@@ -672,9 +688,13 @@ namespace Play {
 			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_SKY);
 		
 		// boss
-		if (isBoss) 
+		if (isBoss) {
 			ConsoleRenderer::ScreenDrawStringW(boss->pos.X, boss->pos.Y, boss->body, FG_GREEN);
-		
+
+			for (Bullet* current = b_bulletList.head; current != nullptr; current = current->next) 
+				ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_GREEN);
+			
+		}
 
 		// UI
 		ConsoleRenderer::ScreenDrawStringW(10, 55, ui_playerHp, FG_RED); 
