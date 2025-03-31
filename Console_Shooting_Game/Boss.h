@@ -12,7 +12,7 @@ public:
 	bool isDie;
 
 	Boss() : pos({ 28, 0 }), hp(10000), body( L"Boss" ), attackDamege(20),
-		moveCycle(0.5f), shootCycle(1.0f), isDie(false){};
+		moveCycle(0.2f), shootCycle(1.0f), isDie(false){};
 	void Move();
 	void Hit(int damage);
 	bool isCollision(SHORT x, SHORT y);

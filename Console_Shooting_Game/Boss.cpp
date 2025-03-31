@@ -1,8 +1,43 @@
 #include "Boss.h"
 
+// boss move :  {1, 4} ~ {58, 40} 내에서 랜덤 이동
 void Boss::Move() {
-	this->pos.Y++;
-	// 움직임 패턴 수정 예정
+	if (this->pos.Y < 8) {
+		this->pos.Y++;
+	}
+	else {
+		// 임시값 저장
+		int nextX = this->pos.X;
+		int nextY = this->pos.Y;
+
+		int randomInt = rand() % 6;
+		switch (randomInt)
+		{
+		case 0:
+			nextX += 2;
+			if(nextX >= 1 && nextX <= 58) this->pos.X = nextX;
+			else break;
+			break;
+		case 1:
+			nextX -= 2;
+			if (nextX >= 1 && nextX <= 58) this->pos.X = nextX;
+			else break;
+			break;
+		case 2:
+			nextY += 2;
+			if (nextY >= 8 && nextY <= 40) this->pos.Y = nextY;
+			else break;
+			break;
+		case 3:
+			nextY -= 2;
+			if (nextY >= 8 && nextY <= 40) this->pos.Y = nextY;
+			else break;
+			break;
+			
+		default:
+			break;
+		}
+	}
 }
 
 void Boss::Hit(int damage) {
