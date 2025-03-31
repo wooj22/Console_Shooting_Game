@@ -201,7 +201,7 @@ inline void UpdateTimer() {
 	speedPosionCreateTimer += Time::GetDeltaTime();
 	speedPosionMoveTimer += Time::GetDeltaTime();
 
-	if (isBoss) {
+	if (isBoss && !player.isBossKill) {
 		bossMoveTimer += Time::GetDeltaTime();
 		bossShootTimer += Time::GetDeltaTime();
 		bossBulletMoveTimer += Time::GetDeltaTime();
@@ -592,6 +592,7 @@ namespace Play {
 		Time::Initialize();
 		InitializationTimer();
 		player.Initialization();
+
 		UpdatePlayerHpUi(&player);
 		UpdatePlayerPowerUi(&player);
 		UpdatePlayerSpeedUi(&player);
@@ -630,7 +631,7 @@ namespace Play {
 		else if(player.isDie){
 			OutputDebugStringA("player : die\n");
 
-			// list data clear
+			// data clear
 			enemyList.clear();
 			s_enemyList.clear();
 			p_bulletList.Clear();
@@ -648,8 +649,9 @@ namespace Play {
 		// game success
 		else if (!player.isDie && player.isBossKill) {
 			OutputDebugStringA("player : boss kill\n ");
+			// TODO :: 게임 성공 연출 추가?
 
-			// scene change          // TODO :: END SCENE에 성공/실패 문자데이터 수정
+			// scene change
 			Game::isGameSuccess = true;
 			Game::g_SceneCurrent = Game::END_SCENE;
 			End::Initalize();
