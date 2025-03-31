@@ -12,6 +12,9 @@ namespace Game {
 	Scene g_SceneCurrent = Game::MENU_SCENE;
 	bool isGameSuccess = false;
 
+	// 사운드 매니저
+	SoundManager& soundManager = SoundManager::getInstance();
+
 	// Start : 게임 시작
 	void Initalize() {
 		Menu::Initalize();

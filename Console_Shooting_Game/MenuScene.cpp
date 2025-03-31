@@ -78,7 +78,8 @@ namespace Menu {
 
 	// Start
 	void Initalize() {
-		
+		Game::soundManager.InitSystem();
+		Game::soundManager.PlayBGM();
 	}
 
 	// Update 
@@ -86,10 +87,12 @@ namespace Menu {
 		// scene change
 		if (Input::IsKeyPressed(VK_UP)) {
 			selectBar_coord.Y = 39;
+			Game::soundManager.PlaySFX_Shoot();		// ui사운드 추가하기
 		}
 
 		if (Input::IsKeyPressed(VK_DOWN)) {
 			selectBar_coord.Y = 41;
+			Game::soundManager.PlaySFX_Shoot();		// ui사운드 추가하기
 		}
 
 		if (Input::IsKeyPressed(VK_SPACE)) {

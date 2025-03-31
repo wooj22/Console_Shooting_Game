@@ -143,7 +143,8 @@ const int overMapHeight = sizeof(over) / sizeof(over[0]);
 namespace End {
 	// Start
 	void Initalize() {
-		
+		Game::soundManager.StopSound();
+		Game::soundManager.InitSystem();
 	}
 
 	// Update 
@@ -157,11 +158,16 @@ namespace End {
 
 	// Render
 	void Render() {
-		if(Game::isGameSuccess)
+		if (Game::isGameSuccess) {
+			Game::soundManager.PlaySFX_GameSuccess();
 			for (int i = 0; i < winMapHeight; i++)
 				ConsoleRenderer::ScreenDrawStringW(0, i, win[i], FG_YELLOW);
-		else
+		}	
+		else {
+			Game::soundManager.PlaySFX_GameOver();
 			for (int i = 0; i < overMapHeight; i++)
 				ConsoleRenderer::ScreenDrawStringW(0, i, over[i], FG_GRAY);
+		}
+			
 	}
 }

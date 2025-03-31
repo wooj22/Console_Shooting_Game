@@ -1,4 +1,5 @@
 #pragma once
+#include "SoundManager.h"
 
 namespace Game {
 	// enum으로 Scene 관리
@@ -10,4 +11,5 @@ namespace Game {
 
 	extern Scene g_SceneCurrent;
 	extern bool isGameSuccess;
+	extern SoundManager& soundManager;
 }
