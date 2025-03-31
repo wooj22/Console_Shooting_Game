@@ -41,7 +41,7 @@ L"                                                            ",
 L"                                                            ",
 L"                                                            ",
 L"                                                            ",
-L"                        press [ESC]                         ",
+L"                       press [Enter]                        ",
 L"                                                            ",
 L"                                                            ",
 L"                                                            ",
@@ -105,7 +105,7 @@ L"                                                            ",
 L"                                                            ",
 L"                                                            ",
 L"                                                            ",
-L"                        press [ESC]                         ",
+L"                       press [Enter]                        ",
 L"                                                            ",
 L"                                                            ",
 L"                                                            ",
@@ -148,7 +148,7 @@ namespace End {
 	// Update 
 	void Update() {
 		// scene change
-		if (Input::IsKeyPressed(VK_ESCAPE)) {
+		if (Input::IsKeyPressed(VK_RETURN)) {
 			Game::g_SceneCurrent = Game::MENU_SCENE;
 			Menu::Initalize();
 		}
