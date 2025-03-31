@@ -152,7 +152,7 @@ Boss* boss;
 // boss bullet data
 BulletList b_bulletList;
 float bossBulletMoveTimer = 0.0f;
-float bossBulletMoveCycle = 0.035f;
+float bossBulletMoveCycle = 0.02f;
 
 /* ------------------------ Funtions ---------------------------*/
 /* 충돌 체크는 cycle이 더 짧은 쪽에서 검사하여 놓치지 않도록 한다. */
@@ -557,7 +557,8 @@ inline void BossControll() {
 
 		// boss attack
 		if (bossShootTimer >= boss->shootCycle) {
-			b_bulletList.Insert(new BossBullet((*boss).pos.X+1, (*boss).pos.Y + 1));
+			int xPosi = rand() % 4;
+			b_bulletList.Insert(new BossBullet((*boss).pos.X+ xPosi, (*boss).pos.Y + 1));
 			bossShootTimer = 0.0f;
 		}
 
