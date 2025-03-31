@@ -146,7 +146,9 @@ float speedPosionMoveTimer = 0.0f;
 
 // boss data
 bool isBoss = false;
-float bossSpawnTime = 100.0f;
+float bossSpawnTime = 10.0f;	// 100으로 다시 돌려놔
+float bossMoveTimer = 0.0f;
+float bossShootTimer = 0.0f;
 Boss* boss;
 
 /* ------------------------ Funtions ---------------------------*/
@@ -170,6 +172,8 @@ inline void InitializationTimer() {
 	powerPosionMoveTimer = 0.0f;
 	speedPosionCreateTimer = 0.0f;
 	speedPosionMoveTimer = 0.0f;
+	bossMoveTimer = 0.0f;
+	bossShootTimer = 0.0f;
 }
 
 // Timer += deltaTime
@@ -192,6 +196,11 @@ inline void UpdateTimer() {
 	powerPosionMoveTimer += Time::GetDeltaTime();
 	speedPosionCreateTimer += Time::GetDeltaTime();
 	speedPosionMoveTimer += Time::GetDeltaTime();
+
+	if (isBoss) {
+		bossMoveTimer += Time::GetDeltaTime();
+		bossShootTimer += Time::GetDeltaTime();
+	}
 }
 
 /// Level Managing
@@ -518,6 +527,25 @@ inline void SpeedPosionMoving() {
 	}
 }
 
+/// Boss
+inline void BossControll() {
+	if (isBoss) {
+		// move
+		if (bossMoveTimer >= boss->moveCycle)
+		{
+			boss->Move();
+			bossMoveTimer = 0;
+		}
+
+		// shoot
+		if (bossShootTimer >= boss->shootCycle) {
+			boss->Shoot();
+			bossShootTimer = 0;
+		}
+	}
+}
+
+
 
 /* ------------------------- Play ----------------------------*/
 namespace Play {
@@ -557,6 +585,10 @@ namespace Play {
 
 			SpeedPosionCreating();
 			SpeedPosionMoving();
+
+			if (isBoss) {
+				BossControll();
+			}
 		}
 		else {
 			// debug
@@ -626,6 +658,11 @@ namespace Play {
 		for (Item* current = speedPosionList.head; current != nullptr; current = current->next)
 			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_SKY);
 		
+		// boss
+		if (isBoss) 
+			ConsoleRenderer::ScreenDrawStringW(boss->pos.X, boss->pos.Y, boss->body, FG_GREEN);
+		
+
 		// UI
 		ConsoleRenderer::ScreenDrawStringW(10, 55, ui_playerHp, FG_RED); 
 		ConsoleRenderer::ScreenDrawStringW(10, 56, ui_playerPower, FG_BLUE);
