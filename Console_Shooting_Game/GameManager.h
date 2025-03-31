@@ -9,5 +9,5 @@ namespace Game {
 	};
 
 	extern Scene g_SceneCurrent;
-	extern bool g_isDie;
+	extern bool isGameSuccess;
 }

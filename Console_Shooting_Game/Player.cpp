@@ -13,6 +13,7 @@ void Player::Initialization() {
 	shootCycle = 0.2f;
 	isDie = false;
 	isHit = false;
+	isBossKill = false;
 }
 
 /// 이동

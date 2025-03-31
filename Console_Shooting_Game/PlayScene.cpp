@@ -289,7 +289,8 @@ inline void PlayerMoving() {
 		}
 
 		// collision(player - boss) : 바~로 die
-		if (isBoss && boss->isCollision(player.pos.X, player.pos.Y))
+		if (isBoss && !player.isBossKill && 
+			boss->isCollision(player.pos.X, player.pos.Y))
 			player.isDie = true;
 		
 			
@@ -361,10 +362,11 @@ inline void PlayerBulletControll() {
 			}
 
 			// collision(playerbullet - boss) : playerbullet remove, boss hp 감소(die)
-			if (isBoss && !isBulletDestroyed &&
-				boss->isCollision(currentBullet->pos.X, currentBullet->pos.Y)) {
+			if (isBoss && !player.isBossKill &&
+				!isBulletDestroyed && boss->isCollision(currentBullet->pos.X, currentBullet->pos.Y)) {
 				p_bulletList.Remove(currentBullet);
 				boss->Hit(player.attackDamege);
+				if (boss->isDie) player.isBossKill = true;
 			}
 			
 
@@ -547,40 +549,37 @@ inline void SpeedPosionMoving() {
 
 /// Boss
 inline void BossControll() {
-	if (isBoss) {
-		// boss move
-		if (bossMoveTimer >= boss->moveCycle)
-		{
-			boss->Move();
-			bossMoveTimer = 0.0f;
-		}
+	// boss move
+	if (bossMoveTimer >= boss->moveCycle)
+	{
+		boss->Move();
+		bossMoveTimer = 0.0f;
+	}
 
-		// boss attack
-		if (bossShootTimer >= boss->shootCycle) {
-			int xPosi = rand() % 4;
-			b_bulletList.Insert(new BossBullet((*boss).pos.X+ xPosi, (*boss).pos.Y + 1));
-			bossShootTimer = 0.0f;
-		}
+	// boss attack
+	if (bossShootTimer >= boss->shootCycle) {
+		int xPosi = rand() % 4;
+		b_bulletList.Insert(new BossBullet((*boss).pos.X + xPosi, (*boss).pos.Y + 1));
+		bossShootTimer = 0.0f;
+	}
 
-		// bullet move & collision
-		if (bossBulletMoveTimer >= bossBulletMoveCycle) {
-			for (Bullet* current = b_bulletList.head; current != nullptr; ) {
-				Bullet* next = current->next;
-				((BossBullet*)current)->Move();
+	// bullet move & collision
+	if (bossBulletMoveTimer >= bossBulletMoveCycle) {
+		for (Bullet* current = b_bulletList.head; current != nullptr; ) {
+			Bullet* next = current->next;
+			((BossBullet*)current)->Move();
 
-				if (player.isCollision(current->pos.X, current->pos.Y)) {
-					b_bulletList.Remove(current);
-					player.Hit(boss->attackDamege);
-					UpdatePlayerHpUi(&player);
-				}
-				current = next;
+			if (player.isCollision(current->pos.X, current->pos.Y)) {
+				b_bulletList.Remove(current);
+				player.Hit(boss->attackDamege);
+				UpdatePlayerHpUi(&player);
 			}
-
-			bossBulletMoveTimer = 0.0f;
+			current = next;
 		}
+
+		bossBulletMoveTimer = 0.0f;
 	}
 }
-
 
 
 /* ------------------------- Play ----------------------------*/
@@ -600,7 +599,8 @@ namespace Play {
 
 	// Update
 	void Update() {
-		if (!player.isDie) {
+		// playing
+		if (!player.isDie && !player.isBossKill) {
 			UpdateTimer();
 			LevelManaging();
 
@@ -622,16 +622,13 @@ namespace Play {
 			SpeedPosionCreating();
 			SpeedPosionMoving();
 
-			if (isBoss) {
+			if (isBoss && !player.isBossKill) {
 				BossControll();
 			}
 		}
-		else {
-			// debug
-			OutputDebugStringA("player : 죽었다...\n HP : ");
-			std::string str = std::to_string(player.hp);
-			const char* cstr = str.c_str();
-			OutputDebugStringA(cstr);
+		// game over
+		else if(player.isDie){
+			OutputDebugStringA("player : die\n");
 
 			// list data clear
 			enemyList.clear();
@@ -641,8 +638,19 @@ namespace Play {
 			hpPosionList.Clear();
 			powerPosionList.Clear();
 			speedPosionList.Clear();
+			delete boss;
 
 			// scene change
+			Game::isGameSuccess = false;
+			Game::g_SceneCurrent = Game::END_SCENE;
+			End::Initalize();
+		}
+		// game success
+		else if (!player.isDie && player.isBossKill) {
+			OutputDebugStringA("player : boss kill\n ");
+
+			// scene change          // TODO :: END SCENE에 성공/실패 문자데이터 수정
+			Game::isGameSuccess = true;
 			Game::g_SceneCurrent = Game::END_SCENE;
 			End::Initalize();
 		}

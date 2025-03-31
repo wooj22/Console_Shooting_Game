@@ -10,21 +10,18 @@
 namespace Game {
 	// 초기화
 	Scene g_SceneCurrent = Game::MENU_SCENE;
-	bool g_isDie = false;
+	bool isGameSuccess = false;
 
 	// Start : 게임 시작
 	void Initalize() {
 		Menu::Initalize();
+		isGameSuccess = false;
 	}
 
 	// Update : SceneCurrent에 따라 Update()호출
 	void Update() {
 		// key input
 		Input::Update();
-
-		if (Input::IsKeyDown(VK_DELETE)) {
-			Game::g_isDie = true;
-		}
 
 		// update
 		switch (Game::g_SceneCurrent)
@@ -75,7 +72,7 @@ int main() {
 	ConsoleRenderer::ScreenInit();
 	Game::Initalize();
 
-	while (!Game::g_isDie)
+	while (true)
 	{
 		Game::Update();
 		Game::Render();

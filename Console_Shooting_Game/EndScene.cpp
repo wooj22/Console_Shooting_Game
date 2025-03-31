@@ -34,11 +34,11 @@ L"                                                            ",
 L"                                                            ",
 L"                                                            ",
 L"                                                            ",
-L"                          Your Die !                        ",
 L"                                                            ",
 L"                                                            ",
 L"                                                            ",
-L"                       press [spacebar]                     ",
+L"                                                            ",
+L"                         press [ESC]                        ",
 L"                                                            ",
 L"                                                            ",
 L"                                                            ",
@@ -72,6 +72,8 @@ L"▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 };
 const int mapHeight = sizeof(endMap) / sizeof(endMap[0]);
 
+const wchar_t* success = L"You Win!";
+const wchar_t* over = L"Dead";
 
 namespace End {
 	// Start
@@ -82,7 +84,7 @@ namespace End {
 	// Update 
 	void Update() {
 		// scene change
-		if (Input::IsKeyPressed(VK_SPACE)) {
+		if (Input::IsKeyPressed(VK_ESCAPE)) {
 			Game::g_SceneCurrent = Game::MENU_SCENE;
 			Menu::Initalize();
 		}
@@ -94,5 +96,10 @@ namespace End {
 		{
 			ConsoleRenderer::ScreenDrawStringW(0, i, endMap[i], FG_YELLOW);
 		}
+
+		if(Game::isGameSuccess)
+			ConsoleRenderer::ScreenDrawStringW(26, 25, success, FG_YELLOW);
+		else
+			ConsoleRenderer::ScreenDrawStringW(28, 25, over, FG_YELLOW);
 	}
 }
