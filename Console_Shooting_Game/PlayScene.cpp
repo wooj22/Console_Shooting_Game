@@ -219,7 +219,7 @@ inline void LevelManaging() {
 	// boss
 	if (!isBoss && gamePlayTimer >= bossSpawnTime) {
 		boss = new Boss();
-		UpdatePlayerHpUi(&player);
+		UpdateBossHpBar(boss);
 		isBoss = true;
 	}
 }
@@ -631,8 +631,6 @@ namespace Play {
 		}
 		// game over
 		else if(player.isDie){
-			OutputDebugStringA("player : die\n");
-
 			// data clear
 			enemyList.clear();
 			s_enemyList.clear();
@@ -650,9 +648,15 @@ namespace Play {
 		}
 		// game success
 		else if (!player.isDie && player.isBossKill) {
-			OutputDebugStringA("player : boss kill\n ");
-			// TODO :: 게임 성공 연출 추가?
-
+			// data clear
+			enemyList.clear();
+			s_enemyList.clear();
+			p_bulletList.Clear();
+			e_bulletList.Clear();
+			hpPosionList.Clear();
+			powerPosionList.Clear();
+			speedPosionList.Clear();
+			
 			// scene change
 			Game::isGameSuccess = true;
 			Game::g_SceneCurrent = Game::END_SCENE;
@@ -707,7 +711,6 @@ namespace Play {
 
 			for (Bullet* current = b_bulletList.head; current != nullptr; current = current->next) 
 				ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_GREEN);
-			
 		}
 
 		// UI
