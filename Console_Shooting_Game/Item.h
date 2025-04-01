@@ -15,8 +15,6 @@ public:
 	Item(SHORT x, SHORT y, char body) : pos({ x, y }), body(body), isGoal(false), next(nullptr) {};
 	void Move();
 	bool isCollision(SHORT x, SHORT y);
-	void SetPos(int x, int y) { pos.X = x; pos.Y = y; }
-	COORD GetPos() { return pos; }
 };
 
 class HpPosion : public Item{

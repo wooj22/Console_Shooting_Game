@@ -87,9 +87,9 @@ int currentLevel = 0;
 float gamePlayTimer = 0.0f;
 
 float levelChangeTiming[3] = {0, 20, 60};
-float enemySpawnCycle[3] = { 6.5f, 5.0f, 3.0f };
+float enemySpawnCycle[3] = { 5.0f, 4.0f, 3.0f };
 float enemyMoveCycle[3] = { 1.2f, 1.0f, 0.7f };
-float s_enemySpawnCycle[3] = { 10.0f, 6.0f, 4.0f };
+float s_enemySpawnCycle[3] = { 8.0f, 6.0f, 3.5f };
 float s_enemyMoveCycle[3] = { 1.5f, 0.8f, 0.5f };
 float s_enemyShootCycle[3] = { 5.0f, 3.0f, 2.0f };
 float s_enemyBulletMoveCycle[3] = { 0.3f, 0.1f, 0.05f };
@@ -157,7 +157,7 @@ float bossBulletMoveCycle = 0.02f;
 /* ------------------------ Funtions ---------------------------*/
 /* 충돌 체크는 cycle이 더 짧은 쪽에서 검사하여 놓치지 않도록 한다. */
 
-// Timer Initialization
+/// Timer Initialization
 inline void InitializationTimer() {
 	gamePlayTimer  = 0.0f;
 	playerMoveTimer = 0.0f;
@@ -180,7 +180,7 @@ inline void InitializationTimer() {
 	bossBulletMoveTimer = 0.0f;
 }
 
-// Timer += deltaTime
+/// Update Timer
 inline void UpdateTimer() {
 	Time::UpdateTime();
 	player.HitTimer();
@@ -313,6 +313,7 @@ inline void PlayerShooting() {
 			p_bulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1, '!'));
 		else
 			p_bulletList.Insert(new PlayerBullet(player.pos.X, player.pos.Y - 1, '$'));
+
 		Game::soundManager.PlaySFX_Shoot();
 		playerShootTimer = 0.0f;
 	}
@@ -376,7 +377,6 @@ inline void PlayerBulletControll() {
 				if (boss->isDie) player.isBossKill = true;
 			}
 			
-
 			// 상단을 넘었을 경우 remove
 			if(currentBullet->isGoal) 
 				p_bulletList.Remove(currentBullet);
@@ -458,7 +458,7 @@ inline void EnemyBulletControll() {
 			((EnemyBullet*)currentBullet)->Move();
 
 			// collision(enemy bullet - player) : enemy bullet remove, player hp 감소
-			if (player.isCollision(currentBullet->GetPos().X, currentBullet->GetPos().Y)) {
+			if (player.isCollision(currentBullet->pos.X, currentBullet->pos.Y)) {
 				e_bulletList.Remove(currentBullet);
 				player.Hit(s_enemyList.front().attackDamege);
 				UpdatePlayerHpUi(&player);
@@ -684,7 +684,7 @@ namespace Play {
 
 		// player bullet
 		for (Bullet* current = p_bulletList.head; current != NULL; current = current->next) 
-			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_YELLOW);
+			ConsoleRenderer::ScreenDrawChar(current->pos.X, current->pos.Y, current->body, FG_YELLOW);
 		
 		// enemy
 		for (auto& enemy : enemyList) 
@@ -696,19 +696,19 @@ namespace Play {
 		
 		// s_enemy bullet
 		for (Bullet* current = e_bulletList.head; current != nullptr; current = current->next) 
-			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_GREEN);
+			ConsoleRenderer::ScreenDrawChar(current->pos.X, current->pos.Y, current->body, FG_GREEN);
 		
 		// hp posion
 		for (Item* current = hpPosionList.head; current != nullptr; current = current->next)
-			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_RED);
+			ConsoleRenderer::ScreenDrawChar(current->pos.X, current->pos.Y, current->body, FG_RED);
 		
 		// power posion
 		for (Item* current = powerPosionList.head; current != nullptr; current = current->next)
-			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_BLUE);
+			ConsoleRenderer::ScreenDrawChar(current->pos.X, current->pos.Y, current->body, FG_BLUE);
 		
 		// speed posion
 		for (Item* current = speedPosionList.head; current != nullptr; current = current->next)
-			ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_SKY);
+			ConsoleRenderer::ScreenDrawChar(current->pos.X, current->pos.Y, current->body, FG_SKY);
 		
 		// boss
 		if (isBoss) {
@@ -716,7 +716,7 @@ namespace Play {
 			ConsoleRenderer::ScreenDrawStringW(boss->pos.X, boss->pos.Y-2, ui_bossHpBar, FG_RED);
 
 			for (Bullet* current = b_bulletList.head; current != nullptr; current = current->next) 
-				ConsoleRenderer::ScreenDrawChar(current->GetPos().X, current->GetPos().Y, current->body, FG_GREEN);
+				ConsoleRenderer::ScreenDrawChar(current->pos.X, current->pos.Y, current->body, FG_GREEN);
 		}
 
 		// UI

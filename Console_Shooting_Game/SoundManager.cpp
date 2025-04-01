@@ -16,9 +16,8 @@ void SoundManager::InitSystem() {
 	system->init(512, FMOD_INIT_NORMAL, nullptr);
 }
 
-/// Sound Stop
+/// All Sound Stop
 void SoundManager::StopSound() {
-	// 정리
 	sfx_sound->release();
 	bgm_sound->release();
 	system->close();
@@ -31,6 +30,7 @@ void SoundManager::PlayBGM() {
 }
 
 /// SFX Play
+/// 메모리 누수 문제 Fix : &sfx_sound, &bgm_sound를 분리하고, sfx play마다 sfx_sound->release();
 void SoundManager::PlaySFX_Shoot() {
 	sfx_sound->release();
 	system->createSound("SFX_Shoot.wav", FMOD_DEFAULT, nullptr, &sfx_sound);
@@ -53,6 +53,7 @@ void SoundManager::PlaySFX_GameOver() {
 	system->createSound("SFX_GameOver.wav", FMOD_DEFAULT, nullptr, &sfx_sound);
 	system->playSound(sfx_sound, nullptr, false, &channel);
 }
+
 void SoundManager::PlaySFX_GameSuccess() {
 	sfx_sound->release();
 	system->createSound("SFX_GameSuccess.wav", FMOD_DEFAULT, nullptr, &sfx_sound);
