@@ -8,18 +8,21 @@
 #include "PlayScene.h"
 #include "EndScene.h"
 
+/* 전체 게임 루프를 관할하는 GameManager 입니다.*/
+
 namespace Game {
-	// 초기화
+	// extern 초기화
 	Scene g_SceneCurrent = Game::MENU_SCENE;
 	bool isGameSuccess = false;
 
-	// 사운드 매니저
+	// sound manager
 	SoundManager& soundManager = SoundManager::getInstance();
 
-	// Start : 게임 시작
+	// Start
 	void Initalize() {
 		Menu::Initalize();
 		isGameSuccess = false;
+		Game::soundManager.InitSystem();
 	}
 
 	// Update : SceneCurrent에 따라 Update()호출
@@ -75,9 +78,7 @@ namespace Game {
 	}
 }
 
-// Main : 게임 진행
-// [Spacebar]를 누르면 씬을 전환합니다.
-// 루프 종료가 없으니 주의하세요
+// Main Game Loop
 int main() {
 	ConsoleRenderer::ScreenInit();
 	Game::Initalize();

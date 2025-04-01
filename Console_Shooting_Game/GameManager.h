@@ -2,7 +2,6 @@
 #include "SoundManager.h"
 
 namespace Game {
-	// enum으로 Scene 관리
 	enum Scene {
 		MENU_SCENE,
 		INFO_SCENE,
