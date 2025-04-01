@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "GameManager.h"
 #include "MenuScene.h"
+#include "InfoScene.h"
 #include "PlayScene.h"
 #include "EndScene.h"
 
@@ -19,7 +20,6 @@ namespace Game {
 	void Initalize() {
 		Menu::Initalize();
 		isGameSuccess = false;
-		
 	}
 
 	// Update : SceneCurrent에 따라 Update()호출
@@ -32,6 +32,9 @@ namespace Game {
 		{
 		case Game::MENU_SCENE:
 			Menu::Update();
+			break;
+		case Game::INFO_SCENE:
+			Info::Update();
 			break;
 		case Game::PLAY_SCENE:
 			Play::Update();
@@ -53,6 +56,9 @@ namespace Game {
 		{
 		case Game::MENU_SCENE:
 			Menu::Render();
+			break;
+		case Game::INFO_SCENE:
+			Info::Render();
 			break;
 		case Game::PLAY_SCENE:
 			Play::Render();

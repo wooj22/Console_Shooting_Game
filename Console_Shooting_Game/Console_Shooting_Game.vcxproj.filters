@@ -28,9 +28,6 @@
     <Filter Include="Bullet">
       <UniqueIdentifier>{76395391-3028-4213-a711-e04097ecc621}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Enemy">
-      <UniqueIdentifier>{7fcfa658-b732-4cec-8d0e-e8c36ad8b502}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Player">
       <UniqueIdentifier>{27094330-ef01-4a58-a78e-a7726548dafd}</UniqueIdentifier>
     </Filter>
@@ -39,6 +36,9 @@
     </Filter>
     <Filter Include="Boss">
       <UniqueIdentifier>{35d56831-bbec-42e2-b517-5fc6003aca94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Item\Enemy">
+      <UniqueIdentifier>{7fcfa658-b732-4cec-8d0e-e8c36ad8b502}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -70,7 +70,7 @@
       <Filter>Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>Enemy</Filter>
+      <Filter>Item\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="UIManager.cpp">
       <Filter>소스 파일</Filter>
@@ -83,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="Boss.cpp">
       <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="InfoScene.cpp">
+      <Filter>소스 파일\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -114,7 +117,7 @@
       <Filter>Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>Enemy</Filter>
+      <Filter>Item\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="UIManager.h">
       <Filter>헤더 파일</Filter>
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="Boss.h">
       <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="InfoScene.h">
+      <Filter>헤더 파일\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
