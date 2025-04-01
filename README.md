@@ -24,3 +24,11 @@
 그래서 enemy는 list를 따로 만들지 않고 그냥 벡터 컨테이너를 사용했다..
 
  C++고급문법을 더 공부해서 효율적인 코드를 작성할 수 있도록 하고, 기초도 더 탄탄히 다져야겠다.
+
+
+ [Screen Image]
+ 
+![메뉴화면](https://github.com/user-attachments/assets/caee54fc-1cc6-43f0-b101-b4c549237fb4)
+![인포화면](https://github.com/user-attachments/assets/9d9c16f2-7c31-46f6-91d0-a0b8cbd45061)
+![플레이화면](https://github.com/user-attachments/assets/bf4d3ccc-da02-46a3-b0a2-10f86d5d8062)
+![성공화면](https://github.com/user-attachments/assets/ed57a1ab-b55d-44a6-bcd8-4e32c2383615)
