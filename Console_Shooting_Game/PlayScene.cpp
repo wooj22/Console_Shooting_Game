@@ -590,6 +590,7 @@ inline void BossControll() {
 				b_bulletList.Remove(current);
 				player.Hit(boss->attackDamege);
 				UpdatePlayerHpUi(&player);
+				Game::soundManager.PlaySFX_Hit();
 			}
 			current = next;
 		}
