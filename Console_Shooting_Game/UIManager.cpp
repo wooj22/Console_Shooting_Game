@@ -134,12 +134,12 @@ void UpdatePlayerSpeedUi(Player* player) {
 
 ///  boss hpBar update
 void UpdateBossHpBar(Boss* boss) {
-	// boss hp max : 10000
-	if(boss->hp >= 7500)
+	int bossMaxHp = 20000;
+	if(boss->hp >= bossMaxHp * 0.75)
 		ui_bossHpBar = { L"▂▂▂▂" };
-	else if (boss->hp >= 5000)
+	else if (boss->hp >= bossMaxHp * 0.5)
 		ui_bossHpBar = { L"▂▂▂" };
-	else if (boss->hp >= 2500)
+	else if (boss->hp >= bossMaxHp * 0.25)
 		ui_bossHpBar = { L"▂▂" };
 	else if (boss->hp > 0)
 		ui_bossHpBar = { L"▂" };

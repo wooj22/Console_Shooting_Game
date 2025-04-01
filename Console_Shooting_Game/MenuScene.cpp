@@ -86,23 +86,23 @@ namespace Menu {
 	void Update() {
 		if (Input::IsKeyPressed(VK_UP)) {
 			selectBar_coord.Y = 39;
-			Game::soundManager.PlaySFX_Shoot();
+			Game::soundManager.PlaySFX_Ui();
 		}
 
 		if (Input::IsKeyPressed(VK_DOWN)) {
 			selectBar_coord.Y = 41;
-			Game::soundManager.PlaySFX_Shoot();
+			Game::soundManager.PlaySFX_Ui();
 		}
 
 		// scene change
 		if (Input::IsKeyPressed(VK_SPACE)) {
 			if (selectBar_coord.Y == 39) {
-				Game::soundManager.PlaySFX_Shoot();
+				Game::soundManager.PlaySFX_Ui();
 				Game::g_SceneCurrent = Game::PLAY_SCENE;
 				Play::Initalize();
 			}
 			else if (selectBar_coord.Y == 41) {
-				Game::soundManager.PlaySFX_Shoot();
+				Game::soundManager.PlaySFX_Ui();
 				Game::g_SceneCurrent = Game::INFO_SCENE;
 				Info::Initalize();
 			}

@@ -59,3 +59,9 @@ void SoundManager::PlaySFX_GameSuccess() {
 	system->createSound("SFX_GameSuccess.wav", FMOD_DEFAULT, nullptr, &sfx_sound);
 	system->playSound(sfx_sound, nullptr, false, &channel);
 }
+
+void SoundManager::PlaySFX_Ui() {
+	sfx_sound->release();
+	system->createSound("SFX_Hit.wav", FMOD_DEFAULT, nullptr, &sfx_sound);
+	system->playSound(sfx_sound, nullptr, false, &channel);
+}

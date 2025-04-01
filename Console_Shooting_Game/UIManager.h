@@ -11,5 +11,3 @@ void UpdatePlayerHpUi(Player* player);
 void UpdatePlayerPowerUi(Player* player);
 void UpdatePlayerSpeedUi(Player* player);
 void UpdateBossHpBar(Boss* boss);
-
-void UpdateAdviceLable();

@@ -22,4 +22,5 @@ public:
 	void PlaySFX_ItemPickUp();
 	void PlaySFX_GameOver();
 	void PlaySFX_GameSuccess();
+	void PlaySFX_Ui();
 };

@@ -82,7 +82,7 @@ namespace Info {
 	void Update() {
 		// scene change
 		if (Input::IsKeyPressed(VK_SPACE)) {
-			Game::soundManager.PlaySFX_Shoot();
+			Game::soundManager.PlaySFX_Ui();
 			Game::g_SceneCurrent = Game::MENU_SCENE;
 			Menu::Initalize();
 		}

@@ -144,7 +144,7 @@ float speedPosionMoveTimer = 0.0f;
 
 // boss data
 bool isBoss = false;
-float bossSpawnTime = 100.0f;
+float bossSpawnTime = 120.0f;
 float bossMoveTimer = 0.0f;
 float bossShootTimer = 0.0f;
 Boss* boss;
@@ -156,6 +156,7 @@ float bossBulletMoveCycle = 0.02f;
 
 /* ------------------------ Funtions ---------------------------*/
 /* 충돌 체크는 cycle이 더 짧은 쪽에서 검사하여 놓치지 않도록 한다. */
+/* speed posion만 더블체크 : player와 포션 속도가 역전되기 때문에 */
 
 /// Timer Initialization
 inline void InitializationTimer() {
@@ -537,12 +538,20 @@ inline void SpeedPosionCreating() {
 	}
 }
 
-/// Speed Posion move
+/// Speed Posion move & collision
 inline void SpeedPosionMoving() {
 	if (speedPosionMoveTimer >= speedPosionMoveCycle) {
 		for (Item* currentItem = speedPosionList.head; currentItem != nullptr; ) {
 			Item* nextItem = currentItem->next;
 			currentItem->Move();
+
+			// 초반에는 player보다 speed posion이 더 빠르기 때문에 얘만 더블 체크
+			if (currentItem->isCollision(player.pos.X, player.pos.Y)) {
+				player.SpeedUp();
+				speedPosionList.Remove(currentItem);
+				UpdatePlayerSpeedUi(&player);
+				Game::soundManager.PlaySFX_ItemPickUp();
+			}
 
 			// 하단을 넘었을 경우 remove
 			if (currentItem->isGoal)
