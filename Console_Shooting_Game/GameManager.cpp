@@ -22,7 +22,9 @@ namespace Game {
 	void Initalize() {
 		Menu::Initalize();
 		isGameSuccess = false;
+
 		Game::soundManager.InitSystem();
+		Game::soundManager.PlayBGM();
 	}
 
 	// Update : SceneCurrent에 따라 Update()호출

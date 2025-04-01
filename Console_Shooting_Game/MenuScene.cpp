@@ -79,9 +79,7 @@ namespace Menu {
 
 	// Start
 	void Initalize() {
-		Game::soundManager.StopSound();
-		Game::soundManager.InitSystem();
-		Game::soundManager.PlayBGM();
+
 	}
 
 	// Update 

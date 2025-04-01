@@ -155,6 +155,7 @@ namespace End {
 		// scene change
 		if (Input::IsKeyPressed(VK_RETURN)) {
 			Game::g_SceneCurrent = Game::MENU_SCENE;
+			Game::soundManager.PlayBGM();
 			Menu::Initalize();
 		}
 	}

@@ -75,8 +75,7 @@ namespace Info {
 
 	// Start
 	void Initalize() {
-		Game::soundManager.InitSystem();
-		Game::soundManager.PlayBGM();
+
 	}
 
 	// Update 
