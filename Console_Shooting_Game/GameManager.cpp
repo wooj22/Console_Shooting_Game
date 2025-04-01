@@ -9,13 +9,12 @@
 #include "EndScene.h"
 
 /* 전체 게임 루프를 관할하는 GameManager 입니다.*/
+/* ReadMe.txt를 읽어주세요 */
 
 namespace Game {
 	// extern 초기화
 	Scene g_SceneCurrent = Game::MENU_SCENE;
 	bool isGameSuccess = false;
-
-	// sound manager
 	SoundManager& soundManager = SoundManager::getInstance();
 
 	// Start
