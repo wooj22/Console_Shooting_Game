@@ -37,7 +37,7 @@
     <Filter Include="Boss">
       <UniqueIdentifier>{35d56831-bbec-42e2-b517-5fc6003aca94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Item\Enemy">
+    <Filter Include="Enemy">
       <UniqueIdentifier>{7fcfa658-b732-4cec-8d0e-e8c36ad8b502}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -70,7 +70,7 @@
       <Filter>Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>Item\Enemy</Filter>
+      <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="UIManager.cpp">
       <Filter>소스 파일</Filter>
@@ -117,7 +117,7 @@
       <Filter>Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>Item\Enemy</Filter>
+      <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="UIManager.h">
       <Filter>헤더 파일</Filter>
